@@ -32,12 +32,17 @@ templer - A static-site generator, written in perl.
 
 =head1 ABOUT
 
-Templer is a template-expansion program I use for my websites, which
-allows per-page and global templates to be used, along with variable
-interpolation and simple conditionals.
+Templer is the static-site generator utility I use for my websites.
 
-We allow interpolation, etc, into the output of our pages by the
-use of the L<HTML::Template> module.
+Templer flexible with input pages, and allows variables to be defined
+on a global or per-page basis, and then inserted into the output.
+
+Given a single template a complete site may be generated with an arbitrary
+number of pages, each sharing a common look and feel.  If required you can
+define a range of templates and select which to use on a per-page basis.
+
+We allow variable interpolation, loops, and conditional expansion in the
+generated output via the use of the L<HTML::Template> module.
 
 The name?  It stuck.  Initially I was thinking "templator" and
 "Templer" popped into my mind, via Knights Templer.
@@ -61,7 +66,7 @@ This code is in use in three domains I host:
 Initially there was one version of the C<templer> tool, but slowly the three sites
 required different tweaks and we had three different versions of the site-generator.
 
-The version you're using now is unified, containing all the previously site-specific
+The version you're seeing now is unified, containing all the previously site-specific
 changes.  On that basis it should be generally flexible and usable by others.
 
 =cut
@@ -69,41 +74,49 @@ changes.  On that basis it should be generally flexible and usable by others.
 
 =head1 Site Structure
 
-A site consists of a configuration file C<templer.cfg> and an input
-directory.  Input files are expanded through L<HTML::Template>, to
-expand any variables set in the top of a file, and then the contents
-are inserted into a global layout template
+A templer-based site consists of a configuration file C<templer.cfg> and
+an input directory.  Input files are expanded through L<HTML::Template>, to
+expand any variables set in the pages themselves, or in the global template.
+Once page-content is expanded it is then inserted into a global layout template.
 
-There are two modes of operation for the generated files:
+There are two modes of operation when it comes to processing fiels:
 
 =over 8
 
-=item In-place
+=item "In-place"
 
 Files are processed and the suffix is replaced with .html
 
 =item Output Path
 
 Files are generated in a distinct output-tree, and any static
-assets such as JPG, GIF, PNG, CSS, and JS files are copied across too
+assets such as JPG, GIF, PNG, CSS, and JS files are copied across too.
 
 =back
+
+This allows you to run in-place in your C<~/public_html> directory or to
+setup an output path which is later synced to your final/live location.
 
 =cut
 
 
 =head1 Code Layout
 
+The implementation uses several simple classes, mostly as wrappers around
+variable parsing:
+
 =over 8
 
 =item Templer::Global
 
-Contains global configuration file parsing, of the top-level C<templer.cfg> file.
+This contains the parsing code for the  global configuration file, which is
+located at the top-level directory of the site.  (It must be named
+C<templer.cfg>).
 
 =item Templer::Site
 
-Given an input directory it will return C<Templer::Site::Asset> and
-C<Templer::Site::Page> objects.
+Given an input directory this module finds and returns C<Templer::Site::Asset> and
+C<Templer::Site::Page> objects for each file present.
 
 =item Templer::Site::Asset
 
@@ -123,8 +136,6 @@ Note #2: The global object has sensible defaults.
 
 =head1 Questions / Bug Reports
 
-Please get in touch if you have a bug report/issue.
-
 The code is developed and hosted on gitub in the following location:
 
 =over 8
@@ -133,9 +144,27 @@ The code is developed and hosted on gitub in the following location:
 
 =back
 
-If you wish you may submit bug reports in the tracker there.
-Steve
---
+Please raise any issues in the tracker there.
+
+=cut
+
+
+=head1 AUTHOR
+
+ Steve
+ --
+ http://www.steve.org.uk/
+
+=cut
+
+=head1 LICENSE
+
+Copyright (c) 2012 by Steve Kemp.  All rights reserved.
+
+This module is free software;
+you can redistribute it and/or modify it under
+the same terms as Perl itself.
+The LICENSE file contains the full text of the license.
 
 =cut
 
