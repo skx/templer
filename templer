@@ -656,6 +656,7 @@ exit
 
         # Flags - force a rebuild
         "force",   \$CONFIG{ 'force' },
+        "serve",   \$CONFIG{ 'serve' },
         "verbose", \$CONFIG{ 'verbose' },
     ) );
 
@@ -688,6 +689,7 @@ my $site = Templer::Site->new( suffix => $suffix );
 my $in  = $CONFIG{ 'input' }  || $cfg->field("input")  || "./input/";
 my $out = $CONFIG{ 'output' } || $cfg->field("output") || "./output/";
 my $inplace = $CONFIG{ 'in-place' } || $cfg->field("in-place");
+my $srv = $CONFIG{ 'serve'} || 0;
 
 
 #
@@ -697,6 +699,31 @@ if ( !-d $in )
 {
     print "The input directory doesn't exist: $in\n";
     exit;
+}
+
+
+#
+#  Start a HTTP server
+#
+if ( $CONFIG{'serve'} )
+{
+    #
+    # Document root
+    #
+    my $root = $out;
+    $root = $in if ( defined $inplace );
+
+    if ( ! -d $root )
+    {
+        print "Document root doesn't exist: $root\n";
+        exit 0;
+    }
+
+    #
+    #  This is appalling...
+    #
+    system( "cd $root && python -m SimpleHTTPServer" );
+    exit (00);
 }
 
 
