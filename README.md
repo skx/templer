@@ -63,7 +63,7 @@ or copied literally to the output directory.
 
 In the example above `input/index.skx` would become `output/index.html`.
 
-> *NOTE* The `.skx` suffix is an example. You can define which suffix is considered a page via the configuration file.
+> **NOTE** The `.skx` suffix is an example. You can define which suffix is considered a page via the configuration file.
 
 There is _also_ an "in-place" mode.  When working in-place there is no distinct output directory, instead output is written to the same directory in which is encountered.  Given an input directory you might see this kind of transformation:
 
