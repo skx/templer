@@ -105,7 +105,7 @@ The input-tree is the collection of files that will be template-expanded
 into a layout.  So you'll also want to create a layout directory and place
 at least one layout into it.
 
-There are two examples provided with the distribution, to illustrate the
+There are two examples provided with the distribution to illustrate the
 software.  These example sites are built automatically every evening and
 uploaded online - so you may easily compare the input and the generated
 output:
@@ -114,6 +114,10 @@ output:
    * The online [generated output](http://www.steve.org.uk/Software/templer/examples/simple/output/).
 * [complex example source](https://github.com/skx/templer/tree/master/examples/complex)
    * The online [generated output](http://www.steve.org.uk/Software/templer/examples/complex/output/).
+
+The generated "complex" example is the single best reference to the facilities and usage of the software, as it is intended as an introduction in its own right:
+
+  *  [The reference site](http://www.steve.org.uk/Software/templer/examples/complex/output/).
 
 
 Rebuilding a site
