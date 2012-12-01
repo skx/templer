@@ -23,6 +23,7 @@ key regards:
 * You may change the layout on a per-page basis if you so wish.
 * Conditional variable expansion is supported, via `HTML::Template`.
 * File contents, and file-globs may be used in the templates
+    * This allows the trivial creation of galleries, for example.
 
 Another key point is that the layouts allow for more than a single
 simple "content" block to be placed into them - you can add arbitrary
