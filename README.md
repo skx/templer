@@ -51,10 +51,10 @@ The input-tree is the collection of files that will be template-expanded
 into a layout.  So you'll also want to create a layout directory and place
 at least one layout into it.
 
-The [included examples](https://github.com/skx/templer/tree/master/examples)
-should provide a useful starting point.
-
-The two example sites are built automatically and available online:
+There are two examples provided with the distribution, to illustrate the
+software.  These example sites are built automatically every evening and
+uploaded online - so you may easily compare the input and the generated
+output:
 
 * [simple example source](https://github.com/skx/templer/tree/master/examples/simple)
    * The online [generated output](http://www.steve.org.uk/Software/templer/examples/simple/output/).
