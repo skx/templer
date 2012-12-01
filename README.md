@@ -62,7 +62,7 @@ dependencies.
 Creating a new site
 -------------------
 
-Simply create a directory and copy the `templer.cfg.sample` into it, renaming
+Simply create a directory and copy the `[templer.cfg.sample]https://raw.github.com/skx/templer/master/templer.cfg.sample()` into it, renaming
 it to `templer.cfg`.  This file should then be editted to define where your
 input tree is.
 
