@@ -8,6 +8,25 @@ templer - A static-site generator, written in perl.
 
 =head1 SYNOPSIS
 
+  templer [options]
+
+
+  Help Options:
+
+    --help        Show the help information for this script.
+    --manual      Read the manual for this script.
+
+  Path options:
+
+    --input          Specify the input directory to process.
+    --output         Specify the output directory to build the site to.
+    --layout-path    Specify the location from which to find layouts.
+
+  Flags
+
+    --force          Force a rebuild of all pages.
+    --in-place       Specify we're processing pages in-place, ignoring the output dir.
+    --verbose        Be noisy during the execution.
 
 =cut
 
