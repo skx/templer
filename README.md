@@ -43,12 +43,16 @@ Concepts
 Creating a new site
 -------------------
 
-Simply create a directory and copy the `templer.cfg.sample` into it.  Update
-that file as per your tastes.
+Simply create a directory and copy the `templer.cfg.sample` into it, renaming
+it to `templer.cfg`.  This file should then be editted to define where your
+input tree is.
 
-At the very least you'll wish to specify the input directory to process, and
-an output directory to which output will be generated.  (If you prefer you
-may make use of the "in-place" mode.)
+The input-tree is the collection of files that will be template-expanded
+into a layout.  So you'll also want to create a layout directory and place
+at least one layout into it.
+
+The [included examples](https://github.com/skx/templer/tree/master/examples)
+should provide a useful starting point.
 
 
 Rebuilding a site
