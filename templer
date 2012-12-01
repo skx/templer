@@ -406,7 +406,6 @@ sub _readFile
         }
     }
 
-    print "CONTENT:\n" . $self->{'content'} . "\n" if ( $filename =~ /privacy/ );
     close($handle);
 }
 
@@ -858,6 +857,8 @@ foreach my $page (@pages)
                                     die_on_bad_params      => 0,
                                     search_path_on_include => 1,
                                     path                   => $tpath,
+                                    global_vars            => 1,
+                                    loop_context_vars      => 1,
                                   );
 
 
@@ -874,7 +875,9 @@ foreach my $page (@pages)
     my $body = HTML::Template->new( scalarref              => \$page->content(),
                                     die_on_bad_params      => 0,
                                     search_path_on_include => 1,
-                                    path                   => $dirName
+                                    path                   => $dirName,
+                                    global_vars            => 1,
+                                    loop_context_vars      => 1,
                                   );
 
 
