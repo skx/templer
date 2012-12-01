@@ -83,7 +83,7 @@ output = ./output/
 #
 #    copyright = Steve Kemp
 #
-#  Can be used in your template, or you page text via:
+#  Means you can use this in your layout, or your page text:
 #
 #    <!-- tmpl_var name='copyright' -->
 #
