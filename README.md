@@ -40,6 +40,25 @@ Concepts
     * An asset is something which is copied into the output directory with no changes amade to t.
 
 
+
+Installation
+------------
+
+The code is modular and neat, but it is deliberately contained in a single
+script.  This means installation is limited to copying the script to a
+directory on your PATH.
+
+The two dependencies are:
+
+* Perl
+* The [HTML::Template](http://search.cpan.org/perldoc?HTML%3A%3ATemplate) module.
+   *  This may be installed, on a Debian system, with `apt-get install libhtml-template-perl`.
+
+It is possible in the future that Markdown, Textile, or similar will be supported.
+If that is the case they will be 100% optional.  I have no wish to increase the
+dependencies.
+
+
 Creating a new site
 -------------------
 
