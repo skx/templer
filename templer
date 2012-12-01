@@ -796,8 +796,6 @@ foreach my $page (@pages)
                 $img = substr( $img, length( $dirName . "/" ) );
                 push( @$ref, { file => $img } );
             }
-            print "NAME: $var\n";
-            print $ref;
             $data{ $var } = $ref;
         }
     }
