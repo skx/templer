@@ -230,7 +230,7 @@ sub _readGlobalCFG
         chomp($line);
         next if ( $line =~ /^#/ );
 
-        if ( $line =~ /^(.*)=(.*)$/ )
+        if ( $line =~ /^([^=]+)=(.*)$/ )
         {
             my $key = $1;
             my $val = $2;
@@ -383,7 +383,7 @@ sub _readFile
         chomp($line);
         if ($header)
         {
-            if ( $line =~ /^(.*):(.*)$/ )
+            if ( $line =~ /^([^:]+):(.*)$/ )
             {
                 my $key = $1;
                 my $val = $2;
@@ -395,7 +395,7 @@ sub _readFile
                 print "Templer::Site::Page set: $key => $val\n"
                   if ( $self->{ 'debug' } );
             }
-            if ( $line =~ /^----$/ )
+            if ( $line =~ /^----[\r\n]*$/ )
             {
                 $header = undef;
             }
@@ -405,6 +405,8 @@ sub _readFile
             $self->{ 'content' } .= $line . "\n";
         }
     }
+
+    print "CONTENT:\n" . $self->{'content'} . "\n" if ( $filename =~ /privacy/ );
     close($handle);
 }
 
