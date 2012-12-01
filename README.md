@@ -54,6 +54,13 @@ at least one layout into it.
 The [included examples](https://github.com/skx/templer/tree/master/examples)
 should provide a useful starting point.
 
+The two example sites are built automatically and available online:
+
+* [simple example source](https://github.com/skx/templer/tree/master/examples/simple)
+   * The online [generated output](http://www.steve.org.uk/Software/templer/examples/simple/output/).
+* [complex example source](https://github.com/skx/templer/tree/master/examples/complex)
+   * The online [generated output](http://www.steve.org.uk/Software/templer/examples/complex/output/).
+
 
 Rebuilding a site
 -----------------
