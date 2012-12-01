@@ -38,8 +38,9 @@ A templer site comprises of three things:
 
 * A global configuration file.
      * This defines the paths to search for inputs, templates, etc.
+     * The [`templer.cfg.sample`](https://raw.github.com/skx/templer/master/templer.cfg.sample) is a useful thing to look at.
 * A layout.
-    * This is used to build the output pages, and defines the common layout.
+    * This is used to build the output pages, and defines the common look and feel.
 * A series of pages & assets.
     * Pages have their content processed and inserted into the layout to produce output HTML.
     * Assets are not processed, but are copied into the output directory untouched.
@@ -57,10 +58,12 @@ In general we assume there is a tree like so:
     ├── output
     └── templer.cfg
 
-Every file in the input directory is either processed, and converted into a HTML file,
+Every file in the input directory is either processed and converted into a HTML file,
 or copied literally to the output directory.
 
-In the example above `input/index.skx` would become `output/index.html`.  (Note that the `.skx` suffix is an example, via the global configuration file you can specify any suffix you wish).
+In the example above `input/index.skx` would become `output/index.html`.
+
+> *NOTE* The `.skx` suffix is an example. You can define which suffix is considered a page via the configuration file.
 
 There is _also_ an "in-place" mode.  When working in-place there is no distinct output directory, instead output is written to the same directory in which is encountered.  Given an input directory you might see this kind of transformation:
 
