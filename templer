@@ -1,81 +1,125 @@
 #!/usr/bin/perl
-#
-# === About
-#
-# Templer is a template-expansion program I use for my websites, which
-# allows per-page and global templates to be used, along with variable
-# interpolation and simple conditionals.
-#
-# We allow interpolation, etc, into the output of our pages by the
-# use of the M<HTML::Template> module.
-#
-# The name?  It stuck.  Initially I was thinking "templator" and
-# "Templer" popped into my mind, via Knights Templer.
-#
-#
-# === Live Usage
-#
-# This code is in use in three domains I host:
-#
-# =over 8
-#
-# =item stolen-souls.com
-#
-# =item blogspam.net
-#
-# =item steve.org.uk
-#
-# =back
-#
-# Over time it has evolved to become reasonably non-Steve-specific, but if you
-# have queries please do get in touch.
-#
-#
-# === Structure
-#
-# A site consists of a configuration file C<templer.cfg> and an input
-# directory.  Input files are expanded through L<HTML::Template>, to
-# expand any variables set in the top of a file, and then the contents
-# are inserted into a global layout template
-#
-# There are two modes of operation for the generated files:
-#
-#   * In-place
-#     Files are processed and the suffix is replaced with .html
-#
-#   * Output Path
-#     Files are generated in a distinct output-tree, and any static
-#     assets such as JPG, GIF, PNG, CSS, and JS files are copied across too
-#
-#
-# === Code Layout
-#
-#  Templer::Global
-#    - Contains global configuration file parsing.  ("templer.cfg")
-#
-#  Templer::Site
-#    - Given an input directory it will return objects of the type:
-#
-#       Templer::Site::Asset
-#        - An item which requires zero expansion.  Media, javascript, etc.
-#
-#       Templer::Site::Page
-#       - A page which requires template expansion.
-#
-#
-# Note #1: The command-line options override those specified in the global object.
-#
-# Note #2: The global object has sensible defaults.
-#
-#
-#
-# === Questions / Bug Reports
-#
-# Please get in touch.
-#
-# Steve
-# --
-#
+
+=head1 NAME
+
+templer - A static-site generator, written in perl.
+
+=cut
+
+=head1 SYNOPSIS
+
+
+=cut
+
+=head1 ABOUT
+
+Templer is a template-expansion program I use for my websites, which
+allows per-page and global templates to be used, along with variable
+interpolation and simple conditionals.
+
+We allow interpolation, etc, into the output of our pages by the
+use of the L<HTML::Template> module.
+
+The name?  It stuck.  Initially I was thinking "templator" and
+"Templer" popped into my mind, via Knights Templer.
+
+=cut
+
+=head1 Live Usage
+
+This code is in use in three domains I host:
+
+=over 8
+
+=item http://stolen-souls.com/
+
+=item http://blogspam.net/
+
+=item http://steve.org.uk/
+
+=back
+
+Initially there was one version of the C<templer> tool, but slowly the three sites
+required different tweaks and we had three different versions of the site-generator.
+
+The version you're using now is unified, containing all the previously site-specific
+changes.  On that basis it should be generally flexible and usable by others.
+
+=cut
+
+
+=head1 Site Structure
+
+A site consists of a configuration file C<templer.cfg> and an input
+directory.  Input files are expanded through L<HTML::Template>, to
+expand any variables set in the top of a file, and then the contents
+are inserted into a global layout template
+
+There are two modes of operation for the generated files:
+
+=over 8
+
+=item In-place
+
+Files are processed and the suffix is replaced with .html
+
+=item Output Path
+
+Files are generated in a distinct output-tree, and any static
+assets such as JPG, GIF, PNG, CSS, and JS files are copied across too
+
+=back
+
+=cut
+
+
+=head1 Code Layout
+
+=over 8
+
+=item Templer::Global
+
+Contains global configuration file parsing, of the top-level C<templer.cfg> file.
+
+=item Templer::Site
+
+Given an input directory it will return C<Templer::Site::Asset> and
+C<Templer::Site::Page> objects.
+
+=item Templer::Site::Asset
+
+An item which requires zero expansion.  Media, javascript, etc.
+
+=item Templer::Site::Page
+
+A page which requires template expansion.
+
+=back
+
+Note #1: The command-line options override those specified in the global object.
+
+Note #2: The global object has sensible defaults.
+
+=cut
+
+=head1 Questions / Bug Reports
+
+Please get in touch if you have a bug report/issue.
+
+The code is developed and hosted on gitub in the following location:
+
+=over 8
+
+=item https://github.com/skx/templer
+
+=back
+
+If you wish you may submit bug reports in the tracker there.
+Steve
+--
+
+=cut
+
 
 
 use strict;
