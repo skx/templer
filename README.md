@@ -3,6 +3,31 @@ Templer
 
 Templer is yet another static site generator, written in Perl.
 
+It makes use of the [HTML::Template](http://search.cpan.org/perldoc?HTML%3A%3ATemplate) module for performing template and variable expansion.
+
+The tool has evolved for my own personal usage over time, but I believe
+I've made it sufficently generic it would be useful to others.
+
+My motivation for putting it together came from the desire to change
+several hand-made, HTML-coded, sites to something more maintainable such
+that I could change the layout in one place.  This explains why there is
+no shortcut to writing the content, such as the use of Markdown, Textile,
+or similar.
+
+The design evolved over time but the key reason for keeping it around
+is that it differs from other simple static-generators in a couple of
+key regards:
+
+* You may define global variables for use in your pages/layouts.
+* A page may define and use page-specific variables.
+* You may change the layout on a per-page basis if you so wish.
+* Conditional variable expansion is supported, via `HTML::Template`.
+* File contents, and file-globs may be used in the templates
+
+Another key point is that the layouts allow for more than a single
+simple "content" block to be placed into them - you can add arbitrary
+numbers of optional side-menus, for example.
+
 
 Concepts
 --------
