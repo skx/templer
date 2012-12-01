@@ -1,0 +1,30 @@
+title: A Page
+src: read_file( SELF )
+sidebar: read_file( sidebar.inc )
+----
+
+
+<h2>A Page</h2>
+<blockquote>
+<p>A page is nothing more than a file which contains content you wish to publish.</p>
+<p>A page contains two things:</p>
+<dl>
+<dt>A header</dt>
+<dd><p>This is where you may define per-page variables.</p></dd>
+<dt>The content</dt>
+<dd><p>This is where you write your content, optionally making use of variables and HTML::Template markup</p></dd>
+</dl>
+<p>The header of a file is any content which lies between the top of the file and the marker "<tt>----</tt>".   The header consists of lines of the form:</p>
+<pre>
+key: value
+key2: value2
+</pre>
+<p>Those examples define the variables "<tt>key</tt>" and "<tt>key2</tt>" respectively.</p>
+<blockquote>
+<p><b>NOTE</b>:  Key names are always transformed to lower-case when encountered.</p>
+</blockquote>
+<p>A header is <b>mandatory</b> even if it is empty, but note that you'll almost certainly want to set the title of the output page.</p>
+
+</blockquote>
+
+

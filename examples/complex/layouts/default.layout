@@ -1,0 +1,43 @@
+<html>
+ <head>
+  <title><!-- tmpl_var name='title' escape='html' --></title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <!-- tmpl_if name='stylesheet' -->
+   <link rel="stylesheet" href="<!-- tmpl_var name='stylesheet' -->" type="text/css" />
+  <!-- tmpl_else -->
+   <link rel="stylesheet" href="style.css" type="text/css" />
+  <!-- /tmpl_if -->
+  <script src="jquery.min.js"></script>
+  <script type="text/javascript">
+
+ $(document).ready(function() {
+   $("#src_toggle").click(function(event){
+      $('#src').toggle();
+      return false;
+   });
+  });
+  </script>
+ </head>
+ <body>
+  <div style="text-align: center;">
+   <h1><!-- tmpl_var name='title' escape='html' --></h1>
+  </div>
+  <p>&nbsp;</p>
+  <table width="100%">
+   <tr>
+    <td valign="top" width="300">
+      <!-- tmpl_var name='sidebar' -->
+    </td>
+    <td valign="top">
+      <!-- tmpl_var name='content' -->
+    </td>
+  </tr>
+  </table>
+
+ <hr />
+ <p style="text-align: right;"> <a href="#" id="src_toggle">Show the source of this page</a>.</p>
+  <div id="src" style="display:none;">
+   <pre><!-- tmpl_var name='src' escape='html' --></pre>
+  </div>
+ </body>
+</html>

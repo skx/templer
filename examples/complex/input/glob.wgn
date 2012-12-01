@@ -1,0 +1,37 @@
+title: File Patterns
+src: read_file( SELF )
+sidebar: read_file( sidebar.inc )
+files: file_glob( "img/*.jpg" )
+----
+
+
+<h2>File Patterns</h2>
+<blockquote>
+<p>There is a special kind of per-page variable, using <tt>file_glob</tt>, which sets
+up a data-structure which is used for a list.  Lists are documented fully in the
+<a href="http://search.cpan.org/perldoc?HTML%3A%3ATemplate">HTML::Template</a>  documentation, but in brief if you have this structure:</p>
+<pre>
+index.wgn
+IMAGE1.jpg
+IMAGE2.jpg
+IMAGE3.jpg
+</pre>
+<p>You can setup a loop to hold the names of each file via:</p>
+<pre>
+files: file_glob( "IMAGE*.jpg" )
+</pre>
+<p>Then this, in your template, will allow you to see each of them:</p>
+<pre>
+  &lt;!-- tmpl_loop name='files' --&gt;
+   &lt;img src= "&lt;!-- tmpl_var name='file' --&gt;"&gt;
+  &lt;!-- /tmpl_loop --&gt;
+</pre>
+<p>Here is a live example:</p>
+
+<!-- tmpl_loop name='files' -->
+  <p><img src="<!-- tmpl_var name='file' -->" /></p>
+<!-- /tmpl_loop -->
+
+</blockquote>
+
+

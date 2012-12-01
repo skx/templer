@@ -1,0 +1,29 @@
+title: Variables
+src: read_file( SELF )
+sidebar: read_file( sidebar.inc )
+my_name: Steve Kemp
+----
+
+<h2><!-- tmpl-var name='title' --></h2>
+<blockquote>
+<p>There are two kinds of variables in a templer deployment:</p>
+<dl>
+<dt>Variables which are global.</dt>
+<dd><p>These are defined in the configuration file <tt>templer.cfg</tt> at the top-level of the site.</p></dd>
+<dt>Variables which are defined on a per-page basis</dt>
+<dd><p>These variables are included in the header of the page, which is the part before the deliminator "----".</p></dd>
+</dl>
+<p>Variables are included by the standard <a href="http://search.cpan.org/perldoc?HTML%3A%3ATemplate">HTML::Template</a> construct:</p>
+<blockquote>
+  &lt;!-- tmpl_var name='<b>name</b>' --&gt;
+</blockquote>
+<p>The input which generated this output page, which you can see at the foot of the page, defines the variable "<tt>my_name</tt>" and so we can output it via this:</p>
+<blockquote>
+  &lt;!-- tmpl_var name='my_name' --&gt;
+</blockquote>
+<p>Here we see that:</p>
+<blockquote>
+ My name is <!-- tmpl_var name='my_name' -->
+</blockquote>
+
+</blockquote>

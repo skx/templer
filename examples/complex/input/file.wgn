@@ -1,0 +1,33 @@
+title: File Reading
+src: read_file( SELF )
+sidebar: read_file( sidebar.inc )
+----
+
+
+<h2>File Reading</h2>
+<blockquote>
+<p>We've <a href="variables.html">already seen</a> how a page can include a variable in the
+input and have this be inserted into the output.</p>
+<p>There is a special kind of per-page variable, using <tt>read_file</tt>, which sets
+the value of a variable to the contents of the named file:</p>
+<pre>
+title: File Reading
+src: read_file( file.wgn )
+sidebar: read_file( sidebar.inc )
+----
+..
+</pre>
+<p>As a helper if you use "<tt>read_file( SELF )</tt>", then "<tt>SELF</tt>" will be
+replaced with the page being read.</p>
+</blockquote>
+
+
+<h2>File Inclusion</h2>
+<blockquote>
+<p>As an alternative to naming a part of your template, and expanding the content
+within it you can of course use the <a href="http://search.cpan.org/perldoc?HTML%3A%3ATemplate">HTML::Template</a> file inclusion construct:</p>
+<pre>
+  &lt;!-- tmpl_include name='path.inc' --&gt;
+</pre>
+<p>The inclusion path is relative to the directory containing the file being processed.</p>
+</blockquote>

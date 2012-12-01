@@ -1,0 +1,26 @@
+title: A Layout
+src: read_file( SELF )
+sidebar: read_file( sidebar.inc )
+----
+
+
+<h2>A Layout</h2>
+<blockquote>
+<p>A layout is a simple HTML::Template file which contains place-holders for your
+content to go into.  The most basic layout would look like this:</p>
+<pre>
+&lt;html&gt;
+ &lt;head&gt;
+  &lt;title&gt;&lt;!-- tmpl_var name='title' escape='html' --&gt;&lt;/title&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+ &lt;!-- tmpl_var name='content' --&gt;
+ &lt;/body&gt;
+&lt;/html&gt;
+</pre>
+<p>Templer will insert the contents of each page into the region named "<tt>content</tt>", and
+in this example we've assumed that <a href="page.html">each page</a> will define the variable "<tt>title</tt>".  Together the content and the title complete the page.</p>
+<p>You can be significantly more sophisticated than just replacing the content and the title of the output page though - by including optional components as we've done with this example.</p>
+</blockquote>
+
+

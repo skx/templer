@@ -1,0 +1,45 @@
+title: Site structure
+src: read_file( SELF )
+sidebar: read_file( sidebar.inc )
+----
+
+
+<h2><!-- tmpl_var name='title' --></h2>
+<blockquote>
+<p>A templer site consists of at least three things:</p>
+<dl>
+<dt>A top-level configuration file.</dt>
+<dd><p>This is always the configuration file named <tt>./knights.cfg</tt>, you cannot rename this, or specify an alternative.</p></dd>
+<dt>A directory containing layouts.</dt>
+<dd><p>By default layout templates are loaded from <tt>./layouts</tt>, and unless a page
+references another layout then the file <tt>default.layout</tt> will be loaded.</p>
+<p>The default layout name may be changed in the configuration file mentioned above.</p></dd>
+<dt>A series of input pages</dt>
+<dd><p>These are your pages of content.  By default these come from <tt>./input</tt>, but
+this may be changed in the global configuration file.</p></dd>
+</dl>
+</blockquote>
+
+<h2>Example Structure</h2>
+<blockquote>
+<p>This site was built via the following structure:</p>
+<pre>
+├── input/
+│   ├── dark.css
+│   ├── file.wgn
+│   ├── index.wgn
+│   ├── jquery.min.js
+│   ├── sidebar.inc
+│   ├── structure.wgn
+│   ├── ..
+│   ├── ..
+│   ├── stylesheet.wgn
+│   └── variables.wgn
+├── layouts/
+│   └── default.layout
+├── output/
+└── templer.cfg
+</pre>
+<p>Here the "<tt>*.wgn</tt>" files are the pages to be processed, and the <tt>output/</tt>
+directory is where our content will be generated and stored.</p>
+</blockquote>

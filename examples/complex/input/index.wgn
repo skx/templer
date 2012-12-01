@@ -1,0 +1,37 @@
+title: Templer
+src: read_file( SELF )
+sidebar: read_file( sidebar.inc )
+----
+
+
+<h2><!-- tmpl_var name='title' --></h2>
+<blockquote>
+<p>This collection of pages is designed to fully demonstrate how you'd use Templer, to generate a website.</p>
+<p>A templer site is created by a collection of input files, and a layout file.</p>
+<p>The general course of processing involves:</p>
+<ul>
+<li>Reading each input page.</li>
+<li>Expanding variables/content.</li>
+<li>Inserting the rendered content into the layout.</li>
+</ul>
+<p>A site itself then consists of a series of <a href="page.html">input pages</a> (i.e. your content) and at least <a href="layout.html">one layout</a>.  An input page might well decide to use a different layout which is just fine.</p>
+</blockquote>
+
+<h2>Quick Links</h2>
+<blockquote>
+<dl>
+<dt><a href="structure.html">Site Structure</a></dt>
+<dd><p>A brief discussion on site-layout.</p></dd>
+<dt><a href="page.html">A Page</a></dt>
+<dd><p>What is a page?  What can I do with it?.</p></dd>
+<dt><a href="variables.html">Variable expansion</a></dt>
+<dd><p>Demonstration of simple variable expansion.</p></dt>
+<dt><a href="stylesheets.html">Conditional variables</a></dt>
+<dd><p>How to have conditional parts of your layout.</p></dd>
+<dt><a href="file.html">Variables containing file contents</a></dt>
+<dd><p>A variable can contain either a literal value or the contents of a file.</p></dd>
+<dt><a href="glob.html">Variables matching filenames</a></dt>
+<dd><p>A variable can also be used to create a loop, based on a glob pattern.  Ideal for creating a gallery, for example.</p></dd>
+</dl>
+</blockquote>
+

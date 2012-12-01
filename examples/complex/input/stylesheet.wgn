@@ -1,0 +1,32 @@
+title: Stylesheet Example
+src: read_file( SELF )
+stylesheet: dark.css
+sidebar: read_file( sidebar.inc )
+----
+
+
+<h2>Conditional Variables</h2>
+<blockquote>
+<p>If you look at the layout used generate this &quot;site&quot; you'll see this:</p>
+<pre>
+  &lt;!-- tmpl_if name='stylesheet' --&gt;
+   &lt;link rel="stylesheet" href="&lt;!-- tmpl_var name='stylesheet' --&gt;"
+      type="text/css" /&gt;
+  &lt;!-- tmpl_else --&gt;
+   &lt;link rel="stylesheet" href="style.css" type="text/css" /&gt;
+  &lt;!-- /tmpl_if --&gt;
+</pre>
+<p>Here the code basically says:</p>
+<ul>
+<li>If there is a variable called "stylesheet" set then use it.</li>
+<li>Otherwise include the "style.css" link.</li>
+</ul>
+<p>If you guessed you could then set a per-page stylesheet-variable you'd be correct.</p>
+<p>This page contains a link to one:</p>
+<pre>
+title: Stylesheet Example
+stylesheet: dark.css
+----
+..
+</pre>
+</blockquote>
