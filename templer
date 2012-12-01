@@ -227,7 +227,9 @@ sub _readGlobalCFG
 
     while ( my $line = <$handle> )
     {
-        chomp($line);
+        # strip trailing newline.
+        $line =~ s/[\r\n]*//g;
+
         next if ( $line =~ /^#/ );
 
         if ( $line =~ /^([^=]+)=(.*)$/ )
@@ -380,7 +382,9 @@ sub _readFile
 
     while ( my $line = <$handle> )
     {
-        chomp($line);
+        # strip trailing newline.
+        $line =~ s/[\r\n]*//g;
+
         if ($header)
         {
             if ( $line =~ /^([^:]+):(.*)$/ )
