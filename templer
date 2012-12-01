@@ -332,11 +332,10 @@ sub source
 #
 # This object holds data about each page.
 #
-# A page is any file in the input-directory which matches the pattern
-# "*.skx", and is not a directory.
+# A page is any non-directory beneath the input-directory which matches the pattern
+# specified by the user (defaults to "*.skx").
 #
-# Pages are processed via the M<HTML::Template> module to create the
-# suitable output.
+# Pages are processed via the M<HTML::Template> module to create the suitable output.
 #
 package Templer::Site::Page;
 
@@ -560,11 +559,11 @@ sub assets
 
 
 #
-# Find files in the given directory and return a new object
+# Find files beneath the given directory and return a new object
 # for each one.
 #
-# We assume that the object can be constructed and receives
-# a single hash with "file => $name".
+# We assume that the object constructor receives a hash as its sole
+# argument with the key "file" containing the file path.
 #
 sub _findFiles
 {
@@ -591,6 +590,9 @@ sub _findFiles
     #
     my @matches;
 
+    #
+    #  The class-object we're going to construct.
+    #
     my $class = $args{ 'object' };
 
     if ( $args{ 'must_match' } )
@@ -609,6 +611,7 @@ sub _findFiles
             push( @matches, $class->new( file => $file ) );
         }
     }
+
     @matches;
 }
 
@@ -670,8 +673,8 @@ pod2usage( -verbose => 2 ) if ( $CONFIG{ 'manual' } );
 my $cfg = Templer::Global->new( file => "./templer.cfg" );
 
 #
-#  Create a site helper - telling it what suffix to use, unless
-# that was specified in the global configuration file.
+#  Create a site helper - telling it what suffix to look for to
+# identify pages.
 #
 my $suffix = $cfg->field("suffix") || ".skx";
 my $site = Templer::Site->new( suffix => $suffix );
@@ -680,7 +683,7 @@ my $site = Templer::Site->new( suffix => $suffix );
 #
 #  The input directory to process, and output path.
 #
-#  [The command line takes precedence.  Always]
+#  [The command line takes precedence.  Always.]
 #
 my $in  = $CONFIG{ 'input' }  || $cfg->field("input")  || "./input/";
 my $out = $CONFIG{ 'output' } || $cfg->field("output") || "./output/";
@@ -732,7 +735,11 @@ my $rebuilt = 0;
 #
 foreach my $page (@pages)
 {
+    #
+    # The path of the page, on-disk.
+    #
     my $src = $page->source();
+
     print "\nProcessing page: $src\n" if ( $CONFIG{ 'verbose' } );
 
     #
@@ -806,6 +813,7 @@ foreach my $page (@pages)
     #
     next unless ($rebuild);
 
+
     #
     # Keep track of rebuilt pages.
     #
@@ -825,7 +833,7 @@ foreach my $page (@pages)
     #
     #  Load the HTLM::Template module against the body of the page.
     #
-    #  Includes are relative to the path of the input
+    #  (Includes are relative to the path of the input.)
     #
     my $dirName = $page->source();
     if ( $dirName =~ /^(.*)\/(.*)$/ )
@@ -845,12 +853,16 @@ foreach my $page (@pages)
     my %data = ( $cfg->fields(), $page->fields() );
 
     #
-    #  If any key contains "read_file()" then read the file.
+    #  If the value of any key contains a magic token we'll handle
+    # that specially here.
     #
     foreach my $var ( keys %data )
     {
         if ( $data{ $var } =~ /^read_file\((.*)\)/ )
         {
+            #
+            #  Read a file contents.
+            #
             my $file = $1;
             $file =~ s/['"]//g;
             $file =~ s/^\s+|\s+$//g;
@@ -868,6 +880,9 @@ foreach my $page (@pages)
         }
         if ( $data{ $var } =~ /^run_command\((.*)\)/ )
         {
+            #
+            # Run a system command, and capture the output.
+            #
             my $cmd = $1;
             $cmd =~ s/['"]//g;
             $cmd =~ s/^\s+|\s+$//g;
@@ -875,6 +890,15 @@ foreach my $page (@pages)
         }
         if ( $data{ $var } =~ /^file_glob\((.*)\)/ )
         {
+            #
+            #  Populate an array of hash-refs referring to
+            # files which match a particular glob.
+            #
+            #  Could be used for many things, will be used for
+            # image-gallaries.
+            #
+            #  TODO: Populate height/width/etc.
+            #
             my $pattern = $1;
             $pattern =~ s/['"]//g;
             $pattern =~ s/^\s+|\s+$//g;
@@ -906,7 +930,7 @@ foreach my $page (@pages)
     $tmpl->param( \%data );
 
     #
-    # Make sure the output directory exists
+    # Make sure the output path exists.
     #
     my $path = $dst;
     if ( $path =~ /^(.*)\/(.*)$/ )
@@ -963,10 +987,17 @@ foreach my $asset (@assets)
 
 
 
+#
+# All done.
+#
 print "\nAll done: $rebuilt page(s) updated\n";
 print "Copied $copied asset(s)\n" unless ($inplace);
 
 exit(0);
+
+
+
+
 
 
 #
