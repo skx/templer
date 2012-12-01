@@ -26,7 +26,7 @@ sidebar: read_file( sidebar.inc )
 <dd><p>What is a page?  What can I do with it?.</p></dd>
 <dt><a href="variables.html">Variable expansion</a></dt>
 <dd><p>Demonstration of simple variable expansion.</p></dt>
-<dt><a href="stylesheets.html">Conditional variables</a></dt>
+<dt><a href="stylesheet.html">Conditional variables</a></dt>
 <dd><p>How to have conditional parts of your layout.</p></dd>
 <dt><a href="file.html">Variables containing file contents</a></dt>
 <dd><p>A variable can contain either a literal value or the contents of a file.</p></dd>
