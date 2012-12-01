@@ -25,5 +25,19 @@ my_name: Steve Kemp
 <blockquote>
  My name is <!-- tmpl_var name='my_name' -->
 </blockquote>
+</blockquote>
 
+<h2>Types of variables</h2>
+<blockquote>
+<p>There are two types of variables permitted:</p>
+<dl>
+<dt>Simple Strings</dt>
+<dd><p>These are defined literally as "<tt>key: value ..</tt>".</p></dd>
+<dt>Special values</dt>
+<dd><p>There are some special types of variable which are available:</p>
+<ul>
+<li>Variables which are set to <a href="file.html">the contents of files</a>.</li>
+<li>Variables which are set to <a href="glob.html">file globbing matches</a>.</li>
+</ul></dd>
+</dl>
 </blockquote>
