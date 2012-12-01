@@ -227,6 +227,7 @@ sub _readGlobalCFG
 
     while ( my $line = <$handle> )
     {
+
         # strip trailing newline.
         $line =~ s/[\r\n]*//g;
 
@@ -382,6 +383,7 @@ sub _readFile
 
     while ( my $line = <$handle> )
     {
+
         # strip trailing newline.
         $line =~ s/[\r\n]*//g;
 
@@ -1020,9 +1022,17 @@ foreach my $asset (@assets)
     }
 
     #
-    # Do the copy
+    # Do the copy - ensuring that we preserve the mode.
     #
+    # Without the explicit stat()/chmod() my blogspam.net CGI scripts
+    # start to fail.
+    #
+    my ( $dev,  $ino,   $mode,  $nlink, $uid,     $gid, $rdev,
+         $size, $atime, $mtime, $ctime, $blksize, $blocks
+       ) = stat($src);
+
     copy( $src, $dst );
+    chmod( $mode, $dst );
     $copied += 1;
 }
 
