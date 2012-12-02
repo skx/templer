@@ -545,7 +545,8 @@ sub pages
     return (
              $self->_findFiles( must_match => $suffix . "\$",
                                 object     => "Templer::Site::Page",
-                                directory  => $dir
+                                directory  => $dir,
+                                hide_dotfiles => 1,
                               ) );
 }
 
@@ -567,7 +568,8 @@ sub assets
     return (
              $self->_findFiles( must_not_match => $suffix . "\$",
                                 object         => "Templer::Site::Asset",
-                                directory      => $dir
+                                directory      => $dir,
+                                hide_dotfiles => 0,
                               ) );
 
 }
@@ -584,7 +586,16 @@ sub _findFiles
 {
     my ( $self, %args ) = (@_);
 
+    #
+    # Remove the trailing "/" on the end of the directory to search.
+    #
     $args{ 'directory' } =~ s/\/$//g;
+
+    #
+    # Should we hide dotfiles?
+    #
+    my $dotfiles = $args{ 'hide_dotfiles'};
+
 
     #
     #  Files we've found.  Ignoring the suffix just now.
@@ -594,7 +605,7 @@ sub _findFiles
     File::Find::find( {
            wanted => sub {
                my $name = $File::Find::name;
-               $files{ $name } += 1;
+               $files{ $name } += 1 unless ( $dotfiles && ( $name =~ /\/\./ ) );
            },
            follow      => 1,
            follow_skip => 2,
