@@ -1031,12 +1031,19 @@ unless ($inplace)
     }
 
     #
-    # The horrible command we're going to execute.
+    # Run the copy, unless all files are present.
     #
-    my $cmd = "(cd $in && tar -cf - " .
-      join( " ", @copy ) . ") | ( cd $out && tar xf -)";
-    print "TAR: $cmd " if ( $CONFIG{ 'verbose' } );
-    system($cmd );
+    if ( scalar @copy ne 0 )
+    {
+
+        #
+        # The horrible command we're going to execute.
+        #
+        my $cmd = "(cd $in && tar -cf - " .
+          join( " ", @copy ) . ") | ( cd $out && tar xf -)";
+        print "TAR: $cmd " if ( $CONFIG{ 'verbose' } );
+        system($cmd );
+    }
 }
 
 
