@@ -819,7 +819,7 @@ foreach my $page (@pages)
     #
     if ( !-e $tpath . "/" . $template )
     {
-        print "Layout missing: $tpath/$template\n";
+        print "WARNING: Layout file missing: $tpath/$template\n";
         next;
     }
 
@@ -1092,7 +1092,7 @@ sub read_file
     }
     else
     {
-        print "WARNING: Failed to read $name\n";
+        print "WARNING: Attempting to read a file that doesn't exist: $name\n";
     }
     $content;
 }
