@@ -529,11 +529,12 @@ sub new
 
 
 #
-# A site comprises of a collection of pages and
-# a collection of static resources which aren't
-# touched/modified - these are "assets".
+# A site comprises of a collection of pages and a collection of static resources
+# which aren't touched/modified - these are "assets".
 #
-# Return an object for each page.
+# Return an object for each page we've found.
+#
+# NOTE: We don't process pages with a "." prefix, i.e. dotfiles.
 #
 sub pages
 {
@@ -552,11 +553,16 @@ sub pages
 
 
 #
-# A site comprises of a collection of pages and
-# a collection of static resources which aren't
-# touched/modified - these are "assets".
+# A site comprises of a collection of pages and a collection of static resources
+# which aren't touched/modified - these are "assets".
 #
 # Return an object for each asset we find.
+#
+# NOTE:  That we will include files which have a "." prefix here - to correctly
+# copy files such as:
+#
+#    .htpasswd
+#    .htaccess
 #
 sub assets
 {
