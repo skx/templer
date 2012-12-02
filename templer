@@ -986,7 +986,21 @@ foreach my $page (@pages)
 
                 # remove dirname
                 $img = substr( $img, length( $dirName . "/" ) );
-                push( @$ref, { file => $img } );
+
+                # data reference - moved here so we can add height/width if image
+                my %meta = ( file => $img );
+
+                if ( $img =~ /\.(jpe?g|png|gif)$/i )
+                {
+                    my $module = "use Image::Size;";
+                    eval($module);
+                    if ( !$@ )
+                    {
+                        ( $meta{ 'width' }, $meta{ 'height' } ) =
+                          imgsize( $dirName . "/" . $img );
+                    }
+                }
+                push( @$ref, \%meta );
             }
             $data{ $var } = $ref;
         }
