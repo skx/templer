@@ -575,7 +575,7 @@ sub _findFiles
 {
     my ( $self, %args ) = (@_);
 
-    $args{'directory'} =~ s/\/$//g;
+    $args{ 'directory' } =~ s/\/$//g;
 
     #
     #  Files we've found.  Ignoring the suffix just now.
@@ -585,7 +585,7 @@ sub _findFiles
     File::Find::find( {
            wanted => sub {
                my $name = $File::Find::name;
-               $files{$name} += 1;
+               $files{ $name } += 1;
            },
            follow      => 1,
            follow_skip => 2,
@@ -596,7 +596,7 @@ sub _findFiles
     #
     # Remove the input
     #
-    delete $files{ $args{'directory'} };
+    delete $files{ $args{ 'directory' } };
 
     #
     #  OK now we need to find the matches.
@@ -610,7 +610,7 @@ sub _findFiles
 
     if ( $args{ 'must_match' } )
     {
-        foreach my $file ( sort keys %files)
+        foreach my $file ( sort keys %files )
         {
             next unless ( $file =~ /$args{'must_match'}/ );
             push( @matches, $class->new( file => $file ) );
@@ -618,7 +618,7 @@ sub _findFiles
     }
     elsif ( $args{ 'must_not_match' } )
     {
-        foreach my $file ( sort keys %files)
+        foreach my $file ( sort keys %files )
         {
             next if ( $file =~ /$args{'must_not_match'}/ );
             push( @matches, $class->new( file => $file ) );
@@ -1002,8 +1002,9 @@ foreach my $page (@pages)
 #
 #  Now copy all missing assets into place, unless we're running in-place.
 #
-unless ( $inplace )
+unless ($inplace)
 {
+
     #
     #  The files we're going to copy.
     #
@@ -1015,6 +1016,7 @@ unless ( $inplace )
     #
     foreach my $asset (@assets)
     {
+
         #
         # Strip the input component of the filename(s).
         #
@@ -1025,15 +1027,16 @@ unless ( $inplace )
         # If we've got an asset which is a directory that
         # is already present, for example, we'll skip it.
         #
-        push( @copy, $src ) unless( -e "$out/$src" );
+        push( @copy, $src ) unless ( -e "$out/$src" );
     }
 
     #
     # The horrible command we're going to execute.
     #
-    my $cmd = "(cd $in && tar -cf - " . join( " ", @copy ) . ") | ( cd $out && tar xf -)";
-print "TAR: $cmd " if ( $CONFIG{'verbose'} );
-    system( $cmd );
+    my $cmd = "(cd $in && tar -cf - " .
+      join( " ", @copy ) . ") | ( cd $out && tar xf -)";
+    print "TAR: $cmd " if ( $CONFIG{ 'verbose' } );
+    system($cmd );
 }
 
 
