@@ -411,6 +411,15 @@ sub _readFile
         }
     }
 
+    #
+    # If we're still in the header at the end of the file
+    # then something has gone wrong.
+    #
+    if ( $header )
+    {
+        print "WARNING: No header found in $filename\n";
+    }
+
     close($handle);
 }
 
