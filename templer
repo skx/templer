@@ -695,7 +695,7 @@ exit
 
         # Flags - force a rebuild
         "force",   \$CONFIG{ 'force' },
-        "serve",   \$CONFIG{ 'serve' },
+        "serve:i",   \$CONFIG{ 'serve' },
         "verbose", \$CONFIG{ 'verbose' },
     ) );
 
@@ -760,9 +760,10 @@ if ( $CONFIG{ 'serve' } )
     }
 
     #
-    #  This is appalling...
+    #  This is appalling.
     #
-    system("cd $root && python -m SimpleHTTPServer");
+    my $port = $CONFIG{'serve'} || "8000";
+    system("cd $root && python -m SimpleHTTPServer $port");
     exit(00);
 }
 
