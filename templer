@@ -415,7 +415,7 @@ sub _readFile
     # If we're still in the header at the end of the file
     # then something has gone wrong.
     #
-    if ( $header )
+    if ($header)
     {
         print "WARNING: No header found in $filename\n";
     }
@@ -544,9 +544,9 @@ sub pages
     my $suffix = $args{ 'suffix' }    || $self->{ 'suffix' };
 
     return (
-             $self->_findFiles( must_match => $suffix . "\$",
-                                object     => "Templer::Site::Page",
-                                directory  => $dir,
+             $self->_findFiles( must_match    => $suffix . "\$",
+                                object        => "Templer::Site::Page",
+                                directory     => $dir,
                                 hide_dotfiles => 1,
                               ) );
 }
@@ -575,7 +575,7 @@ sub assets
              $self->_findFiles( must_not_match => $suffix . "\$",
                                 object         => "Templer::Site::Asset",
                                 directory      => $dir,
-                                hide_dotfiles => 0,
+                                hide_dotfiles  => 0,
                               ) );
 
 }
@@ -600,7 +600,7 @@ sub _findFiles
     #
     # Should we hide dotfiles?
     #
-    my $dotfiles = $args{ 'hide_dotfiles'};
+    my $dotfiles = $args{ 'hide_dotfiles' };
 
 
     #
@@ -695,7 +695,7 @@ exit
 
         # Flags - force a rebuild
         "force",   \$CONFIG{ 'force' },
-        "serve:i",   \$CONFIG{ 'serve' },
+        "serve:i", \$CONFIG{ 'serve' },
         "verbose", \$CONFIG{ 'verbose' },
     ) );
 
@@ -762,7 +762,7 @@ if ( $CONFIG{ 'serve' } )
     #
     #  This is appalling.
     #
-    my $port = $CONFIG{'serve'} || "8000";
+    my $port = $CONFIG{ 'serve' } || "8000";
     system("cd $root && python -m SimpleHTTPServer $port");
     exit(00);
 }
@@ -950,7 +950,7 @@ foreach my $page (@pages)
                 $file = $dirName . "/" . $file;
             }
 
-            $data{ $var } = read_and_expand_file($file, \%data);
+            $data{ $var } = read_and_expand_file( $file, \%data );
         }
         if ( $data{ $var } =~ /^run_command\((.*)\)/ )
         {
@@ -1092,18 +1092,19 @@ exit(0);
 #
 sub read_and_expand_file
 {
-    my ($name, $ref) = (@_);
+    my ( $name, $ref ) = (@_);
 
     my $content = "";
 
     if ( -e $name )
     {
-        my $template = HTML::Template->new( filename => $name,
-                                            die_on_bad_params => 0,
-                                            global_vars            => 1,
-                                            loop_context_vars      => 1,
-                                          );
-        $template->param( %$ref );
+        my $template =
+          HTML::Template->new( filename          => $name,
+                               die_on_bad_params => 0,
+                               global_vars       => 1,
+                               loop_context_vars => 1,
+                             );
+        $template->param(%$ref);
         $content = $template->output();
     }
     else
