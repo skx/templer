@@ -173,7 +173,6 @@ The LICENSE file contains the full text of the license.
 use strict;
 use warnings;
 
-use File::Copy;
 use File::Find;
 use File::Path qw! mkpath !;
 use Getopt::Long;
@@ -576,21 +575,28 @@ sub _findFiles
 {
     my ( $self, %args ) = (@_);
 
+    $args{'directory'} =~ s/\/$//g;
+
     #
     #  Files we've found.  Ignoring the suffix just now.
     #
-    my @files;
+    my %files;
 
     File::Find::find( {
            wanted => sub {
-               push( @files, $File::Find::name )
-                 if ( !-d $File::Find::name );
+               my $name = $File::Find::name;
+               $files{$name} += 1;
            },
            follow      => 1,
            follow_skip => 2,
            no_chdir    => 1
         },
         $args{ 'directory' } );
+
+    #
+    # Remove the input
+    #
+    delete $files{ $args{'directory'} };
 
     #
     #  OK now we need to find the matches.
@@ -604,7 +610,7 @@ sub _findFiles
 
     if ( $args{ 'must_match' } )
     {
-        foreach my $file (@files)
+        foreach my $file ( sort keys %files)
         {
             next unless ( $file =~ /$args{'must_match'}/ );
             push( @matches, $class->new( file => $file ) );
@@ -612,7 +618,7 @@ sub _findFiles
     }
     elsif ( $args{ 'must_not_match' } )
     {
-        foreach my $file (@files)
+        foreach my $file ( sort keys %files)
         {
             next if ( $file =~ /$args{'must_not_match'}/ );
             push( @matches, $class->new( file => $file ) );
@@ -994,46 +1000,40 @@ foreach my $page (@pages)
 
 
 #
-#  Now copy all missing assets into place.
+#  Now copy all missing assets into place, unless we're running in-place.
 #
-my $copied = 0;
-
-foreach my $asset (@assets)
+unless ( $inplace )
 {
+    #
+    #  The files we're going to copy.
+    #
+    my @copy;
+
 
     #
-    # If we're running "in-place" then we don't need to
-    # copy assets.
+    # We're going to build-up a command line to pass to tar
     #
-    next if ($inplace);
-
-    #
-    # Work out the input-> output change.
-    #
-    my $src = $asset->source();
-    my $dst = $src;
-    $dst =~ s/$in/$out/g;
-
-    my $path = $dst;
-    if ( $path =~ /^(.*)\/(.*)$/ )
+    foreach my $asset (@assets)
     {
-        $path = $1;
-        mkpath( $path, { verbose => 0, mode => oct(755) } ) if ( !-d $path );
+        #
+        # Strip the input component of the filename(s).
+        #
+        my $src = $asset->source();
+        $src =~ s/$in//g;
+
+        #
+        # If we've got an asset which is a directory that
+        # is already present, for example, we'll skip it.
+        #
+        push( @copy, $src ) unless( -e "$out/$src" );
     }
 
     #
-    # Do the copy - ensuring that we preserve the mode.
+    # The horrible command we're going to execute.
     #
-    # Without the explicit stat()/chmod() my blogspam.net CGI scripts
-    # start to fail.
-    #
-    my ( $dev,  $ino,   $mode,  $nlink, $uid,     $gid, $rdev,
-         $size, $atime, $mtime, $ctime, $blksize, $blocks
-       ) = stat($src);
-
-    copy( $src, $dst );
-    chmod( $mode, $dst );
-    $copied += 1;
+    my $cmd = "(cd $in && tar -cf - " . join( " ", @copy ) . ") | ( cd $out && tar xf -)";
+print "TAR: $cmd " if ( $CONFIG{'verbose'} );
+    system( $cmd );
 }
 
 
@@ -1042,7 +1042,6 @@ foreach my $asset (@assets)
 # All done.
 #
 print "\nAll done: $rebuilt page(s) updated\n";
-print "Copied $copied asset(s)\n" unless ($inplace);
 
 exit(0);
 
