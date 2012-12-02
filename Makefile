@@ -15,6 +15,7 @@ tidy:
 
 
 examples: clean
-	cd ./examples/simple/  ; ../../templer --force
-	cd ./examples/complex/ ; ../../templer --force
+	cd ./examples/simple/   ; ../../templer --force
+	cd ./examples/complex/  ; ../../templer --force
+	cd ./examples/symlinks/ ; ../../templer --force
 	rsync -vazr -e "ssh -C" ./examples/ s-steve@steve.org.uk:htdocs/Software/templer/examples/
