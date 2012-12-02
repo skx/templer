@@ -6,11 +6,5 @@ a hacked version of this script.
 
    2. Ignore emacs saves, because I frequently edit and push at the same time.
 
-   3. Confirm that symlinks work correctly as assets.  Specifically I'm concerned
-      that porting the static site might be a challenge due to symlinks:
-        http://static.steve.org.uk/js/
-      A potential solution is to use rsync to copy the input assets to the output
-      directory.  Or tar.  Or something else horribly icky & unpleasant.
-
 When this file is empty development is done.  But even if/when I move to
 another generator I'll know pitfalls to look out for.
