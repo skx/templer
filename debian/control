@@ -1,0 +1,33 @@
+Source: templer
+Section: text
+Priority: optional
+Maintainer: Steve Kemp <steve@steve.org.uk>
+Build-Depends: debhelper (>> 7.0.0)
+Standards-Version: 3.9.1
+Homepage: http://www.steve.org.uk/Software/templer/
+
+
+Package: templer
+Architecture: all
+Depends: ${misc:Depends}, libhtml-template-perl, perl, perl-modules
+Recommends: libimage-size-perl
+Description: Static-site generator, written in perl.
+ This package provides you with the templer command, which can build
+ static-websites with ease.
+ .
+ A site is built from an arbitrary number of pages & assets (things
+ that are left alone) and at least one layout.
+ .
+ There is the facility to use both global variables, site-wide, and
+ variables which are defined upon a per-page basis.
+ .
+ Variable definitions may include:
+ .
+  * File globs, for example *.jpg, which allows trivial gallery creation.
+ .
+  * File contents.
+ .
+  * Shell command output.
+ .
+ Layouts may be defined on a per-page basis, and all output is passed through
+ the standard HTML::Template module.
