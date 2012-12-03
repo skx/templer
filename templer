@@ -950,7 +950,7 @@ foreach my $page (@pages)
                 $file = $dirName . "/" . $file;
             }
 
-            $data{ $var } = read_and_expand_file( $file, \%data );
+            $data{ $var } = read_file( $file, \%data );
         }
         if ( $data{ $var } =~ /^run_command\((.*)\)/ )
         {
@@ -1104,7 +1104,7 @@ exit(0);
 #
 #   Foo: read_file( "/etc/passwd" )
 #
-sub read_and_expand_file
+sub read_file
 {
     my ( $name, $ref ) = (@_);
 
@@ -1112,14 +1112,16 @@ sub read_and_expand_file
 
     if ( -e $name )
     {
-        my $template =
-          HTML::Template->new( filename          => $name,
-                               die_on_bad_params => 0,
-                               global_vars       => 1,
-                               loop_context_vars => 1,
-                             );
-        $template->param(%$ref);
-        $content = $template->output();
+        open( my $handle, "<:utf8", $name ) or
+          return "";
+
+        binmode( $handle, ":utf8" );
+
+        while( my $line = <$handle> )
+        {
+            $content .= $line;
+        }
+        close( $handle );
     }
     else
     {
