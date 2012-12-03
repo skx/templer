@@ -9,7 +9,7 @@ sidebar: read_file( sidebar.inc )
 <p>A templer site consists of at least three things:</p>
 <dl>
 <dt>A top-level configuration file.</dt>
-<dd><p>This is always the configuration file named <tt>./knights.cfg</tt>, you cannot rename this, or specify an alternative.</p></dd>
+<dd><p>This is always the configuration file named <tt>./templer.cfg</tt>, you cannot rename this, or specify an alternative.</p></dd>
 <dt>A directory containing layouts.</dt>
 <dd><p>By default layout templates are loaded from <tt>./layouts</tt>, and unless a page
 references another layout then the file <tt>default.layout</tt> will be loaded.</p>
