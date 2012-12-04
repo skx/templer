@@ -241,8 +241,21 @@ sub _readGlobalCFG
             $key =~ s/^\s+|\s+$//g;
             $val =~ s/^\s+|\s+$//g;
 
-            $self->{ $key } = $val;
+            #
+            # If the line is pre/post-build then save the values
+            #
+            if ( $key =~ /^(pre|post)-build$/ )
+            {
+                push( @{ $self->{ $key } }, $val );
+            }
+            else
+            {
 
+                #
+                # The general case is store the value in the key.
+                #
+                $self->{ $key } = $val;
+            }
             print "Templer::Global set: $key => $val\n"
               if ( $self->{ 'debug' } );
         }
@@ -782,6 +795,20 @@ my $dtemplate = $CONFIG{ 'layout' } ||
 
 
 #
+#  See if we have pre-build commands
+#
+my $pre = $cfg->field('pre-build');
+if ($pre)
+{
+    foreach my $cmd (@$pre)
+    {
+        $CONFIG{ 'verbose' } && print "Pre-build command: $cmd\n";
+        system($cmd );
+    }
+}
+
+
+#
 #  Create the output directory if missing, unless we're in-place
 #
 mkpath( $out, { verbose => 0, mode => oct(755) } )
@@ -1089,6 +1116,23 @@ unless ($inplace)
         system($cmd );
     }
 }
+
+
+
+
+#
+#  See if we have post-build commands
+#
+my $post = $cfg->field('post-build');
+if ($post)
+{
+    foreach my $cmd (@$pre)
+    {
+        $CONFIG{ 'verbose' } && print "Post-build command: $cmd\n";
+        system($cmd );
+    }
+}
+
 
 
 
