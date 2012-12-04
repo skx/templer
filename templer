@@ -173,6 +173,7 @@ The LICENSE file contains the full text of the license.
 use strict;
 use warnings;
 
+use Cwd;
 use File::Find;
 use File::Path qw! mkpath !;
 use Getopt::Long;
@@ -979,13 +980,13 @@ foreach my $page (@pages)
             $pattern =~ s/['"]//g;
             $pattern =~ s/^\s+|\s+$//g;
 
+            my $pwd = cwd();
+            chdir( $dirName . "/" );
+
             # add the data
             my $ref;
-            foreach my $img ( glob( $dirName . "/" . $pattern ) )
+            foreach my $img ( glob($pattern) )
             {
-
-                # remove dirname
-                $img = substr( $img, length( $dirName . "/" ) );
 
                 # data reference - moved here so we can add height/width if image
                 my %meta = ( file => $img );
@@ -1002,6 +1003,8 @@ foreach my $page (@pages)
                 }
                 push( @$ref, \%meta );
             }
+
+            chdir($pwd);
             $data{ $var } = $ref;
         }
     }
@@ -1117,11 +1120,11 @@ sub read_file
 
         binmode( $handle, ":utf8" );
 
-        while( my $line = <$handle> )
+        while ( my $line = <$handle> )
         {
             $content .= $line;
         }
-        close( $handle );
+        close($handle);
     }
     else
     {
