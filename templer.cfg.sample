@@ -1,3 +1,17 @@
+
+
+
+##
+#
+# If you wish to execute commands prior to building the
+# site you may include an arbitrary number of keys called
+# pre-build.
+#
+# pre-build = echo Starting build at $(date)
+# pre-build = echo Running on $(hostname)
+#
+##
+
 ##
 #
 # The first section of the configuration file refers to the
@@ -75,6 +89,18 @@ output = ./output/
 ##
 
 
+
+##
+#
+# If you wish to execute commands after building the
+# site you may include an arbitrary number of keys called
+# post-build.
+#
+# post-build = echo Finished build at $(date)
+#
+##
+
+
 #
 #  Anything below this is a global variable, accessible by name in your
 # templates.
@@ -87,3 +113,5 @@ output = ./output/
 #
 #    <!-- tmpl_var name='copyright' -->
 #
+
+

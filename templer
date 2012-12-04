@@ -1126,7 +1126,7 @@ unless ($inplace)
 my $post = $cfg->field('post-build');
 if ($post)
 {
-    foreach my $cmd (@$pre)
+    foreach my $cmd (@$post)
     {
         $CONFIG{ 'verbose' } && print "Post-build command: $cmd\n";
         system($cmd );
