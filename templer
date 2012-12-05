@@ -995,13 +995,10 @@ foreach my $page (@pages)
         {
 
             #
-            #  Populate an array of hash-refs referring to
-            # files which match a particular glob.
+            #  Populate an array of hash-refs referring to files which match
+            #  a particular glob.
             #
-            #  Could be used for many things, will be used for
-            # image-gallaries.
-            #
-            #  TODO: Populate height/width/etc.
+            #  Could be used for many things, will be used for image-gallaries.
             #
             my $pattern = $1;
             $pattern =~ s/['"]//g;
@@ -1031,8 +1028,18 @@ foreach my $page (@pages)
                 push( @$ref, \%meta );
             }
 
+            if ($ref)
+            {
+                $data{ $var } = $ref;
+            }
+            else
+            {
+                print
+                  "WARNING: pattern '$pattern' matched zero files for page " .
+                  $page->source() . "\n";
+                delete $data{ $var };
+            }
             chdir($pwd);
-            $data{ $var } = $ref;
         }
     }
 
