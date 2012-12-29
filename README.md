@@ -92,8 +92,8 @@ a sample page:
 
 
 The header of the page is deliminated from the body by four dashes (`----`) and can
-contain an arbitrary number of "key: value" pairs, by default we'd only expect to
-see the page title being set on a per-page basis.
+contain an arbitrary number of variable definitions - although by default we'd only
+expect to see the page title being set.
 
 The special variable __layout__ may be used to specify a different layout for
 the current page.  If there is no per-page layout then the global layout declared
