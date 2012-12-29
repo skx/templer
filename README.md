@@ -3,9 +3,9 @@ Templer
 
 Templer is yet another static site generator, written in Perl.
 
-It makes use of the [HTML::Template](http://search.cpan.org/perldoc?HTML%3A%3ATemplate) module for performing template and variable expansion.
+It makes use of the [HTML::Template](http://search.cpan.org/perldoc?HTML%3A%3ATemplate) module for performing variable expansion within pages and layouts, along with looping and conditional-statement handling.
 
-The tool has evolved for my own personal usage over time, but I believe
+Templer has evolved over time for my own personal use, but I believe
 it is sufficently generic it could be useful to others.
 
 My motivation for putting it together came from the desire to change
@@ -48,7 +48,7 @@ A templer site comprises of three things:
 In general we assume there is a tree like so:
 
     ├── input
-    │   ├── index.skx
+    │   ├── index.wgn
     │   ├── ...
     │   ├── ...
     │   ├── favicon.ico
@@ -58,21 +58,37 @@ In general we assume there is a tree like so:
     ├── output
     └── templer.cfg
 
-Every file in the input directory is either processed and converted into a HTML file,
-or copied literally to the output directory.
+Every file in the input directory is either considered to be a page which is converted
+into HTML, or an asset which is copied into the output-tree with no changes made.
 
-In the example above `input/index.skx` would become `output/index.html`.
+In the example above `input/index.wgn` would become `output/index.html`.
 
-> **NOTE** The `.skx` suffix is an example. You can define which suffix is considered a page via the configuration file.
+> **NOTE** The `.wgn` suffix is an example. You can define which suffix is considered a page via the configuration file.
 
 There is _also_ an "in-place" mode.  When working in-place there is no distinct output directory, instead output is written to the same directory in which is encountered.  Given an input directory you might see this kind of transformation:
 
-     index.skx           -> index.html
-     about.skx           -> about.html
+     index.wgn           -> index.html
+     about.wgn           -> about.html
      favicon.ico         [Ignored and left un-modified.]
      robots.txt          [Ignored and left un-modified.]
      ..
 
+
+
+Pages
+-----
+
+Your site will be made of pages, which are snippets of HTML you write.  These
+snippets will be processed and inserted into the layout file before being output
+to disk.
+
+A page is a simple file which contains a header and some content.  This is
+a sample page:
+
+    Title:  This is the title page.
+    Foo:  This is the content of the variable named "foo".
+    ----
+    <p>This is the body of the page</p>
 
 
 
