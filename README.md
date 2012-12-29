@@ -86,15 +86,21 @@ A page is a simple file which contains a header and some content.  This is
 a sample page:
 
     Title:  This is the title page.
-    Foo:  This is the content of the variable named "foo".
     ----
     <p>This is the body of the page</p>
 
 
 The header of the page is deliminated from the body by four dashes (`----`) and can
-contain an arbitrary number of "key: value" pairs.  These variable declerations are
-then available for use within the text of the body, using the standard HTML::Template
-expansion facilities:
+contain an arbitrary number of "key: value" pairs, by default we'd only expect to
+see the page title being set on a per-page basis.
+
+
+Variable Definitions
+--------------------
+
+Within the header of each page you may declare an arbitrary number of per-page
+variables.  These variable declerations are then available for use within the
+page-body, using the standard HTML::Template expansion facilities:
 
 
      Title:  Page title
@@ -124,6 +130,9 @@ a tease of using the file-globbing to generate a simple gallery:
        <p>No images were found.</p>
      <!-- /tmpl_if -->
 
+In addition to declaring variables in the page-header you may also declare
+__global__ variables in your `templer.cfg` file.  This is demonstrated in
+the [`templer.cfg`](https://raw.github.com/skx/templer/master/templer.cfg.sample) sample-file.
 
 
 Installation
