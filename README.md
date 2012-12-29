@@ -91,6 +91,40 @@ a sample page:
     <p>This is the body of the page</p>
 
 
+The header of the page is deliminated from the body by four dashes (`----`) and can
+contain an arbitrary number of "key: value" pairs.  These variable declerations are
+then available for use within the text of the body, using the standard HTML::Template
+expansion facilities:
+
+
+     Title:  Page title
+     Name: Steve Kemp
+     ----
+     <p>Hello, my name is <!-- tmpl_var name='name' -->.</p>
+
+> The only surprise here is that we referred to the variable called "Name" as "name".  All
+variable-names are transformed to lower-case for consistancy.
+
+As well as simple "name: value" pairs there are also additional options:
+
+* A variable may refer to the contents of a given file.
+* A variable may refer to a list of filenames, matching a pattern.
+
+Both of these are demonstrated in the complex example referenced later, but here is
+a tease of using the file-globbing to generate a simple gallery:
+
+   Title: My gallery
+   Images: file_glob( "img/*.jpg" )
+   ---
+   <!-- tmpl_if name='images' -->
+     <!-- tmpl_loop name='images' -->
+      <p><img src="<!-- tmpl_var name='file' -->" /> </p>
+     <!-- /tmpl_loop -->
+   <!-- tmpl_else -->
+     <p>No images were found.</p>
+   <!-- /tmpl_if -->
+
+
 
 Installation
 ------------
