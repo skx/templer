@@ -113,16 +113,16 @@ As well as simple "name: value" pairs there are also additional options:
 Both of these are demonstrated in the complex example referenced later, but here is
 a tease of using the file-globbing to generate a simple gallery:
 
-   Title: My gallery
-   Images: file_glob( "img/*.jpg" )
-   ---
-   <!-- tmpl_if name='images' -->
-     <!-- tmpl_loop name='images' -->
-      <p><img src="<!-- tmpl_var name='file' -->" /> </p>
-     <!-- /tmpl_loop -->
-   <!-- tmpl_else -->
-     <p>No images were found.</p>
-   <!-- /tmpl_if -->
+     Title: My gallery
+     Images: file_glob( "img/*.jpg" )
+     ---
+     <!-- tmpl_if name='images' -->
+       <!-- tmpl_loop name='images' -->
+        <p><img src="<!-- tmpl_var name='file' -->" /> </p>
+       <!-- /tmpl_loop -->
+     <!-- tmpl_else -->
+       <p>No images were found.</p>
+     <!-- /tmpl_if -->
 
 
 
