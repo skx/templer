@@ -94,13 +94,17 @@ The header of the page is deliminated from the body by four dashes (`----`) and 
 contain an arbitrary number of "key: value" pairs, by default we'd only expect to
 see the page title being set on a per-page basis.
 
+The special variable __layout__ may be used to specify a different layout for
+the current page.  If there is no per-page layout then the global layout declared
+in the `templer.cfg` file will be used.
+
 
 Variable Definitions
 --------------------
 
 Within the header of each page you may declare an arbitrary number of per-page
 variables.  These variable declerations are then available for use within the
-page-body, using the standard HTML::Template expansion facilities:
+page-body, using the standard  [HTML::Template](http://search.cpan.org/perldoc?HTML%3A%3ATemplate) expansion facilities:
 
 
      Title:  Page title
@@ -114,10 +118,25 @@ variable-names are transformed to lower-case for consistancy.
 As well as simple "name: value" pairs there are also additional options:
 
 * A variable may refer to the contents of a given file.
+    * Using `read_file`
 * A variable may refer to a list of filenames, matching a pattern.
+    * Using `file_glob`
 
-Both of these are demonstrated in the complex example referenced later, but here is
-a tease of using the file-globbing to generate a simple gallery:
+In addition to declaring variables in a page-header you may also declare
+__global__ variables in your `templer.cfg` file.  This is demonstrated in
+the sample [`templer.cfg`](https://raw.github.com/skx/templer/master/templer.cfg.sample) file.
+
+
+
+File Globbing
+-------------
+
+We've already seen simple variables declared by "Key: value" in the page header,
+in addition to this you may define a variable that refers to a number of files
+by pattern.
+
+Here is a simple example of creating a gallery which will include files matching
+the patter `img/*.jpg`:
 
      Title: My gallery
      Images: file_glob( "img/*.jpg" )
@@ -130,9 +149,26 @@ a tease of using the file-globbing to generate a simple gallery:
        <p>No images were found.</p>
      <!-- /tmpl_if -->
 
-In addition to declaring variables in the page-header you may also declare
-__global__ variables in your `templer.cfg` file.  This is demonstrated in
-the [`templer.cfg`](https://raw.github.com/skx/templer/master/templer.cfg.sample) sample-file.
+
+
+File Inclusion
+--------------
+
+The [HTML::Template](http://search.cpan.org/perldoc?HTML%3A%3ATemplate) module supports file inclusion natively, via the following construct:
+
+      <p>This is some text.</p>
+      <!-- tmpl_include name='/etc/passwd' -->
+      <p>That was my password file.</p>
+
+In addition to this you may define a variable to contain the contents of a specified
+file.  For example:
+
+      Title: This file has my passwords!
+      Passwd: file_contents( "/etc/passwd" )
+      ----
+      <p>Please see my passwords:</p>
+      <pre><!-- tmpl_var name='passwd' -->
+      </pre>
 
 
 Installation
