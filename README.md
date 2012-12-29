@@ -37,13 +37,14 @@ Concepts
 A templer site comprises of three things:
 
 * A global configuration file.
-     * This defines the paths to search for inputs, templates, etc.
-     * The [`templer.cfg.sample`](https://raw.github.com/skx/templer/master/templer.cfg.sample) is a useful thing to look at.
+     * This defines the paths to search for inputs, etc.
+     * This may contain global variable declerations.
+     * Please see the example configuration file: [`templer.cfg`](https://raw.github.com/skx/templer/master/templer.cfg.sample).
 * A layout.
     * This is used to format the output pages, defining the common look and feel.
 * A series of pages & assets.
     * Pages have their content processed and inserted into the layout to produce output HTML.
-    * Assets are not processed, but are copied into the output directory untouched.
+    * Assets are not processed, but are copied into the output directory literally.
 
 In general we assume there is a tree like so:
 
