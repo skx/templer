@@ -164,7 +164,7 @@ In addition to this you may define a variable to contain the contents of a speci
 file.  For example:
 
       Title: This file has my passwords!
-      Passwd: file_contents( "/etc/passwd" )
+      Passwd: read_file( "/etc/passwd" )
       ----
       <p>Please see my passwords:</p>
       <pre><!-- tmpl_var name='passwd' -->
