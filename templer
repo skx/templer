@@ -1018,7 +1018,9 @@ foreach my $page (@pages)
                 if ( $img =~ /\.(jpe?g|png|gif)$/i )
                 {
                     my $module = "use Image::Size;";
+                    ## no critic (Eval)
                     eval($module);
+                    ## use critic
                     if ( !$@ )
                     {
                         ( $meta{ 'width' }, $meta{ 'height' } ) =
