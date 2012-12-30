@@ -197,8 +197,7 @@ There is a supplied script `templer-generate` which will create a new site-struc
 if you give in the name of a directory to create & write to:
 
      ~$ ./templer-generate my-site
-     ~$ ./templer-generate my-site
-     precious ~/git/templer $ tree my-site/
+     ~$ tree my-site/
      my-site/
       ├── input
       │   ├── about.wgn
