@@ -193,13 +193,25 @@ dependencies.
 Creating a new site
 -------------------
 
-Simply create a directory and copy the [`templer.cfg.sample`](https://raw.github.com/skx/templer/master/templer.cfg.sample) into it, renaming
-it to `templer.cfg`.  This file should then be editted to define where your
-input tree is.
+There is a supplied script `templer-generate` which will create a new site-structure
+if you give in the name of a directory to create & write to:
 
-The input-tree is the collection of files that will be template-expanded
-into a layout.  So you'll also want to create a layout directory and place
-at least one layout into it.
+     ~$ ./templer-generate my-site
+     ~$ ./templer-generate my-site
+     precious ~/git/templer $ tree my-site/
+     my-site/
+      ├── input
+      │   ├── about.wgn
+      │   ├── index.wgn
+      │   └── robots.txt
+      ├── layouts
+      │   └── default.layout
+      ├── output
+      └── templer.cfg
+
+If you prefer you may go through the process manually creating a directory,
+adding the [`templer.cfg`](https://raw.github.com/skx/templer/master/templer.cfg.sample)
+to it, and then creating the input tree and layout directory.
 
 There are two examples provided with the distribution to illustrate the
 software.  These example sites are built automatically every evening and
