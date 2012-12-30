@@ -12,9 +12,11 @@ clean:
 
 critic:
 	perlcritic ./templer
+	perlcritic ./templer-generate
 
 tidy:
 	perltidy ./templer
+	perltidy ./templer-generate
 
 
 
