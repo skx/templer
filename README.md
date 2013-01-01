@@ -95,7 +95,7 @@ The header of the page is deliminated from the body by four dashes (`----`) and 
 contain an arbitrary number of variable definitions - although by default we'd only
 expect to see the page title being set.
 
-The special variable __layout__ may be used to specify a different layout for
+The special variable `layout` may be used to specify a different layout for
 the current page.  If there is no per-page layout then the global layout declared
 in the `templer.cfg` file will be used.
 
@@ -132,12 +132,12 @@ the sample [`templer.cfg`](https://raw.github.com/skx/templer/master/templer.cfg
 File Globbing
 -------------
 
-We've already seen simple variables declared by "Key: value" in the page header,
+We've already seen simple variables declared by "key: value" in the page header,
 in addition to this you may define a variable that refers to a number of files
 by pattern.
 
 Here is a simple example of creating a gallery which will include files matching
-the patter `img/*.jpg`:
+the pattern `img/*.jpg`:
 
      Title: My gallery
      Images: file_glob( "img/*.jpg" )
@@ -149,6 +149,13 @@ the patter `img/*.jpg`:
      <!-- tmpl_else -->
        <p>No images were found.</p>
      <!-- /tmpl_if -->
+
+> **TIP**:  If your images are numbered numerically you can ensure their correct order by doing this:
+
+    Title:  This is my title
+    images: file_glob( img/[0-9].jpg img/1[0-9].jpg )
+    ----
+    <p>My gallery is now included in ascending numerical order:</p>
 
 
 
