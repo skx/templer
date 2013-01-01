@@ -10,9 +10,7 @@ it is sufficently generic it could be useful to others.
 
 My motivation for putting it together came from the desire to change
 several hand-made, HTML-coded, sites to something more maintainable such
-that I could change the layout in one place.  This explains why there is
-no shortcut to writing the content; Markdown, Textile, etc are not supported
-because it is assumed your content is written in HTML.
+that I could easily change the layout in one place.
 
 The design evolved over time but the key reason for keeping it around
 is that it differs from many other simple static-generators in several
@@ -29,6 +27,9 @@ ways:
 Another key point is that the layouts allow for more than a single
 simple "content" block to be placed into them - you can add arbitrary
 numbers of optional side-menus, for example.
+
+Although this tool was written and used with the intent you'd write your
+site-content in HTML you can use Textile or Markdown if you prefer.
 
 
 Concepts
@@ -98,6 +99,11 @@ expect to see the page title being set.
 The special variable `layout` may be used to specify a different layout for
 the current page.  If there is no per-page layout then the global layout declared
 in the `templer.cfg` file will be used.
+
+The special variable `format` may be given a value of `textile` or `markdown` to
+enable processing the page body with the appropriate filter.  This will work providing you
+have the [dependencies installed](#installation).
+
 
 
 Variable Definitions
@@ -202,10 +208,9 @@ The dependencies are minimal, to ease installation:
 * Perl
 * The [HTML::Template](http://search.cpan.org/perldoc?HTML%3A%3ATemplate) module.
    *  This may be installed, on a Debian system, with `apt-get install libhtml-template-perl`.
-
-It is possible in the future that Markdown, Textile, or similar will be supported.
-If that is the case they will be 100% optional.  I have no wish to increase the
-dependencies.
+* The [Text::Markdown](http://search.cpan.org/perldoc?Text%3A%3AMarkdown) module is required if you wish to write your page bodies in Markdown.
+* The [Text::Textile](http://search.cpan.org/perldoc?Text%3A%3ATextile) module is required if you wish to write your page bodies in Textile.
+   * Both of these modules are optional.
 
 
 
