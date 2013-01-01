@@ -194,7 +194,7 @@ package Templer::Util;
 #
 sub load_module_dynamically
 {
-    my ( $str ) = (@_);
+    my ($str) = (@_);
 
     my $ret = undef;
 
@@ -217,7 +217,7 @@ sub load_module_dynamically
 #
 sub file_contnets
 {
-    my ( $name ) = (@_);
+    my ($name) = (@_);
 
     my $content = "";
 
@@ -240,7 +240,6 @@ sub file_contnets
     }
     $content;
 }
-
 
 
 
@@ -551,7 +550,8 @@ sub content
     }
     else
     {
-        print "WARNING: Unknown formatter '$format' for file " . $self->{ 'file' } . "\n";
+        print "WARNING: Unknown formatter '$format' for file " .
+          $self->{ 'file' } . "\n";
     }
 
 
@@ -1113,7 +1113,7 @@ foreach my $page (@pages)
                 $file = $dirName . "/" . $file;
             }
 
-            $data{ $var } = Templer::Util::file_contents( $file );
+            $data{ $var } = Templer::Util::file_contents($file);
         }
         if ( $data{ $var } =~ /^run_command\((.*)\)/ )
         {
