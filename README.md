@@ -186,7 +186,18 @@ The code is modular and neat, but it is deliberately contained in a single
 script.  This means installation is limited to copying the script to a
 directory on your PATH.
 
-The two dependencies are:
+The simplest possible installation method would be this:
+
+        $ wget https://raw.github.com/skx/templer/master/templer
+        $ sudo mv templer /usr/local/bin
+        $ sudo chmod 755 /usr/local/bin/templer
+        $ sudo chown root.root /usr/local/bin/templer
+
+It is preferred that you checkout the repository directly, to
+allow yourself to receive updates correctly, but the above will
+work.
+
+The dependencies are minimal, to ease installation:
 
 * Perl
 * The [HTML::Template](http://search.cpan.org/perldoc?HTML%3A%3ATemplate) module.
@@ -195,6 +206,7 @@ The two dependencies are:
 It is possible in the future that Markdown, Textile, or similar will be supported.
 If that is the case they will be 100% optional.  I have no wish to increase the
 dependencies.
+
 
 
 Creating a new site
