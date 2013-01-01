@@ -208,10 +208,11 @@ The dependencies are minimal, to ease installation:
 * Perl
 * The [HTML::Template](http://search.cpan.org/perldoc?HTML%3A%3ATemplate) module.
    *  This may be installed, on a Debian system, with `apt-get install libhtml-template-perl`.
-* The [Text::Markdown](http://search.cpan.org/perldoc?Text%3A%3AMarkdown) module is required if you wish to write your page bodies in Markdown.
-* The [Text::Textile](http://search.cpan.org/perldoc?Text%3A%3ATextile) module is required if you wish to write your page bodies in Textile.
-   * Both of these modules are optional.
-
+* The following are optional modules:
+   * The [Text::Markdown](http://search.cpan.org/perldoc?Text%3A%3AMarkdown) module is required if you wish to write your page bodies in Markdown.
+      *  This may be installed, on a Debian system, with `apt-get install libtext-markdown-perl`.
+   * The [Text::Textile](http://search.cpan.org/perldoc?Text%3A%3ATextile) module is required if you wish to write your page bodies in Textile.
+      *  This may be installed, on a Debian system, with `apt-get install libtext-textile-perl`.
 
 
 Creating a new site
