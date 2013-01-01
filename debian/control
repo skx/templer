@@ -10,7 +10,7 @@ Homepage: http://www.steve.org.uk/Software/templer/
 Package: templer
 Architecture: all
 Depends: ${misc:Depends}, libhtml-template-perl, perl, perl-modules
-Recommends: libimage-size-perl
+Recommends: libimage-size-perl, libtext-textile-perl, libtext-markdown-perl
 Description: Static-site generator, written in perl.
  This package provides you with the templer command, which can build
  static-websites with ease.
