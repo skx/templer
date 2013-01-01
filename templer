@@ -486,7 +486,7 @@ sub content
     #
 
 
-    if ( $format =~ /markdown/i )
+    if ( $format =~ /^markdown$/i )
     {
 
         #
