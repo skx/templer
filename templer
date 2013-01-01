@@ -183,6 +183,69 @@ use Pod::Usage;
 
 
 #
+# A collection of static utility methods.
+#
+package Templer::Util;
+
+
+
+#
+# Load a module, dynamically, and return 1 on succss.
+#
+sub load_module_dynamically
+{
+    my ( $str ) = (@_);
+
+    my $ret = undef;
+
+    ## no critic (Eval)
+    eval($str);
+    ## use critic
+
+    if ( !$@ )
+    {
+        $ret = 1;
+    }
+    return ($ret);
+}
+
+
+#
+#  Read a file, and return a string of the contents.
+#
+#  Warn if the file isn't found.
+#
+sub file_contnets
+{
+    my ( $name ) = (@_);
+
+    my $content = "";
+
+    if ( -e $name )
+    {
+        open( my $handle, "<:utf8", $name ) or
+          return "";
+
+        binmode( $handle, ":utf8" );
+
+        while ( my $line = <$handle> )
+        {
+            $content .= $line;
+        }
+        close($handle);
+    }
+    else
+    {
+        print "WARNING: Attempting to read a file that doesn't exist: $name\n";
+    }
+    $content;
+}
+
+
+
+
+
+#
 #  A package for reading the global configuration file.
 #
 #  We assume that every project contains a "./templer.cfg" file in the
@@ -375,7 +438,7 @@ sub new
     }
 
     bless( $self, $class );
-    $self->_readFile( $self->{ 'file' } ) if ( $self->{ 'file' } );
+    $self->_parse_page( $self->{ 'file' } ) if ( $self->{ 'file' } );
     return $self;
 }
 
@@ -383,7 +446,7 @@ sub new
 #
 # Read the file, and parse the header/content.
 #
-sub _readFile
+sub _parse_page
 {
     my ( $self, $filename ) = (@_);
 
@@ -437,28 +500,6 @@ sub _readFile
 }
 
 
-#
-#  Attempt to dynamically load a module.
-#
-#  If it fails return undef.  If it succeeds return 1.
-#
-sub _load_module
-{
-    my ( $self, $str ) = (@_);
-
-    my $ret = undef;
-
-    ## no critic (Eval)
-    eval($str);
-    ## use critic
-
-    if ( !$@ )
-    {
-        $ret = 1;
-    }
-
-    return ($ret);
-}
 
 
 #
@@ -492,9 +533,9 @@ sub content
         #
         #  If the markdown module is available then load it and use it.
         #
-        if ( $self->_load_module("use Text::Markdown 'markdown';") )
+        if ( Templer::Util::load_module_dynamically("use Text::Markdown;") )
         {
-            return ( markdown($content) );
+            return ( Text::Markdown::markdown($content) );
         }
     }
     elsif ( $format =~ /^textile$/i )
@@ -503,9 +544,9 @@ sub content
         #
         #  If the textile module is available then load it and use it.
         #
-        if ( $self->_load_module("use Text::Textile qw(textile);") )
+        if ( Templer::Util::load_module_dynamically("use Text::Textile;") )
         {
-            return ( textile($content) );
+            return ( Text::Textile::textile($content) );
         }
     }
 
@@ -1067,7 +1108,7 @@ foreach my $page (@pages)
                 $file = $dirName . "/" . $file;
             }
 
-            $data{ $var } = read_file( $file, \%data );
+            $data{ $var } = Templer::Util::file_contents( $file );
         }
         if ( $data{ $var } =~ /^run_command\((.*)\)/ )
         {
@@ -1244,33 +1285,3 @@ exit(0);
 
 
 
-#
-# Helper for meta-data expansion:
-#
-#   Foo: read_file( "/etc/passwd" )
-#
-sub read_file
-{
-    my ( $name, $ref ) = (@_);
-
-    my $content = "";
-
-    if ( -e $name )
-    {
-        open( my $handle, "<:utf8", $name ) or
-          return "";
-
-        binmode( $handle, ":utf8" );
-
-        while ( my $line = <$handle> )
-        {
-            $content .= $line;
-        }
-        close($handle);
-    }
-    else
-    {
-        print "WARNING: Attempting to read a file that doesn't exist: $name\n";
-    }
-    $content;
-}
