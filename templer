@@ -549,6 +549,11 @@ sub content
             return ( Text::Textile::textile($content) );
         }
     }
+    else
+    {
+        print "WARNING: Unknown formatter '$format' for file " . $self->{ 'file' } . "\n";
+    }
+
 
     #
     #  Unknown format, or an attempt to load a module failed.
