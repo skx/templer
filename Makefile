@@ -18,7 +18,8 @@ tidy:
 	perltidy ./templer
 	perltidy ./templer-generate
 
-
+test:
+	prove --shuffle t/
 
 examples: clean
 	cd ./examples/simple/   ; ../../templer --force
