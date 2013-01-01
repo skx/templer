@@ -438,14 +438,81 @@ sub _readFile
 
 
 #
+#  Attempt to dynamically load a module.
+#
+#  If it fails return undef.  If it succeeds return 1.
+#
+sub _load_module
+{
+    my ( $self, $str ) = (@_);
+
+    my $ret = undef;
+
+    ## no critic (Eval)
+    eval($str);
+    ## use critic
+
+    if ( !$@ )
+    {
+        $ret = 1;
+    }
+
+    return ($ret);
+}
+
+
+#
 # Return the body of the page.
 #
-# Here is where we'd do markdown expansion if we wished.
+# Here we perform the textile/markdown expansion if possible.
 #
 sub content
 {
     my ($self) = (@_);
-    return ( $self->{ 'content' } );
+
+    #
+    #  The content we read from the page.
+    #
+    my $content = $self->{ 'content' };
+    my $format = $self->{ 'format' } || undef;
+
+    #
+    #  If we don't have any special format then just return the body.
+    #
+    return ($content) if ( !$format );
+
+    #
+    #  Now look at the format.
+    #
+
+
+    if ( $format =~ /markdown/i )
+    {
+
+        #
+        #  If the markdown module is available then load it and use it.
+        #
+        if ( $self->_load_module("use Text::Markdown 'markdown';") )
+        {
+            return ( markdown($content) );
+        }
+    }
+    elsif ( $format =~ /^textile$/i )
+    {
+
+        #
+        #  If the textile module is available then load it and use it.
+        #
+        if ( $self->_load_module("use Text::Textile qw(textile);") )
+        {
+            return ( textile($content) );
+        }
+    }
+
+    #
+    #  Unknown format, or an attempt to load a module failed.
+    #
+    return $content;
 }
 
 
