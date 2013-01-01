@@ -177,7 +177,6 @@ use Cwd;
 use File::Find;
 use File::Path qw! mkpath !;
 use Getopt::Long;
-use HTML::Template;
 use Pod::Usage;
 
 
@@ -682,6 +681,8 @@ sub _findFiles
 package main;
 
 
+
+
 #
 #  Configuration variables
 #
@@ -720,6 +721,27 @@ exit
 pod2usage(1) if ( $CONFIG{ 'help' } );
 pod2usage( -verbose => 2 ) if ( $CONFIG{ 'manual' } );
 
+
+#
+#  Ensure we have the HTML::Template module
+#
+my $module = "use HTML::Template;";
+## no critic (Eval)
+eval($module);
+## use critic
+if ($@)
+{
+    print "The HTML::Template module doesn't seem to be installed.\n";
+
+    if ( ( -d "/etc/apt" ) && ( -x "/usr/bin/apt-get" ) )
+    {
+        print
+          "You seem to be running a Debian-like distribution.  You can install the missing module via:\n";
+        print "\tapt-get update\n";
+        print "\tapt-get install libhtml-template-perl\n";
+    }
+    exit(1);
+}
 
 #
 #  Read the global configuration file.
