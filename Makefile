@@ -14,6 +14,11 @@ critic:
 	perlcritic ./templer
 	perlcritic ./templer-generate
 
+install:
+	cp ./templer ./templer-generate /usr/local/bin
+	chown root.root /usr/local/bin/templer /usr/local/bin/templer-generate
+	chmod 755 /usr/local/bin/templer /usr/local/bin/templer-generate
+
 tidy:
 	perltidy ./templer
 	perltidy ./templer-generate
