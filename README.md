@@ -198,6 +198,7 @@ The simplest possible installation method would be this:
         $ cd templer
         $ sudo make install
 
+(If you ever wish to remove the software you may run `sudo make uninstall`.)
 
 The dependencies are minimal, to ease installation:
 
