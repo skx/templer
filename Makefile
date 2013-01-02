@@ -26,6 +26,12 @@ tidy:
 test:
 	prove --shuffle t/
 
+
+uninstall:
+	rm /usr/local/bin/templer          || true
+	rm /usr/local/bin/templer-generate || true
+
+
 examples: clean
 	cd ./examples/simple/   ; ../../templer --force
 	cd ./examples/complex/  ; ../../templer --force
