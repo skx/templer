@@ -216,7 +216,7 @@ sub load_module_dynamically
 #
 #  Warn if the file isn't found.
 #
-sub file_contnets
+sub file_contents
 {
     my ($name) = (@_);
 
