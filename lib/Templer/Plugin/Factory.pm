@@ -13,7 +13,7 @@ sub new
 }
 
 #
-# Register a new formatter object.
+# Register a new formatter plugin.
 #
 sub register_formatter
 {
@@ -24,8 +24,41 @@ sub register_formatter
     $self->{'formatters'}{ $name } = $obj;
 }
 
+
 #
-#  Gain access to a previously registered formatter object.
+# Register a new plugin for variable expansion.
+#
+sub register_plugin
+{
+    my ( $self, $name, $obj ) = (@_);
+
+    die "No name" unless( $name );
+    $name = lc( $name );
+    $self->{'plugins'}{ $name } = $obj;
+}
+
+
+#
+#  Expand variables via all loaded plugins.
+#
+#  This is chained.
+#
+sub expand_variables
+{
+    my( $self, $page, $data ) = ( @_ );
+
+    foreach my $name ( keys (%{$self->{'plugins'}}) )
+    {
+        my %in = %$data;
+        my $object = $self->{'plugins'}{$name}->new();
+        $out = $object->expand_variables( $page, \%in );
+        $data = \%$out;
+    }
+    return ( $data );
+}
+
+#
+#  Gain access to a previously registered formatter object, by name.
 #
 sub formatter
 {
@@ -44,8 +77,11 @@ sub formatter
     return( $obj );
 }
 
+
 #
-#  For the test-suite only
+#  Return the names of each known formatter-plugin.
+#
+#  Used by the test-suite only.
 #
 sub formatters
 {
@@ -54,14 +90,6 @@ sub formatters
     keys (%{$self->{'formatters'}});
 }
 
-
-sub load_plugin
-{
-    my ( $self, $name ) = (@_);
-
-    my $o = $self->{ $name };
-    return $o->new();
-}
 
 
 1;
