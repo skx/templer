@@ -42,7 +42,6 @@ sub expand_variables
 
             $file =~ s/['"]//g;
             $file =~ s/^\s+|\s+$//g;
-            print "We're : $file\n";
 
             if ( $file eq "SELF" )
             {
