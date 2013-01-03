@@ -2,7 +2,7 @@
 Plugins
 =======
 
-Templer allows itself to be extended via the additiona of plugins, several
+Templer allows itself to be extended via the addition of plugins, several
 of which are distributed as part of the core code.
 
 There are two types of plugins which are supported, although there is no
@@ -14,9 +14,9 @@ reason why more families couldn't be added in the future:
 * Plugins which extend the variable definitions.
     * Creating variables that refer to file contents, file globs, etc.
 
-There is a slightly different API for the two plugin-familes, but both
+There is a slightly different API for the two plugin-families, but both
 are as simple as I could make them. The following plugins are included in the
-distribution and may be studied for referencce:
+distribution and may be studied for reference:
 
 * Templer::Plugin::Markdown
    * Allows input files to be written in Markdown.
@@ -56,7 +56,7 @@ like so:
       }
 
 If the named formatter is not present, or does not report itself as "enabled"
-then the markup will be returend without the HTML expansion.  To be explicit
+then the markup will be returned without the HTML expansion.  To be explicit
 any formatter plugin must implement only the following two methods:
 
 * `available`
