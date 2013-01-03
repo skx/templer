@@ -58,7 +58,6 @@ sub expand_variables
                 $file = $dirName . "/" . $file unless ( $file =~ /^\// );
             }
 
-            print "FILE: $file\n";
             $hash{ $key } = $self->file_contents($file);
         }
     }
@@ -77,7 +76,6 @@ sub file_contents
 {
     my ( $self, $name ) = (@_);
 
-    print "READING: $name\n";
     my $content = "";
 
     if ( -e $name )
