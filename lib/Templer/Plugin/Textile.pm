@@ -20,12 +20,12 @@ sub available
     eval($str);
     ## use critic
 
-    return( $@ ? undef : 1 );
+    return ( $@ ? undef : 1 );
 }
 
 sub format
 {
-    my( $self, $str ) = ( @_ );
+    my ( $self, $str ) = (@_);
 
     if ( $self->available() )
     {
@@ -37,4 +37,5 @@ sub format
     }
 }
 
-Templer::Plugin::Factory->new()->register_formatter( "textile", "Templer::Plugin::Textile" );
+Templer::Plugin::Factory->new()
+  ->register_formatter( "textile", "Templer::Plugin::Textile" );
