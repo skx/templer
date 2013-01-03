@@ -21,15 +21,17 @@ ways:
 * You may change the layout on a per-page basis if you so wish.
     * This was something that is missing from a lot of competing tools.
 * Conditional variable expansion is supported, via `HTML::Template`.
-* File contents, and file-globs may be used in the templates
+* File contents, shell commands, and file-globs may be used in the templates
     * This allows the trivial creation of galleries, for example.
+    * These are implemented via [plugins](#plugins).
 
 Another key point is that the layouts allow for more than a single
 simple "content" block to be placed into them - you can add arbitrary
 numbers of optional side-menus, for example.
 
 Although this tool was written and used with the intent you'd write your
-site-content in HTML you can use Textile or Markdown if you prefer.
+site-content in HTML you can use Textile or Markdown if you prefer
+(these input methods are available via [plugins](#plugins)).
 
 
 Concepts
@@ -125,9 +127,11 @@ variable-names are transformed to lower-case for consistancy.
 As well as simple "name: value" pairs there are also additional options:
 
 * A variable may refer to the contents of a given file.
-    * Using `read_file`
+    * Using `read_file`.
 * A variable may refer to a list of filenames, matching a pattern.
-    * Using `file_glob`
+    * Using `file_glob`.
+* A variable may contain the output of running a command.
+    * Using `run_command`.
 
 In addition to declaring variables in a page-header you may also declare
 __global__ variables in your `templer.cfg` file.  This is demonstrated in
@@ -200,6 +204,13 @@ The simplest possible installation method would be this:
 
 (If you ever wish to remove the software you may run `sudo make uninstall`.)
 
+If you wish to merely run/examine the scripts then you should run `make` first,
+like so:
+
+        $ git clone https://github.com/skx/templer.git
+        $ cd templer
+        $ make
+
 The dependencies are minimal, to ease installation:
 
 * Perl
@@ -218,7 +229,7 @@ Creating a new site
 There is a supplied script `templer-generate` which will create a new site-structure
 if you give in the name of a directory to create & write to:
 
-     ~$ ./templer-generate my-site
+     ~$ templer-generate my-site
      ~$ tree my-site/
      my-site/
       ├── input
@@ -264,6 +275,12 @@ what happens:
 In the general case `templer` should rebuild only the files which are needed
 to be built, if you teak an include-file, or similar, it is possible you will
 need to explicitly force a rebuild.
+
+
+Plugins
+-------
+
+**TODO**: Document.
 
 
 Problems
