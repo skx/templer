@@ -47,6 +47,8 @@ sub expand_variables
 {
     my ( $self, $page, $data ) = (@_);
 
+    my $out;
+
     foreach my $name ( keys( %{ $self->{ 'plugins' } } ) )
     {
         my %in     = %$data;
