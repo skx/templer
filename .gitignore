@@ -5,3 +5,4 @@ debian/templer
 debian/*.log
 debian/*.substvars
 debian/files
+templer-generate
