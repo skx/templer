@@ -40,8 +40,8 @@ Concepts
 A templer site comprises of three things:
 
 * A global configuration file.
-     * This defines the paths to search for inputs, etc.
-     * This may contain global variable declerations.
+     * This defines the paths to search for input pages, layout templates, plugins, etc.
+     * This may contain global variable declarations.
      * Please see the example configuration file: [`templer.cfg`](https://raw.github.com/skx/templer/master/templer.cfg.sample).
 * A layout.
     * This is used to format the output pages, defining the common look and feel.
@@ -98,13 +98,14 @@ The header of the page is deliminated from the body by four dashes (`----`) and 
 contain an arbitrary number of variable definitions - although by default we'd only
 expect to see the page title being set.
 
-The special variable `layout` may be used to specify a different layout for
-the current page.  If there is no per-page layout then the global layout declared
-in the `templer.cfg` file will be used.
+The special variable `layout` may be used to specify a different layout template for
+the current page.  If there is no per-page layout specified then the global layout
+declared in the `templer.cfg` file will be used.
 
 The special variable `format` may be given a value of `textile` or `markdown` to
-enable processing the page body with the appropriate filter.  This will work providing you
-have the [dependencies installed](#installation).
+enable processing the page body with the appropriate filter.   These formatters are
+implemented as [plugins](#plugins), and will be available assuming their
+[dependencies are installed](#installation).
 
 
 
