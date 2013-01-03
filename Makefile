@@ -11,11 +11,11 @@ clean:
 	-@test -d ./examples/complex/output && rm -rf ./examples/complex/output/ || true
 	-@test -d ./output && rm -rf ./output/ || true
 
-critic:
+critic: default
 	perlcritic ./templer
 	perlcritic ./templer-generate
 
-install: templer-generate
+install: default
 	cp ./templer ./templer-generate /usr/local/bin
 	chown root.root /usr/local/bin/templer /usr/local/bin/templer-generate
 	chmod 755 /usr/local/bin/templer /usr/local/bin/templer-generate
@@ -25,6 +25,7 @@ install: templer-generate
 # Make the main script
 #
 templer:
+	echo '#!/usr/bin/perl -w' > templer
 	cat lib/Templer/Util.pm \
             lib/Templer/Global.pm \
 	    lib/Templer/Plugin/Factory.pm \
@@ -36,7 +37,7 @@ templer:
             lib/Templer/Site.pm \
             lib/Templer/Site/Asset.pm \
             lib/Templer/Site/Page.pm \
-            templer.in > templer
+            templer.in >> templer
 	chmod +x templer
 
 
@@ -49,8 +50,8 @@ templer-generate: templer-generate.in lib/Templer/Site/New.pm
 	chmod +x templer-generate
 
 tidy:
-	perltidy ./templer
-	perltidy ./templer-generate
+	perltidy *.in
+	perltidy $$(find . -name '*.pm' -print)
 
 test:
 	prove --shuffle t/
