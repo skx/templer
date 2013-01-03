@@ -112,14 +112,14 @@ sub content
     #
     #  Do we have a formatter plugin for this type?
     #
-    if ( $format )
+    if ($format)
     {
         my $factory = Templer::Plugin::Factory->new();
-        my $helper  = $factory->formatter( $format );
+        my $helper  = $factory->formatter($format);
 
-        if ( $helper )
+        if ($helper)
         {
-            $content = $helper->format( $content );
+            $content = $helper->format($content);
         }
     }
     return $content;
@@ -143,7 +143,17 @@ sub fields
 {
     my ($self) = (@_);
 
-    %$self;
+    #
+    #  The key:value pairs
+    #
+    my %data = %$self;
+
+    #
+    #  Use the plugin-factory to expand each of the variables.
+    #
+    my $plugin = Templer::Plugin::Factory->new();
+    my $ref = $plugin->expand_variables( $self, \%data );
+    return %$ref;
 }
 
 
