@@ -19,9 +19,9 @@ sub register_formatter
 {
     my ( $self, $name, $obj ) = (@_);
 
-    die "No name" unless( $name );
-    $name = lc( $name );
-    $self->{'formatters'}{ $name } = $obj;
+    die "No name" unless ($name);
+    $name = lc($name);
+    $self->{ 'formatters' }{ $name } = $obj;
 }
 
 
@@ -32,9 +32,9 @@ sub register_plugin
 {
     my ( $self, $name, $obj ) = (@_);
 
-    die "No name" unless( $name );
-    $name = lc( $name );
-    $self->{'plugins'}{ $name } = $obj;
+    die "No name" unless ($name);
+    $name = lc($name);
+    $self->{ 'plugins' }{ $name } = $obj;
 }
 
 
@@ -45,16 +45,16 @@ sub register_plugin
 #
 sub expand_variables
 {
-    my( $self, $page, $data ) = ( @_ );
+    my ( $self, $page, $data ) = (@_);
 
-    foreach my $name ( keys (%{$self->{'plugins'}}) )
+    foreach my $name ( keys( %{ $self->{ 'plugins' } } ) )
     {
-        my %in = %$data;
-        my $object = $self->{'plugins'}{$name}->new();
+        my %in     = %$data;
+        my $object = $self->{ 'plugins' }{ $name }->new();
         $out = $object->expand_variables( $page, \%in );
         $data = \%$out;
     }
-    return ( $data );
+    return ($data);
 }
 
 #
@@ -64,17 +64,17 @@ sub formatter
 {
     my ( $self, $name ) = (@_);
 
-    die "No name" unless( $name );
-    $name = lc( $name );
+    die "No name" unless ($name);
+    $name = lc($name);
 
     #
     #  Lookup the formatter by name, if it is found
     # then instantiate the clsee.
     #
-    my $obj =  $self->{'formatters'}{ $name } || undef;
-    $obj = $obj->new() if ( $obj );
+    my $obj = $self->{ 'formatters' }{ $name } || undef;
+    $obj = $obj->new() if ($obj);
 
-    return( $obj );
+    return ($obj);
 }
 
 
@@ -85,9 +85,9 @@ sub formatter
 #
 sub formatters
 {
-    my( $self ) = ( @_ );
+    my ($self) = (@_);
 
-    keys (%{$self->{'formatters'}});
+    keys( %{ $self->{ 'formatters' } } );
 }
 
 

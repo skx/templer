@@ -23,7 +23,7 @@ sub available
     eval($str);
     ## use critic
 
-    return( $@ ? undef : 1 );
+    return ( $@ ? undef : 1 );
 }
 
 
@@ -32,11 +32,11 @@ sub available
 #
 sub format
 {
-    my( $self, $str ) = ( @_ );
+    my ( $self, $str ) = (@_);
 
     if ( $self->available() )
     {
-        Text::Markdown::markdown($str );
+        Text::Markdown::markdown($str);
     }
     else
     {
@@ -44,4 +44,5 @@ sub format
     }
 }
 
-Templer::Plugin::Factory->new()->register_formatter( "markdown", "Templer::Plugin::Markdown" );
+Templer::Plugin::Factory->new()
+  ->register_formatter( "markdown", "Templer::Plugin::Markdown" );
