@@ -1,0 +1,615 @@
+#!/usr/bin/perl
+
+=head1 NAME
+
+templer - A static-site generator, written in perl.
+
+=cut
+
+=head1 SYNOPSIS
+
+  templer [options]
+
+
+  Help Options:
+
+    --help        Show the help information for this script.
+    --manual      Read the manual for this script.
+
+  Path options:
+
+    --input          Specify the input directory to process.
+    --output         Specify the output directory to build the site to.
+    --layout-path    Specify the location from which to find layouts.
+    --plugin-path    Specify the location from which to load plugins.
+
+  Flags
+
+    --force          Force a rebuild of all pages.
+    --in-place       Specify we're processing pages in-place, ignoring the output dir.
+    --verbose        Be noisy during the execution.
+
+=cut
+
+=head1 ABOUT
+
+Templer is the static-site generator utility I use for my websites.
+
+Templer flexible with input pages, and allows variables to be defined
+on a global or per-page basis, and then inserted into the output.
+
+Given a single template a complete site may be generated with an arbitrary
+number of pages, each sharing a common look and feel.  If required you can
+define a range of templates and select which to use on a per-page basis.
+
+We allow variable interpolation, loops, and conditional expansion in the
+generated output via the use of the L<HTML::Template> module.
+
+The name?  It stuck.  Initially I was thinking "templator" and
+"Templer" popped into my mind, via Knights Templer.
+
+=cut
+
+=head1 Live Usage
+
+This code is in use in three domains I host:
+
+=over 8
+
+=item http://stolen-souls.com/
+
+=item http://blogspam.net/
+
+=item http://steve.org.uk/
+
+=back
+
+Initially there was one version of the C<templer> tool, but slowly the three sites
+required different tweaks and we had three different versions of the site-generator.
+
+The version you're seeing now is unified, containing all the previously site-specific
+changes.  On that basis it should be generally flexible and usable by others.
+
+=cut
+
+
+=head1 Site Structure
+
+A templer-based site consists of a configuration file C<templer.cfg> and
+an input directory.  Input files are expanded through L<HTML::Template>, to
+expand any variables set in the pages themselves, or in the global template.
+Once page-content is expanded it is then inserted into a global layout template.
+
+There are two modes of operation when it comes to processing fiels:
+
+=over 8
+
+=item "In-place"
+
+Files are processed and the suffix is replaced with .html
+
+=item Output Path
+
+Files are generated in a distinct output-tree, and any static
+assets such as JPG, GIF, PNG, CSS, and JS files are copied across too.
+
+=back
+
+This allows you to run in-place in your C<~/public_html> directory or to
+setup an output path which is later synced to your final/live location.
+
+=cut
+
+
+=head1 Code Layout
+
+The implementation uses several simple classes, mostly as wrappers around
+variable parsing:
+
+=over 8
+
+=item Templer::Global
+
+This contains the parsing code for the  global configuration file, which is
+located at the top-level directory of the site.  (It must be named
+C<templer.cfg>).
+
+=item Templer::Site
+
+Given an input directory this module finds and returns C<Templer::Site::Asset> and
+C<Templer::Site::Page> objects for each file present.
+
+=item Templer::Site::Asset
+
+An item which requires zero expansion.  Media, javascript, etc.
+
+=item Templer::Site::Page
+
+A page which requires template expansion.
+
+=back
+
+Note #1: The command-line options override those specified in the global object.
+
+Note #2: The global object has sensible defaults.
+
+=cut
+
+=head1 Questions / Bug Reports
+
+The code is developed and hosted on gitub in the following location:
+
+=over 8
+
+=item https://github.com/skx/templer
+
+=back
+
+Please raise any issues in the tracker there.
+
+=cut
+
+
+=head1 AUTHOR
+
+ Steve
+ --
+ http://www.steve.org.uk/
+
+=cut
+
+=head1 LICENSE
+
+Copyright (c) 2012 by Steve Kemp.  All rights reserved.
+
+This module is free software;
+you can redistribute it and/or modify it under
+the same terms as Perl itself.
+The LICENSE file contains the full text of the license.
+
+=cut
+
+
+
+use strict;
+use warnings;
+
+use Cwd;
+use File::Basename;
+use File::Find;
+use File::Path qw! mkpath !;
+use Getopt::Long;
+use Pod::Usage;
+
+
+
+
+####
+##
+#  Entry point to the code.
+##
+########
+
+
+
+package main;
+
+
+
+
+#
+#  Configuration variables
+#
+my %CONFIG;
+
+
+
+
+#
+#  Parse the command line.
+#
+exit
+  if (
+    !Getopt::Long::GetOptions(
+
+        # Help options
+        "help",   \$CONFIG{ 'help' },
+        "manual", \$CONFIG{ 'manual' },
+
+        # In/out/in-place
+        "input=s",       \$CONFIG{ 'input' },
+        "output=s",      \$CONFIG{ 'output' },
+        "in-place",      \$CONFIG{ 'in-place' },
+        "layout-path=s", \$CONFIG{ 'layout-path' },
+        "plugin-path=s", \$CONFIG{ 'plugin-path' },
+
+        # Flags - force a rebuild
+        "force",   \$CONFIG{ 'force' },
+        "serve:i", \$CONFIG{ 'serve' },
+        "verbose", \$CONFIG{ 'verbose' },
+    ) );
+
+
+#
+#  Help/Manual handling.
+#
+pod2usage(1) if ( $CONFIG{ 'help' } );
+pod2usage( -verbose => 2 ) if ( $CONFIG{ 'manual' } );
+
+
+#
+#  Ensure we have the HTML::Template module
+#
+my $module = "use HTML::Template;";
+## no critic (Eval)
+eval($module);
+## use critic
+if ($@)
+{
+    print "The HTML::Template module doesn't seem to be installed.\n";
+
+    if ( ( -d "/etc/apt" ) && ( -x "/usr/bin/apt-get" ) )
+    {
+        print
+          "You seem to be running a Debian-like distribution.  You can install the missing module via:\n";
+        print "\tapt-get update\n";
+        print "\tapt-get install libhtml-template-perl\n";
+    }
+    exit(1);
+}
+
+#
+#  Read the global configuration file.
+#
+my $cfg = Templer::Global->new( file => "./templer.cfg" );
+
+#
+#  Create a site helper - telling it what suffix to look for to
+# identify pages.
+#
+my $suffix = $cfg->field("suffix") || ".skx";
+my $site = Templer::Site->new( suffix => $suffix );
+
+
+#
+#  The input directory to process, and output path.
+#
+#  [The command line takes precedence.  Always.]
+#
+my $in  = $CONFIG{ 'input' }  || $cfg->field("input")  || "./input/";
+my $out = $CONFIG{ 'output' } || $cfg->field("output") || "./output/";
+my $inplace = $CONFIG{ 'in-place' } || $cfg->field("in-place");
+my $srv     = $CONFIG{ 'serve' }    || 0;
+
+
+#
+#  Ensure we have an input directory.
+#
+if ( !-d $in )
+{
+    print "The input directory doesn't exist: $in\n";
+    exit;
+}
+
+
+#
+#  Start a HTTP server
+#
+if ( $CONFIG{ 'serve' } )
+{
+
+    #
+    # Document root
+    #
+    my $root = $out;
+    $root = $in if ( defined $inplace );
+
+    if ( !-d $root )
+    {
+        print "Document root doesn't exist: $root\n";
+        exit 0;
+    }
+
+    #
+    #  This is appalling.
+    #
+    my $port = $CONFIG{ 'serve' } || "8000";
+    system("cd $root && python -m SimpleHTTPServer $port");
+    exit(00);
+}
+
+
+#
+#  The template path, and default template
+#
+my $tpath = $CONFIG{ 'layout-path' } ||
+  $cfg->field("layout-path") ||
+  "./layouts";
+my $dtemplate = $CONFIG{ 'layout' } ||
+  $cfg->field("layout") ||
+  "default.layout";
+
+
+#
+#  The plugin path
+#
+my $ppath = $CONFIG{ 'plugin-path' } ||
+  $cfg->field("plugin-path") ||
+  "./plugins";
+
+#
+#  Load the plugins
+#
+$site->load_plugins($ppath) if ( -d $ppath );
+
+
+#
+#  See if we have pre-build commands
+#
+my $pre = $cfg->field('pre-build');
+if ($pre)
+{
+    foreach my $cmd (@$pre)
+    {
+        $CONFIG{ 'verbose' } && print "Pre-build command: $cmd\n";
+        system($cmd );
+    }
+}
+
+
+#
+#  Create the output directory if missing, unless we're in-place
+#
+File::Path::mkpath( $out, { verbose => 0, mode => oct(755) } )
+  if ( !-d $out && ( !$CONFIG{ 'in-place' } ) );
+
+
+#
+#  Find all pages & assets.
+#
+my @pages = $site->pages( directory => $in );
+my @assets = $site->assets( directory => $in );
+
+#
+# Count of pages we've built.
+#
+my $rebuilt = 0;
+
+#
+#  For each page we've found.
+#
+foreach my $page (@pages)
+{
+
+    #
+    # The path of the page, on-disk.
+    #
+    my $src = $page->source();
+
+    print "\nProcessing page: $src\n" if ( $CONFIG{ 'verbose' } );
+
+    #
+    # Convert the input path to a suitable output path.
+    #
+    my $dst = $src;
+    $dst =~ s/$suffix/.html/g;
+    $dst =~ s/$in/$out/g unless ($inplace);
+
+    #
+    # Show the transformation.
+    #
+    print "File: $src\n" if ( $CONFIG{ 'verbose' } );
+    print "Dest: $dst\n" if ( $CONFIG{ 'verbose' } );
+
+
+    #
+    # The template to expand the content into will come from the page, or the global
+    # configuration
+    #
+    my $template = $page->layout() || $cfg->layout() || $dtemplate;
+    print "Layout file is: $tpath/$template\n" if ( $CONFIG{ 'verbose' } );
+
+    #
+    # Ensure the template exists.
+    #
+    if ( !-e $tpath . "/" . $template )
+    {
+        print "WARNING: Layout file missing: $tpath/$template\n";
+        next;
+    }
+
+
+    #
+    #  If the destination is missing or old then we must rebuild.
+    #
+    my $rebuild = 0;
+    if ( !-e $dst )
+    {
+        $rebuild = 1;
+        print "Forcing rebuild because $dst is missing.\n"
+          if ( $CONFIG{ 'verbose' } );
+    }
+    else
+    {
+        if ( -M $src < -M $dst )
+        {
+            print "Rebuilding as page is newer than the output.\n"
+              if ( $CONFIG{ 'verbose' } );
+            $rebuild = 1;
+        }
+        else
+        {
+            if ( -M $dst > -M $tpath . "/" . $template )
+            {
+                print "Rebuilding as output is older than the layout.\n"
+                  if ( $CONFIG{ 'verbose' } );
+                $rebuild = 1;
+            }
+        }
+    }
+
+
+    #
+    # Is the rebuild being forced?
+    #
+    $rebuild = 1 if ( $CONFIG{ 'force' } );
+
+    #
+    #  Skip this page if we don't need to build it.
+    #
+    next unless ($rebuild);
+
+
+    #
+    # Keep track of rebuilt pages.
+    #
+    $rebuilt += 1;
+
+
+    #
+    #  Load the HTML::Template module against the layout.
+    #
+    my $tmpl = HTML::Template->new( filename => $tpath . "/" . $template,
+                                    die_on_bad_params      => 0,
+                                    search_path_on_include => 1,
+                                    path                   => $tpath,
+                                    global_vars            => 1,
+                                    loop_context_vars      => 1,
+                                  );
+
+
+    #
+    #  Load the HTLM::Template module against the body of the page.
+    #
+    #  (Includes are relative to the path of the input.)
+    #
+    my $dirName = $page->source();
+    if ( $dirName =~ /^(.*)\/(.*)$/ )
+    {
+        $dirName = $1;
+    }
+    my $body = HTML::Template->new( scalarref              => \$page->content(),
+                                    die_on_bad_params      => 0,
+                                    search_path_on_include => 1,
+                                    path                   => $dirName,
+                                    global_vars            => 1,
+                                    loop_context_vars      => 1,
+                                  );
+
+
+    #
+    #  The template-data we'll expand for the page/template.
+    #
+    my %data = ( $cfg->fields(), $page->fields() );
+
+    #
+    #  Template-expand the body of the page.
+    #
+    $body->param( \%data );
+    $data{ 'content' } = $body->output();
+
+
+    #
+    # Make the (updated) global and per-page data available
+    # to the template object.
+    #
+    $tmpl->param( \%data );
+
+    #
+    # Make sure the output path exists.
+    #
+    my $path = $dst;
+    if ( $path =~ /^(.*)\/(.*)$/ )
+    {
+        $path = $1;
+        File::Path::mkpath( $path, { verbose => 0, mode => oct(755) } )
+          if ( !-d $path );
+    }
+
+    #
+    #  Output the expanded template to the destination file.
+    #
+    print "Writing to $dst\n" if ( $CONFIG{ 'verbose' } );
+    open my $handle, ">:utf8", $dst or die "Failed to write to '$dst' - $!";
+    binmode( $handle, ":utf8" );
+    print $handle $tmpl->output();
+    close $handle;
+}
+
+
+#
+#  Now copy all missing assets into place, unless we're running in-place.
+#
+unless ($inplace)
+{
+
+    #
+    #  The files we're going to copy.
+    #
+    my @copy;
+
+
+    #
+    # We're going to build-up a command line to pass to tar
+    #
+    foreach my $asset (@assets)
+    {
+
+        #
+        # Strip the input component of the filename(s).
+        #
+        my $src = $asset->source();
+        $src =~ s/$in//g;
+
+        #
+        # If we've got an asset which is a directory that
+        # is already present, for example, we'll skip it.
+        #
+        push( @copy, $src ) unless ( -e "$out/$src" );
+    }
+
+    #
+    # Run the copy, unless all files are present.
+    #
+    if ( scalar @copy ne 0 )
+    {
+
+        #
+        # The horrible command we're going to execute.
+        #
+        my $cmd = "(cd $in && tar -cf - " .
+          join( " ", @copy ) . ") | ( cd $out && tar xf -)";
+        print "TAR: $cmd " if ( $CONFIG{ 'verbose' } );
+        system($cmd );
+    }
+}
+
+
+
+
+#
+#  See if we have post-build commands
+#
+my $post = $cfg->field('post-build');
+if ($post)
+{
+    foreach my $cmd (@$post)
+    {
+        $CONFIG{ 'verbose' } && print "Post-build command: $cmd\n";
+        system($cmd );
+    }
+}
+
+
+
+
+#
+# All done.
+#
+print "\nAll done: $rebuilt page(s) updated\n";
+
+exit(0);
+
+
+
+
