@@ -1,5 +1,4 @@
 
-
 clean:
 	-@find . \( -name '*.bak' -o -name '*.log' -o -name '*~' \) -delete
 	-@test -e ./debian/files && rm -f ./debian/files || true
@@ -14,10 +13,38 @@ critic:
 	perlcritic ./templer
 	perlcritic ./templer-generate
 
-install:
+install: templer-generate
 	cp ./templer ./templer-generate /usr/local/bin
 	chown root.root /usr/local/bin/templer /usr/local/bin/templer-generate
 	chmod 755 /usr/local/bin/templer /usr/local/bin/templer-generate
+
+
+#
+# Make the main script
+#
+templer:
+	cat lib/Templer/Util.pm \
+            lib/Templer/Global.pm \
+	    lib/Templer/Plugin/Factory.pm \
+	    lib/Templer/Plugin/Markdown.pm \
+	    lib/Templer/Plugin/Textile.pm \
+	    lib/Templer/Plugin/FileContents.pm \
+	    lib/Templer/Plugin/FileGlob.pm \
+	    lib/Templer/Plugin/ShellCommand.pm \
+            lib/Templer/Site.pm \
+            lib/Templer/Site/Asset.pm \
+            lib/Templer/Site/Page.pm \
+            templer.in > templer
+	chmod +x templer
+
+
+
+#
+#  Make the generator script
+#
+templer-generate: templer-generate.in lib/Templer/Site/New.pm
+	cat templer-generate.in lib/Templer/Site/New.pm > templer-generate
+	chmod +x templer-generate
 
 tidy:
 	perltidy ./templer

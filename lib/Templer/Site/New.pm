@@ -34,6 +34,10 @@ sub create
     #
     my $created = 0;
 
+    my $name   = undef;
+    my $marker = undef;
+    my $tmp    = undef;
+
     #
     # Process our data-section.
     #
@@ -96,6 +100,10 @@ sub create
                         close($handle);
 
                         $created += 1;
+                    }
+                    else
+                    {
+                        print "WARNING: Refusing to over-write $base/$name\n";
                     }
 
                     $name   = undef;
