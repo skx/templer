@@ -3,67 +3,95 @@ Plugins
 =======
 
 Templer allows itself to be extended via the additiona of plugins, several
-of which are included with the codebase itself.
+of which are distributed as part of the core code.
 
 There are two types of plugins which are supported, although there is no
 reason why more families couldn't be added in the future:
 
 * Plugins which are used for formatting.
-    * Converting input files from Textile, Markdown, etc, into HTML.
+    * Formatting input files in Textile, Markdown, etc, into HTML.
+
 * Plugins which extend the variable definitions.
     * Creating variables that refer to file contents, file globs, etc.
 
-
-The following plugins are included in the distribution:
+There is a slightly different API for the two plugin-familes, but both
+are as simple as I could make them. The following plugins are included in the
+distribution and may be studied for referencce:
 
 * Templer::Plugin::Markdown
    * Allows input files to be written in Markdown.
 * Templer::Plugin::Textile
    * Allows input files to be written in Textile.
-* Templer::Plugin::ShellCommand  [TODO]
-   * Set variable values to the output of shell commands.
-* Templer::Plugin::FileGlob  [TODO]
-   * Set variable values to lists of files, based on a globbing pattern.
-* Templer::Plugin::FileContents  [TODO]
+
+* Templer::Plugin::FileContents
    * Set variable values to the contents of files.
+* Templer::Plugin::FileGlob
+   * Set variable values to lists of files, based on a globbing pattern.
+* Templer::Plugin::ShellCommand
+   * Set variable values to the output of shell commands.
 
 
-Plugin API
-----------
 
-The API is very similar for both cases, and largely consists of
-testing whether the plugin is available and then the single method
-which is used to make the job.
 
-The formatting case is the simplest:
+Formatter Plugins
+------------------
+
+The formatting plugins are intentionally simple because they are explicitly enabled
+on a per-page basis.  There is no need to dynamically try them all in turn, or
+anything like that.
+
+A standard input page-file might look like this:
+
+     Title: My page title.
+     Formatter: textile
+     ----
+     This is a textile page.  It has **bold** text!
+
+When this page is rendered the Textile plugin is created and it is then called
+like so:
 
       if ( $plugin->available() )
       {
           $html = $plugin->format(  $input );
       }
 
-There is no other method required for the formatting plugins.  This is
-simple because only a single plugin is registered for each formatter-type.
-(i.e. There is a single Textile renderer).
+If the named formatter is not present, or does not report itself as "enabled"
+then the markup will be returend without the HTML expansion.  To be explicit
+any formatter plugin must implement only the following two methods:
+
+* `available`
+   * To determine whether this plugin is available.  (i.e. It might only be enabled if the modules it relies upon are present.)
+* `format`
+   * Given some input text return the rendered content.
+
+
+
+Variable Expansion Plugins
+--------------------------
 
 For the variable-expansion plugins the approach is similar, but we need
 to consider the case of N-plugins being available and possibly more than
-one being interested in the expansion.  When a page is loaded the associated
- variables definitions are each passed to all known-plugins.  If one can
-handle it then it does so, otherwise it will be ignored:
+one being interested in the expansion.
+
+When a page is processed the associated variables definitions are each passed
+to all known-plugins in turn.  Each plugin has the opportunity to:
+
+* Delete an existing page-variable.
+* Add a new page-variable (or more than one).
+* Update the definition of an existing page variable (or more than one).
+
+In pseudo-code the processing looks like this:
 
 
-        $done = false;
+        $data = ( "foo" => "bar",
+                  title => "This is my page title .." );
 
         foreach my $plugin ( $plugins )
         {
-            if ( $plugin->canHandle( $site, $page, $key, $value ) )
-            {
-                ( $key2, $val2 ) = $plugin->handle( $site, $page, $key, $value );
-
-                # delete key + value from the page.
-                # replace with key2 + val2.
-            }
+             $data = $plugin->expand_variables( $page, $data );
         }
 
-Here a plugin will expand and replace the key:value pair.
+
+Each plugin will be called once, and once only, for each page.  The `expand_variables`
+method is given a reference to the page from which the variable(s) were loaded,
+which may be useful in some situations.
