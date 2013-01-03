@@ -281,7 +281,7 @@ need to explicitly force a rebuild.
 Plugins
 -------
 
-**TODO**: Document.
+**TODO**: Document here, in the meantime [this overview](https://raw.github.com/skx/templer/master/PLUGINS) contains details and sample code.
 
 
 Problems
