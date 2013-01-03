@@ -62,7 +62,7 @@ uninstall:
 	rm /usr/local/bin/templer-generate || true
 
 
-examples: clean
+examples: clean default
 	cd ./examples/simple/   ; ../../templer --force
 	cd ./examples/complex/  ; ../../templer --force
 	cd ./examples/symlinks/ ; ../../templer --force
