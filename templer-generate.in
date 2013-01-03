@@ -86,7 +86,7 @@ if ( !defined($base) )
 
 
 my $helper = Templer::Site::New->new();
-$helper->create( $base, $CONFIG{'force'} );
+$helper->create( $base, $CONFIG{ 'force' } );
 
 
 #
