@@ -5,26 +5,6 @@ package Templer::Util;
 
 
 
-#
-# Load a module, dynamically, and return 1 on succss.
-#
-sub load_module_dynamically
-{
-    my ($str) = (@_);
-
-    my $ret = undef;
-
-    ## no critic (Eval)
-    eval($str);
-    ## use critic
-
-    if ( !$@ )
-    {
-        $ret = 1;
-    }
-    return ($ret);
-}
-
 
 #
 #  Read a file, and return a string of the contents.
