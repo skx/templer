@@ -110,47 +110,18 @@ sub content
     my $format = $self->{ 'format' } || undef;
 
     #
-    #  If we don't have any special format then just return the body.
+    #  Do we have a formatter plugin for this type?
     #
-    return ($content) if ( !$format );
-
-    #
-    #  Now look at the format.
-    #
-
-
-    if ( $format =~ /^markdown$/i )
+    if ( $format )
     {
+        my $factory = Templer::Plugin::Factory->new();
+        my $helper  = $factory->formatter( $format );
 
-        #
-        #  If the markdown module is available then load it and use it.
-        #
-        if ( Templer::Util::load_module_dynamically("use Text::Markdown;") )
+        if ( $helper )
         {
-            return ( Text::Markdown::markdown($content) );
+            $content = $helper->format( $content );
         }
     }
-    elsif ( $format =~ /^textile$/i )
-    {
-
-        #
-        #  If the textile module is available then load it and use it.
-        #
-        if ( Templer::Util::load_module_dynamically("use Text::Textile;") )
-        {
-            return ( Text::Textile::textile($content) );
-        }
-    }
-    else
-    {
-        print "WARNING: Unknown formatter '$format' for file " .
-          $self->{ 'file' } . "\n";
-    }
-
-
-    #
-    #  Unknown format, or an attempt to load a module failed.
-    #
     return $content;
 }
 

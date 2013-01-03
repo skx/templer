@@ -1,4 +1,11 @@
 #!/usr/bin/perl -Ilib/ -I../lib/ -w
+#
+#  Test we can load our singleton class-factory, and
+# register/fetch a trivial class with it.
+#
+# Steve
+#
+
 
 use strict;
 use warnings;

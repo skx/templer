@@ -45,7 +45,7 @@ sub formatter
 }
 
 #
-#  For the test-suite onlye
+#  For the test-suite only
 #
 sub formatters
 {

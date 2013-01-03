@@ -1,4 +1,12 @@
 #!/usr/bin/perl -Ilib/ -I../lib/ -w
+#
+#  Test we can instantiate the two formatter plugins, and that
+# they work.
+#
+# Steve
+# --
+#
+
 
 use strict;
 use warnings;
