@@ -1,0 +1,69 @@
+
+Plugins
+=======
+
+Templer allows itself to be extended via the additiona of plugins, several
+of which are included with the codebase itself.
+
+There are two types of plugins which are supported, although there is no
+reason why more families couldn't be added in the future:
+
+* Plugins which are used for formatting.
+    * Converting input files from Textile, Markdown, etc, into HTML.
+* Plugins which extend the variable definitions.
+    * Creating variables that refer to file contents, file globs, etc.
+
+
+The following plugins are included in the distribution:
+
+* Templer::Plugin::Markdown
+   * Allows input files to be written in Markdown.
+* Templer::Plugin::Textile
+   * Allows input files to be written in Textile.
+* Templer::Plugin::ShellCommand  [TODO]
+   * Set variable values to the output of shell commands.
+* Templer::Plugin::FileGlob  [TODO]
+   * Set variable values to lists of files, based on a globbing pattern.
+* Templer::Plugin::FileContents  [TODO]
+   * Set variable values to the contents of files.
+
+
+Plugin API
+----------
+
+The API is very similar for both cases, and largely consists of
+testing whether the plugin is available and then the single method
+which is used to make the job.
+
+The formatting case is the simplest:
+
+      if ( $plugin->available() )
+      {
+          $html = $plugin->format(  $input );
+      }
+
+There is no other method required for the formatting plugins.  This is
+simple because only a single plugin is registered for each formatter-type.
+(i.e. There is a single Textile renderer).
+
+For the variable-expansion plugins the approach is similar, but we need
+to consider the case of N-plugins being available and possibly more than
+one being interested in the expansion.  When a page is loaded the associated
+ variables definitions are each passed to all known-plugins.  If one can
+handle it then it does so, otherwise it will be ignored:
+
+
+        $done = false;
+
+        foreach my $plugin ( $plugins )
+        {
+            if ( $plugin->canHandle( $site, $page, $key, $value ) )
+            {
+                ( $key2, $val2 ) = $plugin->handle( $site, $page, $key, $value );
+
+                # delete key + value from the page.
+                # replace with key2 + val2.
+            }
+        }
+
+Here a plugin will expand and replace the key:value pair.
