@@ -1,4 +1,6 @@
 
+default: templer templer-generate
+
 clean:
 	-@find . \( -name '*.bak' -o -name '*.log' -o -name '*~' \) -delete
 	-@test -e ./debian/files && rm -f ./debian/files || true
