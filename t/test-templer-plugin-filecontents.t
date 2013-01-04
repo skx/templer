@@ -86,6 +86,6 @@ ok( $ref{ 'foo' },      "The fields contain the self-file reference" );
 #
 # Do the file contents look sane?
 #
-ok( $ref{'password'} =~ /root:/ , "The password file looks sane" );
-ok( $ref{'foo'} =~ /passwd/ , "The self-file looks sane" );
+ok( $ref{ 'password' } =~ /root:/,  "The password file looks sane" );
+ok( $ref{ 'foo' }      =~ /passwd/, "The self-file looks sane" );
 
