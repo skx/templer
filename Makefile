@@ -10,7 +10,8 @@ clean:
 	-@test -d ./examples/symlinks/output && rm -rf ./examples/simple/output/ || true
 	-@test -d ./examples/complex/output && rm -rf ./examples/complex/output/ || true
 	-@test -d ./output && rm -rf ./output/ || true
-	-@rm templer templer-generate || true
+	-@test -e ./templer && rm -f templer || true
+	-@test -e ./templer-generate && rm -f templer || true
 
 critic: default
 	perlcritic ./templer
