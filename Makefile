@@ -11,7 +11,7 @@ clean:
 	-@test -d ./examples/complex/output && rm -rf ./examples/complex/output/ || true
 	-@test -d ./output && rm -rf ./output/ || true
 	-@test -e ./templer && rm -f templer || true
-	-@test -e ./templer-generate && rm -f templer || true
+	-@test -e ./templer-generate && rm -f templer-generate || true
 
 critic: default
 	perlcritic ./templer
