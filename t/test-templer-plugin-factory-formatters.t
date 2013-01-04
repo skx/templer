@@ -16,8 +16,6 @@ use Test::More qw! no_plan !;
 
 
 
-package main;
-
 #
 #  Load the factory
 #
