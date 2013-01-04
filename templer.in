@@ -233,8 +233,8 @@ exit
 #
 #  Help/Manual handling.
 #
-pod2usage(1) if ( $CONFIG{ 'help' } );
-pod2usage( -verbose => 2 ) if ( $CONFIG{ 'manual' } );
+Pod::Usage::pod2usage(1) if ( $CONFIG{ 'help' } );
+Pod::Usage::pod2usage( -verbose => 2 ) if ( $CONFIG{ 'manual' } );
 
 
 #
