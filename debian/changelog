@@ -1,3 +1,9 @@
+templer (0.3-1) stable; urgency=low
+
+  * Updated to build with our modular code-base.
+
+ -- Steve Kemp <steve@steve.org.uk>  Fri, 4 Jan 2012 08:33:08 +0000
+
 templer (0.2-1) stable; urgency=low
 
   * Added the new script "templer-generate"
