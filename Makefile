@@ -53,6 +53,7 @@ templer-generate: templer-generate.in lib/Templer/Site/New.pm
 tidy:
 	perltidy *.in
 	perltidy $$(find . -name '*.pm' -print)
+	perltidy t/*.t
 
 test:
 	prove --shuffle t/
