@@ -101,57 +101,6 @@ sub assets
 }
 
 
-
-#
-# Load all plugins from the named directory
-#
-sub load_plugins
-{
-    my ( $self, $dir ) = (@_);
-
-    foreach my $file ( sort( glob( $dir . "/*.pm" ) ) )
-    {
-        require $file;
-
-        #
-        #  Save the name.
-        #
-        my $name = File::Basename::basename($file);
-        $name =~ s/\.pm$//g;
-        push( @{ $self->{ 'plugins' } }, $name );
-    }
-}
-
-
-#
-#  Get the plugins that this site knows about.
-#
-sub plugins
-{
-    my ($self) = (@_);
-
-    @{ $self->{ 'plugins' } };
-}
-
-
-#
-#  Call a plugin
-#
-sub call_plugin
-{
-    my ( $self, $name, $page, $args ) = (@_);
-
-    my $ret = undef;
-    if ( UNIVERSAL::can( $self, $name ) )
-    {
-        $ret = $self->$name( $page, $args );
-    }
-
-    return ($ret);
-}
-
-
-
 #
 # Find files beneath the given directory and return a new object
 # for each one.
