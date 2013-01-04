@@ -337,11 +337,6 @@ my $ppath = $CONFIG{ 'plugin-path' } ||
   $cfg->field("plugin-path") ||
   "./plugins";
 
-#
-#  Load the plugins
-#
-$site->load_plugins($ppath) if ( -d $ppath );
-
 
 #
 #  See if we have pre-build commands
