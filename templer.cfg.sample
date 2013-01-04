@@ -1,6 +1,7 @@
 
 
 
+
 ##
 #
 # If you wish to execute commands prior to building the
@@ -11,6 +12,9 @@
 # pre-build = echo Running on $(hostname)
 #
 ##
+
+
+
 
 ##
 #
@@ -40,6 +44,8 @@ input = ./input/
 ##
 
 
+
+
 ##
 #
 # If we're working in-place then files will be expanded where
@@ -56,6 +62,8 @@ input = ./input/
 #
 ##
 
+
+
 ##
 #
 # The more common way of working is to produce the output in a separate
@@ -68,6 +76,8 @@ input = ./input/
 output = ./output/
 #
 ##
+
+
 
 
 ##
@@ -90,6 +100,24 @@ output = ./output/
 
 
 
+
+##
+#
+# Templer supports plugins for expanding variable definitions
+# inside the input files, or for formating with text systems
+# like Textile, Markdown, etc.
+#
+# There are several plugins included with the system and you
+# can write your own in perl.  Specify the path to load plugins
+# from here.
+#
+plugin-path = ./plugins/
+#
+##
+
+
+
+
 ##
 #
 # If you wish to execute commands after building the
@@ -99,6 +127,7 @@ output = ./output/
 # post-build = echo Finished build at $(date)
 #
 ##
+
 
 
 #
