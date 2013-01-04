@@ -12,6 +12,24 @@ sub new
     $singleton ||= bless {}, $class;
 }
 
+
+
+#
+# Load plugins from a given directory
+#
+sub load_plugins
+{
+    my ( $self, $directory ) = (@_);
+    return unless ( -d $directory );
+
+    foreach my $file ( sort( glob( $directory . "/*.pm" ) ) )
+    {
+        require $file;
+    }
+}
+
+
+
 #
 # Register a new formatter plugin.
 #
@@ -36,6 +54,7 @@ sub register_plugin
     $name = lc($name);
     $self->{ 'plugins' }{ $name } = $obj;
 }
+
 
 
 #

@@ -337,6 +337,13 @@ my $ppath = $CONFIG{ 'plugin-path' } ||
   $cfg->field("plugin-path") ||
   "./plugins";
 
+#
+#  If we have a plugin direcotry then load the plugins
+#
+if ( -d $ppath )
+{
+    Templer::Plugin::Factory->new()->load_plugins($ppath);
+}
 
 #
 #  See if we have pre-build commands
