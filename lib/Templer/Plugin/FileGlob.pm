@@ -110,12 +110,19 @@ sub expand_variables
             #
             #  Could be used for many things, will be used for image-gallaries.
             #
+
+            #
+            #  Get the pattern and strip leading/trailing quotes and whitespace.
+            #
             my $pattern = $1;
             $pattern =~ s/['"]//g;
             $pattern =~ s/^\s+|\s+$//g;
 
             #
-            #  Make sure we're relative to teh directory name.
+            #  Make sure we're relative to the directory containing
+            # the actual input-page.
+            #
+            #  This way globs will match what the author expected.
             #
             my $dirName = $page->source();
             if ( $dirName =~ /^(.*)\/(.*)$/ )
@@ -125,8 +132,15 @@ sub expand_variables
             my $pwd = cwd();
             chdir( $dirName . "/" );
 
-            # add the data
+            #
+            #  The value we'll set the variable to.
+            #
             my $ref;
+
+
+            #
+            #  Run the glob.
+            #
             foreach my $img ( glob($pattern) )
             {
 
@@ -136,6 +150,10 @@ sub expand_variables
                 #
                 my %meta = ( file => $img );
 
+                #
+                # If the file is an image AND we have Image::Size
+                # then populate the height/width too.
+                #
                 if ( $img =~ /\.(jpe?g|png|gif)$/i )
                 {
                     my $module = "use Image::Size;";
@@ -151,6 +169,10 @@ sub expand_variables
                 push( @$ref, \%meta );
             }
 
+            #
+            #  If we found at least one file then we'll update
+            # the variable value to refer to the populated structure.
+            #
             if ($ref)
             {
                 $hash{ $key } = $ref;
@@ -162,13 +184,14 @@ sub expand_variables
                   $page->source() . "\n";
                 delete $hash{ $key };
             }
+
+            #
+            #  Restore the PWD.
+            #
             chdir($pwd);
         }
     }
 
-    #
-    #  Return.
-    #
     return ( \%hash );
 }
 
