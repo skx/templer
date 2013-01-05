@@ -9,7 +9,7 @@ There are two types of plugins which are supported, although there is no
 reason why more families couldn't be added in the future:
 
 * Plugins which are used for formatting.
-    * Formatting input files in Textile, Markdown, etc, into HTML.
+    * Converting input files from Textile, Markdown, etc, into HTML.
 
 * Plugins which extend the variable definitions.
     * Creating variables that refer to file contents, file globs, etc.
@@ -36,9 +36,9 @@ distribution and may be studied for reference:
 Formatter Plugins
 ------------------
 
-The formatting plugins are intentionally simple because they are explicitly enabled
-on a per-page basis.  There is no need to dynamically try them all in turn, or
-anything like that.
+The formatting plugins are intentionally simple because they are explicitly
+enabled on a per-page basis.  There is no need to dynamically try them all in
+turn, executing each which matches a particular condition for example.
 
 A standard input page-file might look like this:
 
@@ -69,16 +69,18 @@ any formatter plugin must implement only the following two methods:
 Variable Expansion Plugins
 --------------------------
 
-For the variable-expansion plugins the approach is similar, but we need
-to consider the case of N-plugins being available and possibly more than
-one being interested in the expansion.
+For the variable-expansion plugins the approach is similar, but an arbitrary
+number of plugins may be registered and each one is executed in turn - so
+return values are chained.
 
-When a page is processed the associated variables definitions are each passed
-to all known-plugins in turn.  Each plugin has the opportunity to:
+Each site page is loaded and the variable names & values are stored in a
+hash.  Each plugin is free to modify that hash of known variables and
+their values.
 
-* Delete an existing page-variable.
-* Add a new page-variable (or more than one).
-* Update the definition of an existing page variable (or more than one).
+Generally we expect that plugins will look for variable values having
+a particular pattern and ignoring those that don't match.  But there is
+certainly no reason why you couldn't write a plugin to convert each
+variable-value to uppercase, or perform other global operations.
 
 In pseudo-code the processing looks like this:
 
@@ -92,6 +94,6 @@ In pseudo-code the processing looks like this:
         }
 
 
-Each plugin will be called once, and once only, for each page.  The `expand_variables`
-method is given a reference to the page from which the variable(s) were loaded,
-which may be useful in some situations.
+Each plugin will be called once, and once only, for each page.  The
+`expand_variables` method is given a reference to the page from which the
+variable(s) were loaded, which may be useful in some situations.
