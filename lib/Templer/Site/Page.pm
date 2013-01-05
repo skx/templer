@@ -1,19 +1,64 @@
 
-#
-# This object holds data about each page.
-#
-# A page is any non-directory beneath the input-directory which matches the pattern
-# specified by the user (defaults to "*.skx").
-#
-# Pages are processed via the M<HTML::Template> module to create the suitable output.
-#
+=head1 NAME
+
+Templer::Site::Page - An interface to a site page.
+
+=cut
+
+=head1 SYNOPSIS
+
+    use strict;
+    use warnings;
+
+    use Templer::Site::Page;
+
+    my $page = Templer::Site::Page->new( file => "./input/foo.wgn" );
+
+=cut
+
+=head1 DESCRIPTION
+
+A page is any non-directory beneath the input-directory which matches the pattern
+specified by the user (defaults to "*.skx").
+
+Pages are processed via the L<HTML::Template> module to create the suitable output.
+
+In C<templer> the page objects are created by the L<Templer::Site> module.
+
+=cut
+
+=head1 AUTHOR
+
+Steve Kemp <steve@steve.org.uk>
+
+=cut
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright (C) 2012-2013 Steve Kemp <steve@steve.org.uk>.
+
+This library is free software. You can modify and or distribute it under
+the same terms as Perl itself.
+
+=cut
+
+=head1 METHODS
+
+=cut
+
 package Templer::Site::Page;
 
 
 
-#
-# Constructor
-#
+=head2 new
+
+The constructor.
+
+The single appropriate argument is the hash-key "file", pointing to the
+page-file on-disk.
+
+=cut
+
 sub new
 {
     my ( $proto, %supplied ) = (@_);
@@ -35,9 +80,14 @@ sub new
 }
 
 
-#
-# Read the file, and parse the header/content.
-#
+=head2 _parse_page
+
+Read the file, and parse the header/content.
+
+This is an internal method.
+
+=cut
+
 sub _parse_page
 {
     my ( $self, $filename ) = (@_);
@@ -94,11 +144,15 @@ sub _parse_page
 
 
 
-#
-# Return the body of the page.
-#
-# Here we perform the textile/markdown expansion if possible.
-#
+=head2 content
+
+Return the body of the page.
+
+Here we perform the textile/markdown expansion if possible via the use
+plugins loaded by L<Templer::Plugin::Factory>.
+
+=cut
+
 sub content
 {
     my ($self) = (@_);
@@ -126,9 +180,20 @@ sub content
 }
 
 
-#
-# Retrieve a field from the header of the page.
-#
+=head2 field
+
+Retrieve a field from the header of the page.
+
+In the following example file "foo", "bar" and "title" are fields:
+
+    Foo: Testing ..
+    Bar: file_glob( "*.gif" )
+    Title: This is my page title.
+    -----
+    <p>This is my page content ..</p>
+
+=cut
+
 sub field
 {
     my ( $self, $field ) = (@_);
@@ -136,9 +201,13 @@ sub field
 }
 
 
-#
-# Return all known fields/values from the page.
-#
+
+=head2 fields
+
+Return all known fields/values from the page.
+
+=cut
+
 sub fields
 {
     my ($self) = (@_);
@@ -157,9 +226,13 @@ sub fields
 }
 
 
-#
-#  Return the filename we were built from.
-#
+=head2 source
+
+Return the filename we were built from.  This is the value passed
+in the constructor.
+
+=cut
+
 sub source
 {
     my ($self) = (@_);
@@ -167,9 +240,13 @@ sub source
 }
 
 
-#
-# Return the per-page layout file to use, if present.
-#
+
+=head2 layout
+
+Return the layout-template to use for this page, if one has been set.
+
+=cut
+
 sub layout
 {
     my ($self) = (@_);

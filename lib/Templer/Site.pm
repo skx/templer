@@ -1,33 +1,77 @@
 
-#
-# This class encapsulates a site.
-#
-# A site is comprised of "pages" and "assets".
-#
-# =over 8
-#
-# =item Pages
-#
-# Pages are things which are template expanded.
-#
-# =item Assets
-#
-# Assets are files that are merely copied from the input directory to
-# the output path.  If we're running in "in-place" mode then they are
-# ignored.
-#
-# =back
-#
-# This class contains helpers for finding and returning arrays of
-# both such objects.
-#
+=head1 NAME
+
+Templer::Site - An interface to a templer site.
+
+=cut
+
+=head1 SYNOPSIS
+
+    use strict;
+    use warnings;
+
+    use Templer::Site::Page;
+
+    my $page = Templer::Site::Page->new( file => "./input/foo.wgn" );
+
+=cut
+
+=head1 DESCRIPTION
+
+This class encapsulates a site.  A site is comprised of "pages" and "assets".
+
+=over 8
+
+=item Pages
+
+Pages are things which are template expanded.  These are represented
+by instances of the C<Templer::Site::Page> class.
+
+=item Assets
+
+Assets are files that are merely copied from the input directory to
+the output path.  If we're running in "in-place" mode then they are
+ignored.
+
+Assets are represented by instances of the C<Templer::Site::Assets> class.
+
+=back
+
+This class contains helpers for finding and returning arrays of
+both such objects.
+
+=cut
+
+=head1 AUTHOR
+
+Steve Kemp <steve@steve.org.uk>
+
+=cut
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright (C) 2012-2013 Steve Kemp <steve@steve.org.uk>.
+
+This library is free software. You can modify and or distribute it under
+the same terms as Perl itself.
+
+=cut
+
+=head1 METHODS
+
+=cut
+
+
 package Templer::Site;
 
 
 
-#
-# Constructor
-#
+=head2 new
+
+Constructor
+
+=cut
+
 sub new
 {
     my ( $proto, %supplied ) = (@_);
@@ -48,14 +92,17 @@ sub new
 }
 
 
-#
-# A site comprises of a collection of pages and a collection of static resources
-# which aren't touched/modified - these are "assets".
-#
-# Return an object for each page we've found.
-#
-# NOTE: We don't process pages with a "." prefix, i.e. dotfiles.
-#
+=head2 pages
+
+A site comprises of a collection of pages and a collection of static resources
+which aren't touched/modified - these are "assets".
+
+Return a C<Templer::Site::Page> object for each page we've found.
+
+B<NOTE> We don't process pages with a "." prefix, i.e. dotfiles.
+
+=cut
+
 sub pages
 {
     my ( $self, %args ) = (@_);
@@ -72,18 +119,18 @@ sub pages
 }
 
 
-#
-# A site comprises of a collection of pages and a collection of static resources
-# which aren't touched/modified - these are "assets".
-#
-# Return an object for each asset we find.
-#
-# NOTE:  That we will include files which have a "." prefix here - to correctly
-# copy files such as:
-#
-#    .htpasswd
-#    .htaccess
-#
+=head2 assets
+
+A site comprises of a collection of pages and a collection of static resources
+which aren't touched/modified - these are "assets".
+
+Return a C<Templer::Site::Asset> object for each asset we find.
+
+B<NOTE> We include files which have a "." prefix here - to correctly
+copy files such as ".htpasswd", ".htaccess", etc.
+
+=cut
+
 sub assets
 {
     my ( $self, %args ) = (@_);
@@ -101,13 +148,16 @@ sub assets
 }
 
 
-#
-# Find files beneath the given directory and return a new object
-# for each one.
-#
-# We assume that the object constructor receives a hash as its sole
-# argument with the key "file" containing the file path.
-#
+=head2 _findFiles
+
+Internal method to find files beneath the given directory and return a new object
+for each one.
+
+We assume that the object constructor receives a hash as its sole
+argument with the key "file" containing the file path.
+
+=cut
+
 sub _findFiles
 {
     my ( $self, %args ) = (@_);
