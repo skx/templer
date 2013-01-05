@@ -140,8 +140,8 @@ the sample [`templer.cfg`](https://raw.github.com/skx/templer/master/templer.cfg
 
 
 
-File Globbing
--------------
+File Globbing Variables
+-----------------------
 
 We've already seen simple variables declared by "key: value" in the page header,
 in addition to this you may define a variable that refers to a number of files
@@ -169,9 +169,12 @@ the pattern `img/*.jpg`:
     <p>My gallery is now included in ascending numerical order:</p>
 
 
+This facility is implemented in the `Templer::Plugin::FileGlob` [plugin](#plugins).
 
-File Inclusion
---------------
+
+
+File Inclusion Variables
+------------------------
 
 The [HTML::Template](http://search.cpan.org/perldoc?HTML%3A%3ATemplate) module supports file inclusion natively, via the following construct:
 
@@ -189,15 +192,29 @@ file.  For example:
       <pre><!-- tmpl_var name='passwd' -->
       </pre>
 
+This facility is implemented in the `Templer::Plugin::FileContents` [plugin](#plugins).
+
+
+
+Shell Command Variables
+-----------------------
+
+Pages may also define variables which receive the value of the output of shell commands.  This is done via definitions like this:
+
+
+      Title: This file is dynamic
+      Host: run_command( "hostname" )
+      ----
+      <p>This page was built upon <!-- tmpl_var name='host' -->.</p>
+
+This facility is implemented in the Templer::Plugin::ShellCommand [plugin](#plugins).
+
+
 
 Installation
 ------------
 
-The code is modular and neat and is currently contained in a single script, this
-will be changing in the near future so with that in mind the preferred installation
-routine must be:
-
-The simplest possible installation method would be this:
+The code is modular and neat and is combined from a series of modules into a single script `templer`.  The simplest possible installation method would be this:
 
         $ git clone https://github.com/skx/templer.git
         $ cd templer
@@ -211,6 +228,8 @@ like so:
         $ git clone https://github.com/skx/templer.git
         $ cd templer
         $ make
+
+This `make`  (or `make default`) command is required to generate the script by concatenating the various modules which make up the code into a single script.  The code is deliberately contained in a single script to ease deployment, but developed in a modular fashion to ease testing.
 
 The dependencies are minimal, to ease installation:
 
