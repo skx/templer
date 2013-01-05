@@ -207,7 +207,7 @@ Pages may also define variables which receive the value of the output of shell c
       ----
       <p>This page was built upon <!-- tmpl_var name='host' -->.</p>
 
-This facility is implemented in the Templer::Plugin::ShellCommand [plugin](#plugins).
+This facility is implemented in the `Templer::Plugin::ShellCommand` [plugin](#plugins).
 
 
 
