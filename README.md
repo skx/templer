@@ -6,7 +6,7 @@ Templer is yet another static site generator, written in Perl.
 It makes use of the [HTML::Template](http://search.cpan.org/perldoc?HTML%3A%3ATemplate) module for performing variable expansion within pages and layouts, along with looping and conditional-statement handling.
 
 Templer has evolved over time for my own personal use, but I believe
-it is sufficently generic it could be useful to others.
+it is sufficiently generic it could be useful to others.
 
 My motivation for putting it together came from the desire to change
 several hand-made, HTML-coded, sites to something more maintainable such
@@ -94,7 +94,7 @@ a sample page:
     <p>This is the body of the page</p>
 
 
-The header of the page is deliminated from the body by four dashes (`----`) and can
+The header of the page is delimited from the body by four dashes (`----`) and can
 contain an arbitrary number of variable definitions - although by default we'd only
 expect to see the page title being set.
 
@@ -113,7 +113,7 @@ Variable Definitions
 --------------------
 
 Within the header of each page you may declare an arbitrary number of per-page
-variables.  These variable declerations are then available for use within the
+variables.  These variable declarations are then available for use within the
 page-body, using the standard  [HTML::Template](http://search.cpan.org/perldoc?HTML%3A%3ATemplate) expansion facilities:
 
 
@@ -123,7 +123,7 @@ page-body, using the standard  [HTML::Template](http://search.cpan.org/perldoc?H
      <p>Hello, my name is <!-- tmpl_var name='name' -->.</p>
 
 > The only surprise here is that we referred to the variable called "Name" as "name".  All
-variable-names are transformed to lower-case for consistancy.
+variable-names are transformed to lower-case for consistency.
 
 As well as simple "name: value" pairs there are also additional options:
 
