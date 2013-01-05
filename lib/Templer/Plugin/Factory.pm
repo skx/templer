@@ -138,7 +138,7 @@ sub register_plugin
 {
     my ( $self, $obj ) = (@_);
 
-    push( @{$self->{ 'plugins' }}, $obj );
+    push( @{ $self->{ 'plugins' } }, $obj );
 }
 
 
@@ -157,7 +157,7 @@ sub expand_variables
 
     foreach my $plugin ( @{ $self->{ 'plugins' } } )
     {
-        my %in     = %$data;
+        my %in = %$data;
 
         #
         # Create & invoke the plugin.
@@ -170,9 +170,15 @@ sub expand_variables
     return ($data);
 }
 
-#
-#  Gain access to a previously registered formatter object, by name.
-#
+
+=head2 formatter
+
+Return a new instance of the formatter class with the given name.
+
+C<undef> is returned if no such plugin is registered.
+
+=cut
+
 sub formatter
 {
     my ( $self, $name ) = (@_);
@@ -191,11 +197,13 @@ sub formatter
 }
 
 
-#
-#  Return the names of each known formatter-plugin.
-#
-#  Used by the test-suite only.
-#
+=head2 formatters
+
+Return the names of each registered formatter-plugin, this is only
+used by the test-suite.
+
+=cut
+
 sub formatters
 {
     my ($self) = (@_);

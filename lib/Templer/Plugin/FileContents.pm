@@ -94,6 +94,7 @@ sub expand_variables
     {
         if ( $hash{ $key } =~ /^read_file\((.*)\)/ )
         {
+
             #
             #  Get the filename specified.
             #
@@ -115,6 +116,7 @@ sub expand_variables
             }
             else
             {
+
                 #
                 #  Otherwise we need to make the file
                 # specified relative to the location
@@ -173,4 +175,5 @@ sub file_contents
 #
 #  Register the plugin.
 #
-Templer::Plugin::Factory->new()->register_plugin( "Templer::Plugin::FileContents" );
+Templer::Plugin::Factory->new()
+  ->register_plugin("Templer::Plugin::FileContents");

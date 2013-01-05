@@ -104,6 +104,7 @@ sub expand_variables
     {
         if ( $hash{ $key } =~ /^file_glob\((.*)\)/ )
         {
+
             #
             #  Populate an array of hash-refs referring to files which match
             #  a particular glob.
@@ -199,4 +200,4 @@ sub expand_variables
 #
 #  Register the plugin.
 #
-Templer::Plugin::Factory->new()->register_plugin( "Templer::Plugin::FileGlob" );
+Templer::Plugin::Factory->new()->register_plugin("Templer::Plugin::FileGlob");

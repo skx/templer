@@ -116,4 +116,5 @@ sub expand_variables
 #
 #  Register the plugin.
 #
-Templer::Plugin::Factory->new()->register_plugin( "Templer::Plugin::ShellCommand" );
+Templer::Plugin::Factory->new()
+  ->register_plugin("Templer::Plugin::ShellCommand");
