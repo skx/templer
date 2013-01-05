@@ -10,9 +10,14 @@ Templer::Site - An interface to a templer site.
     use strict;
     use warnings;
 
-    use Templer::Site::Page;
+    use Templer::Site;
 
-    my $page = Templer::Site::Page->new( file => "./input/foo.wgn" );
+    # Create the helper.
+    my $site   = Templer::Site->new( suffix => ".skx" );
+
+    # Get the pages/assets.
+    my @pages  = $site->pages();
+    my @assets = $site->assets();
 
 =cut
 
