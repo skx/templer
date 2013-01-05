@@ -26,7 +26,7 @@ install: default
 #
 # Make the main script
 #
-templer:
+templer: lib/Templer/Global.pm lib/Templer/Plugin/Factory.pm lib/Templer/Plugin/Markdown.pm lib/Templer/Plugin/Textile.pm lib/Templer/Plugin/FileContents.pm lib/Templer/Plugin/FileGlob.pm lib/Templer/Plugin/ShellCommand.pm lib/Templer/Site.pm lib/Templer/Site/Asset.pm lib/Templer/Site/Page.pm templer.in
 	echo '#!/usr/bin/perl -w' > templer
 	cat lib/Templer/Global.pm \
 	    lib/Templer/Plugin/Factory.pm \
