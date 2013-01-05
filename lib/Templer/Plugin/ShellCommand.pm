@@ -54,7 +54,6 @@ sub expand_variables
 
 
 #
-#  Name is largely irrelevant.  Do we need to set it?
+#  Register the plugin.
 #
-Templer::Plugin::Factory->new()
-  ->register_plugin( "run_command", "Templer::Plugin::ShellCommand" );
+Templer::Plugin::Factory->new()->register_plugin( "Templer::Plugin::ShellCommand" );

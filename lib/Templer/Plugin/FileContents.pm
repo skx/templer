@@ -99,7 +99,6 @@ sub file_contents
 }
 
 #
-#  Name is largely irrelevant.  Do we need to set it?
+#  Register the plugin.
 #
-Templer::Plugin::Factory->new()
-  ->register_plugin( "read_file", "Templer::Plugin::FileContents" );
+Templer::Plugin::Factory->new()->register_plugin( "Templer::Plugin::FileContents" );

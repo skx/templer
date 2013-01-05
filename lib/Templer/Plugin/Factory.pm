@@ -48,11 +48,9 @@ sub register_formatter
 #
 sub register_plugin
 {
-    my ( $self, $name, $obj ) = (@_);
+    my ( $self, $obj ) = (@_);
 
-    die "No name" unless ($name);
-    $name = lc($name);
-    $self->{ 'plugins' }{ $name } = $obj;
+    push( @{$self->{ 'plugins' }}, $obj );
 }
 
 
@@ -68,11 +66,16 @@ sub expand_variables
 
     my $out;
 
-    foreach my $name ( keys( %{ $self->{ 'plugins' } } ) )
+    foreach my $plugin ( @{ $self->{ 'plugins' } } )
     {
         my %in     = %$data;
-        my $object = $self->{ 'plugins' }{ $name }->new();
+
+        #
+        # Create & invoke the plugin.
+        #
+        my $object = $plugin->new();
         $out = $object->expand_variables( $page, \%in );
+
         $data = \%$out;
     }
     return ($data);

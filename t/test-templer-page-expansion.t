@@ -34,7 +34,7 @@ sub expand_variables
     }
     return ( \%hash );
 }
-Templer::Plugin::Factory->new()->register_plugin( "misc", "Simple::Class" );
+Templer::Plugin::Factory->new()->register_plugin( "Simple::Class" );
 
 
 

@@ -107,7 +107,6 @@ sub expand_variables
 
 
 #
-#  Name is largely irrelevant.  Do we need to set it?
+#  Register the plugin.
 #
-Templer::Plugin::Factory->new()
-  ->register_plugin( "file_glob", "Templer::Plugin::FileGlob" );
+Templer::Plugin::Factory->new()->register_plugin( "Templer::Plugin::FileGlob" );
