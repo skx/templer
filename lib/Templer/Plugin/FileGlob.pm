@@ -1,11 +1,68 @@
+
+=head1 NAME
+
+Templer::Plugin::FileGlob - A plugin to expand file globs.
+
+=cut
+
+=head1 SYNOPSIS
+
+The following is a good example use of this plugin
+
+  title: Images of cats
+  images: file_glob( img/candid*.jpg )
+  ----
+  <li>
+  <!-- tmpl_loop name='images' -->
+    <li><img src="<!-- tmpl_var name='file' -->" width="<!-- tmpl_var name='width' -->" height="<!-- tmpl_var name='height' -->"  alt="Animal &amp; Pet Photography, Edinburgh" /></li>
+  <!-- /tmpl_loop -->
+  </ul>
+
+=cut
+
+=head1 DESCRIPTION
+
+This plugin operates on file-patterns and populates loops refering
+to the specified pattern.
+
+The intended use-case is inline-gallery generation, but more uses
+would surely be discovered.
+
+=cut
+
+=head1 AUTHOR
+
+Steve Kemp <steve@steve.org.uk>
+
+=cut
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright (C) 2012-2013 Steve Kemp <steve@steve.org.uk>.
+
+This library is free software. You can modify and or distribute it under
+the same terms as Perl itself.
+
+=cut
+
+=head1 METHODS
+
+=cut
+
+
+
+
 package Templer::Plugin::FileGlob;
 
 use Cwd;
 
 
-#
-# Constructor
-#
+=head2
+
+Constructor.  No arguments are required/supported.
+
+=cut
+
 sub new
 {
     my ( $proto, %supplied ) = (@_);
@@ -17,9 +74,20 @@ sub new
 }
 
 
-#
-#  Given an input hash, of key:value pairs, we update any that match.
-#
+
+=head2 expand_variables
+
+This is the method which is called by the L<Templer::Plugin::Factory>
+to expand the variables contained in a L<Templer::Site::Page> object.
+
+Variables are written in the file in the form "key: value", and are
+internally stored within the Page object as a hash.
+
+This method iterates over each key & value and updates any that
+seem to refer to file-globs.
+
+=cut
+
 sub expand_variables
 {
     my ( $self, $page, $data ) = (@_);
@@ -36,7 +104,6 @@ sub expand_variables
     {
         if ( $hash{ $key } =~ /^file_glob\((.*)\)/ )
         {
-
             #
             #  Populate an array of hash-refs referring to files which match
             #  a particular glob.
