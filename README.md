@@ -218,6 +218,8 @@ The dependencies are minimal, to ease installation:
 * The [HTML::Template](http://search.cpan.org/perldoc?HTML%3A%3ATemplate) module.
    *  This may be installed, on a Debian system, with `apt-get install libhtml-template-perl`.
 * The following are optional modules:
+   * The [Image::Size](http://search.cpan.org/perldoc?Image%3A%3ASize) module is used if available whenever you create `file_glob`-using loops of image files.
+      * This will set the attributes `width` and `height` for the images which are added to the loop.
    * The [Text::Markdown](http://search.cpan.org/perldoc?Text%3A%3AMarkdown) module is required if you wish to write your page bodies in Markdown.
       *  This may be installed, on a Debian system, with `apt-get install libtext-markdown-perl`.
    * The [Text::Textile](http://search.cpan.org/perldoc?Text%3A%3ATextile) module is required if you wish to write your page bodies in Textile.
