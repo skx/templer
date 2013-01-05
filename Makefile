@@ -1,6 +1,14 @@
 
+
+#
+# Default action is to build the two binary scripts
+#
 default: templer templer-generate
 
+
+#
+# Clean temporary/working files
+#
 clean:
 	-@find . \( -name '*.bak' -o -name '*.log' -o -name '*~' \) -delete
 	-@test -e ./debian/files && rm -f ./debian/files || true
@@ -13,10 +21,18 @@ clean:
 	-@test -e ./templer && rm -f templer || true
 	-@test -e ./templer-generate && rm -f templer-generate || true
 
+
+#
+# Run perlcritic against our code
+#
 critic: default
 	perlcritic ./templer
 	perlcritic ./templer-generate
 
+
+#
+# Install to /usr/local/bin
+# 
 install: default
 	cp ./templer ./templer-generate /usr/local/bin
 	chown root.root /usr/local/bin/templer /usr/local/bin/templer-generate
@@ -50,20 +66,35 @@ templer-generate: templer-generate.in lib/Templer/Site/New.pm
 	cat templer-generate.in lib/Templer/Site/New.pm > templer-generate
 	chmod +x templer-generate
 
+
+#
+# Format the code in a standard fashion.
+#
 tidy:
 	perltidy *.in
 	perltidy $$(find . -name '*.pm' -print)
 	perltidy t/*.t
 
+
+#
+# Run the test suite.
+#
 test:
 	prove --shuffle t/
 
 
+#
+# Uninstall
+#
 uninstall:
 	rm /usr/local/bin/templer          || true
 	rm /usr/local/bin/templer-generate || true
 
 
+
+#
+# Rebuild & publish the examples
+#
 examples: clean default
 	cd ./examples/simple/   ; ../../templer --force
 	cd ./examples/complex/  ; ../../templer --force
