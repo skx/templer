@@ -166,14 +166,25 @@ sub content
     #
     #  Do we have a formatter plugin for this type?
     #
+    #  Many formatters might be specified
+    #
     if ($format)
     {
+        #
+        #  The plugin-factory.
+        #
         my $factory = Templer::Plugin::Factory->new();
-        my $helper  = $factory->formatter($format);
 
-        if ($helper)
+        #
+        #  For each formatter.
+        #
+        foreach my $fmt ( split( /,/, $format ) )
         {
-            $content = $helper->format($content);
+            $fmt =~ s/^\s+|\s+$//g;
+            next unless( $fmt );
+
+            my $helper  = $factory->formatter($fmt);
+            $content = $helper->format($content) if ( $helper );
         }
     }
     return $content;
