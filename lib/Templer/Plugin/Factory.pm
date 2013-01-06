@@ -7,11 +7,6 @@ Templer::Plugin::Factory - A simple plugin class
 
 =head1 DESCRIPTION
 
-=cut
-
-
-=head1 DESCRIPTION
-
 This class implements a singleton within which plugin classes may
 be registered and retrieved.
 
