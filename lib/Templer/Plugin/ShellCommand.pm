@@ -99,8 +99,15 @@ sub expand_variables
             # Run a system command, and capture the output.
             #
             my $cmd = $1;
-            $cmd =~ s/['"]//g;
+
+            #
+            #  Strip leading/trailing whitespace, then quotes, then
+            # whitespace again.
+            #
             $cmd =~ s/^\s+|\s+$//g;
+            $cmd =~ s/^['"]|['"]$//g;
+            $cmd =~ s/^\s+|\s+$//g;
+
             $hash{ $key } = `$cmd`;
         }
 
