@@ -398,6 +398,10 @@ Each plugin will be called once, and once only, for each page.  The
 `expand_variables` method is given a reference to the page from which the
 variable(s) were loaded, which may be useful in some situations.
 
+It should be noted for completeness that the same expansion happens on global
+variables defined within your `templer.cfg` file.
+
+
 
 Problems
 --------
