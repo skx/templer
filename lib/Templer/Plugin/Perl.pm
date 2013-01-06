@@ -1,3 +1,4 @@
+
 =head1 NAME
 
 Templer::Plugin::Perl - A simple inline-perl plugin
@@ -96,9 +97,10 @@ sub format
 
     if ( $self->available() )
     {
-        my $template = Text::Template->new( TYPE => "STRING",
-                                            SOURCE => $str );
-        return( $template->fill_in() );
+        my $template =
+          Text::Template->new( TYPE   => "STRING",
+                               SOURCE => $str );
+        return ( $template->fill_in() );
     }
     else
     {

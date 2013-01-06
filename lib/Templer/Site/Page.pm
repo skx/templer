@@ -170,6 +170,7 @@ sub content
     #
     if ($format)
     {
+
         #
         #  The plugin-factory.
         #
@@ -181,10 +182,10 @@ sub content
         foreach my $fmt ( split( /,/, $format ) )
         {
             $fmt =~ s/^\s+|\s+$//g;
-            next unless( $fmt );
+            next unless ($fmt);
 
-            my $helper  = $factory->formatter($fmt);
-            $content = $helper->format($content) if ( $helper );
+            my $helper = $factory->formatter($fmt);
+            $content = $helper->format($content) if ($helper);
         }
     }
     return $content;
