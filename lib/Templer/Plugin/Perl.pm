@@ -17,8 +17,10 @@ such as this to be executed:
 
     Title: This is my page
     format: perl
+    name: Steve
     ----
     <p>The sum of 1 + 1 is { 1 + 1 }.</p>
+    <p>My name is { $name }</p>
 
 =for example end
 
