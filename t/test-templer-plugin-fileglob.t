@@ -84,16 +84,19 @@ is( $page->field("title"),
 #
 #  Get the data, after plugin-expansion
 #
-my %ref = $page->fields();
-ok( %ref,            "Fetching the fields of hte page succeeded" );
-ok( $ref{ 'files' }, "The fields contain a file reference" );
+my %original = $page->fields();
+my $ref      = $factory->expand_variables( $page, \%original );
+my %updated  = %$ref;
 
-foreach my $obj ( @{ $ref{ 'files' } } )
+ok( %updated,            "Fetching the fields of hte page succeeded" );
+ok( $updated{ 'files' }, "The fields contain a file reference" );
+
+foreach my $obj ( @{ $updated{ 'files' } } )
 {
     ok( $obj->{ 'file' }, "The file reference has a name" );
     ok( $obj->{ 'file' } =~ /\.txt$/, "The file reference is sane" );
 }
-is( scalar( @{ $ref{ 'files' } } ),
+is( scalar( @{ $updated{ 'files' } } ),
     3, "We received the number of files we expected" );
 
 #

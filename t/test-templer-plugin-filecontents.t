@@ -78,14 +78,17 @@ is( $page->field("title"),
 #
 #  Get the data, after plugin-expansion
 #
-my %ref = $page->fields();
-ok( %ref,               "Fetching the fields of hte page succeeded" );
-ok( $ref{ 'password' }, "The fields contain a file reference" );
-ok( $ref{ 'foo' },      "The fields contain the self-file reference" );
+my %original = $page->fields();
+my $ref      = $factory->expand_variables( $page, \%original );
+my %updated  = %$ref;
+
+ok( %updated,               "Fetching the fields of hte page succeeded" );
+ok( $updated{ 'password' }, "The fields contain a file reference" );
+ok( $updated{ 'foo' },      "The fields contain the self-file reference" );
 
 #
 # Do the file contents look sane?
 #
-ok( $ref{ 'password' } =~ /root:/,  "The password file looks sane" );
-ok( $ref{ 'foo' }      =~ /passwd/, "The self-file looks sane" );
+ok( $updated{ 'password' } =~ /root:/,  "The password file looks sane" );
+ok( $updated{ 'foo' }      =~ /passwd/, "The self-file looks sane" );
 

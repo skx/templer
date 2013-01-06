@@ -73,17 +73,12 @@ is( $page->field("title"),
 #
 #  Get the fields - which will be expanded by our plugin.
 #
-my %updated = $page->fields();
-is( $updated{ 'title' },
-    "This is the page title.BOO",
-    "The field was expanded"
-  );
-is( $updated{ 'foo' }, "barBOO", "The field was expanded" );
+my %original = $page->fields();
 
-#
-#  Repeat to make sure all is still OK.
-#
-%updated = $page->fields();
+my $plugin  = Templer::Plugin::Factory->new();
+my $ref     = $plugin->expand_variables( $page, \%original );
+my %updated = %$ref;
+
 is( $updated{ 'title' },
     "This is the page title.BOO",
     "The field was expanded"
