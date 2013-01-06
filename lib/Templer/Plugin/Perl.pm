@@ -100,7 +100,7 @@ sub format
         my $template =
           Text::Template->new( TYPE   => "STRING",
                                SOURCE => $str );
-        return ( $template->fill_in(HASH => $data) );
+        return ( $template->fill_in( HASH => $data ) );
     }
     else
     {

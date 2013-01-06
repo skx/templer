@@ -155,7 +155,7 @@ plugins loaded by L<Templer::Plugin::Factory>.
 
 sub content
 {
-    my ($self, $data ) = (@_);
+    my ( $self, $data ) = (@_);
 
     #
     #  The content we read from the page.
@@ -185,7 +185,7 @@ sub content
             next unless ($fmt);
 
             my $helper = $factory->formatter($fmt);
-            $content = $helper->format($content,$data) if ($helper);
+            $content = $helper->format( $content, $data ) if ($helper);
         }
     }
     return $content;

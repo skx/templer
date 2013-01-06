@@ -504,7 +504,7 @@ foreach my $page (@pages)
     {
         $dirName = $1;
     }
-    my $body = HTML::Template->new( scalarref              => \$page->content( \%data ) ,
+    my $body = HTML::Template->new( scalarref => \$page->content( \%data ),
                                     die_on_bad_params      => 0,
                                     search_path_on_include => 1,
                                     path                   => $dirName,
