@@ -101,11 +101,8 @@ sub expand_variables
             my $cmd = $1;
 
             #
-            #  Strip leading/trailing whitespace, then quotes, then
-            # whitespace again.
+            #  Strip leading/trailing whitespace.
             #
-            $cmd =~ s/^\s+|\s+$//g;
-            $cmd =~ s/^['"]|['"]$//g;
             $cmd =~ s/^\s+|\s+$//g;
 
             $hash{ $key } = `$cmd`;
