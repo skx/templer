@@ -212,17 +212,7 @@ sub fields
 {
     my ($self) = (@_);
 
-    #
-    #  The key:value pairs
-    #
-    my %data = %$self;
-
-    #
-    #  Use the plugin-factory to expand each of the variables.
-    #
-    my $plugin = Templer::Plugin::Factory->new();
-    my $ref = $plugin->expand_variables( $self, \%data );
-    return %$ref;
+    return( %$self );
 }
 
 
