@@ -243,6 +243,8 @@ The dependencies are minimal, to ease installation:
       *  This may be installed, on a Debian system, with `apt-get install libtext-markdown-perl`.
    * The [Text::Textile](http://search.cpan.org/perldoc?Text%3A%3ATextile) module is required if you wish to write your page bodies in Textile.
       *  This may be installed, on a Debian system, with `apt-get install libtext-textile-perl`.
+   * The [Text::Template](http://search.cpan.org/perldoc?Text%3A%3ATemplate) module is required if you wish to include dynamic perl in your input pages.
+      *  This may be installed, on a Debian system, with `apt-get install libtext-template-perl`.
 
 
 Creating a new site
@@ -320,6 +322,8 @@ distribution and may be studied for reference:
 
 * Templer::Plugin::Markdown
    * Allows input files to be written in Markdown.
+* Templer::Plugin::Perl
+   * Allows dynamic Perl to be included in your input pages.
 * Templer::Plugin::Textile
    * Allows input files to be written in Textile.
 
@@ -362,7 +366,7 @@ any formatter plugin must implement only the following two methods:
 * `available`
    * To determine whether this plugin is available.  (i.e. It might only be enabled if the modules it relies upon are present.)
 * `format`
-   * Given some input text return the rendered content.
+   * Given some input text return the rendered content.  This method receives all the per-page and global variables too.
 
 
 
