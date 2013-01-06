@@ -480,24 +480,6 @@ foreach my $page (@pages)
                                   );
 
 
-    #
-    #  Load the HTLM::Template module against the body of the page.
-    #
-    #  (Includes are relative to the path of the input.)
-    #
-    my $dirName = $page->source();
-    if ( $dirName =~ /^(.*)\/(.*)$/ )
-    {
-        $dirName = $1;
-    }
-    my $body = HTML::Template->new( scalarref              => \$page->content(),
-                                    die_on_bad_params      => 0,
-                                    search_path_on_include => 1,
-                                    path                   => $dirName,
-                                    global_vars            => 1,
-                                    loop_context_vars      => 1,
-                                  );
-
 
     #
     #  The template-data we'll expand for the page/template.
@@ -510,6 +492,25 @@ foreach my $page (@pages)
     my $plugin = Templer::Plugin::Factory->new();
     my $ref = $plugin->expand_variables( $page, \%data );
     %data = %$ref;
+
+
+    #
+    #  Load the HTLM::Template module against the body of the page.
+    #
+    #  (Includes are relative to the path of the input.)
+    #
+    my $dirName = $page->source();
+    if ( $dirName =~ /^(.*)\/(.*)$/ )
+    {
+        $dirName = $1;
+    }
+    my $body = HTML::Template->new( scalarref              => \$page->content( \%data ) ,
+                                    die_on_bad_params      => 0,
+                                    search_path_on_include => 1,
+                                    path                   => $dirName,
+                                    global_vars            => 1,
+                                    loop_context_vars      => 1,
+                                  );
 
 
     #
