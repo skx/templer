@@ -212,7 +212,7 @@ sub fields
 {
     my ($self) = (@_);
 
-    return( %$self );
+    return (%$self);
 }
 
 
