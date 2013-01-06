@@ -505,6 +505,14 @@ foreach my $page (@pages)
     my %data = ( $cfg->fields(), $page->fields() );
 
     #
+    #  Use the plugin-factory to expand each of the variables.
+    #
+    my $plugin = Templer::Plugin::Factory->new();
+    my $ref = $plugin->expand_variables( $page, \%data );
+    %data = %$ref;
+
+
+    #
     #  Template-expand the body of the page.
     #
     $body->param( \%data );
