@@ -343,7 +343,7 @@ turn, executing each which matches a particular condition for example.
 A standard input page-file might look like this:
 
      Title: My page title.
-     Formatter: textile
+     Format: textile
      ----
      This is a textile page.  It has **bold** text!
 
