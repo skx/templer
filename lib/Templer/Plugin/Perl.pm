@@ -93,14 +93,14 @@ Format the given text.
 
 sub format
 {
-    my ( $self, $str ) = (@_);
+    my ( $self, $str, $data ) = (@_);
 
     if ( $self->available() )
     {
         my $template =
           Text::Template->new( TYPE   => "STRING",
                                SOURCE => $str );
-        return ( $template->fill_in() );
+        return ( $template->fill_in(HASH => $data) );
     }
     else
     {

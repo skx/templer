@@ -91,7 +91,7 @@ Format the given text.
 
 sub format
 {
-    my ( $self, $str ) = (@_);
+    my ( $self, $str, $data ) = (@_);
 
     if ( $self->available() )
     {
