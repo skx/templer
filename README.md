@@ -24,14 +24,15 @@ ways:
 * File contents, shell commands, and file-globs may be used in the templates
     * This allows the trivial creation of galleries, for example.
     * These are implemented via [plugins](#plugins).
+* You may also embed perl code in your pages.
 
 Another key point is that the layouts allow for more than a single
 simple "content" block to be placed into them - you can add arbitrary
 numbers of optional side-menus, for example.
 
 Although this tool was written and used with the intent you'd write your
-site-content in HTML you can use Textile or Markdown if you prefer
-(these input methods are available via [plugins](#plugins)).
+site-content in HTML you can write your input pages in Textile or Markdown
+if you prefer (these inputs are supported via [plugins](#plugins)).
 
 
 Concepts
@@ -214,7 +215,7 @@ This facility is implemented in the `Templer::Plugin::ShellCommand` [plugin](#pl
 Installation
 ------------
 
-The code is modular and neat and is combined from a series of modules into a single script `templer`.  The simplest possible installation method would be this:
+The code is modular and neat and is combined from a series of modules into a single script `templer`.  To install the tool system-wide run:
 
         $ git clone https://github.com/skx/templer.git
         $ cd templer
@@ -229,7 +230,7 @@ like so:
         $ cd templer
         $ make
 
-This `make`  (or `make default`) command is required to generate the script by concatenating the various modules which make up the code into a single script.  The code is deliberately contained in a single script to ease deployment, but developed in a modular fashion to ease testing.
+This `make` (or `make default`) command is required to generate the script by concatenating the various modules which make up the code into a single script.  The code is deliberately contained in a single script to ease deployment, but developed in a modular fashion to ease testing.
 
 The dependencies are minimal, to ease installation:
 
@@ -238,7 +239,7 @@ The dependencies are minimal, to ease installation:
    *  This may be installed, on a Debian system, with `apt-get install libhtml-template-perl`.
 * The following are optional modules:
    * The [Image::Size](http://search.cpan.org/perldoc?Image%3A%3ASize) module is used if available whenever you create `file_glob`-using loops of image files.
-      * This will set the attributes `width` and `height` for the images which are added to the loop.
+      * This will set the attributes `width` and `height` any images added via `file_glob`.
    * The [Text::Markdown](http://search.cpan.org/perldoc?Text%3A%3AMarkdown) module is required if you wish to write your page bodies in Markdown.
       *  This may be installed, on a Debian system, with `apt-get install libtext-markdown-perl`.
    * The [Text::Textile](http://search.cpan.org/perldoc?Text%3A%3ATextile) module is required if you wish to write your page bodies in Textile.
