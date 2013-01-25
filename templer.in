@@ -1,187 +1,7 @@
 #!/usr/bin/perl
-
-=head1 NAME
-
-templer - A static-site generator, written in perl.
-
-=cut
-
-=head1 SYNOPSIS
-
-  templer [options]
-
-
-  Help Options:
-
-    --help        Show the help information for this script.
-    --manual      Read the manual for this script.
-
-  Path options:
-
-    --input          Specify the input directory to process.
-    --output         Specify the output directory to build the site to.
-    --layout-path    Specify the location from which to find layouts.
-    --plugin-path    Specify the location from which to load plugins.
-
-  Flags
-
-    --force          Force a rebuild of all pages.
-    --in-place       Specify we're processing pages in-place, ignoring the output dir.
-    --verbose        Be noisy during the execution.
-
-=cut
-
-=head1 ABOUT
-
-Templer is the static-site generator utility I use for my websites.
-
-Templer flexible with input pages, and allows variables to be defined
-on a global or per-page basis, and then inserted into the output.
-
-Given a single template a complete site may be generated with an arbitrary
-number of pages, each sharing a common look and feel.  If required you can
-define a range of templates and select which to use on a per-page basis.
-
-We allow variable interpolation, loops, and conditional expansion in the
-generated output via the use of the L<HTML::Template> module.
-
-The name?  It stuck.  Initially I was thinking "templator" and
-"Templer" popped into my mind, via Knights Templer.
-
-=cut
-
-=head1 Live Usage
-
-This code is in use in three domains I host:
-
-=over 8
-
-=item http://stolen-souls.com/
-
-=item http://blogspam.net/
-
-=item http://steve.org.uk/
-
-=back
-
-Initially there was one version of the C<templer> tool, but slowly the three sites
-required different tweaks and we had three different versions of the site-generator.
-
-The version you're seeing now is unified, containing all the previously site-specific
-changes.  On that basis it should be generally flexible and usable by others.
-
-=cut
-
-
-=head1 Site Structure
-
-A templer-based site consists of a configuration file C<templer.cfg> and
-an input directory.  Input files are expanded through L<HTML::Template>, to
-expand any variables set in the pages themselves, or in the global template.
-Once page-content is expanded it is then inserted into a global layout template.
-
-There are two modes of operation when it comes to processing fiels:
-
-=over 8
-
-=item "In-place"
-
-Files are processed and the suffix is replaced with .html
-
-=item Output Path
-
-Files are generated in a distinct output-tree, and any static
-assets such as JPG, GIF, PNG, CSS, and JS files are copied across too.
-
-=back
-
-This allows you to run in-place in your C<~/public_html> directory or to
-setup an output path which is later synced to your final/live location.
-
-=cut
-
-
-=head1 Code Layout
-
-The implementation uses several simple classes, mostly as wrappers around
-variable parsing:
-
-=over 8
-
-=item Templer::Global
-
-This contains the parsing code for the  global configuration file, which is
-located at the top-level directory of the site.  (It must be named
-C<templer.cfg>).
-
-=item Templer::Site
-
-Given an input directory this module finds and returns C<Templer::Site::Asset> and
-C<Templer::Site::Page> objects for each file present.
-
-=item Templer::Site::Asset
-
-An item which requires zero expansion.  Media, javascript, etc.
-
-=item Templer::Site::Page
-
-A page which requires template expansion.
-
-=back
-
-Note #1: The command-line options override those specified in the global object.
-
-Note #2: The global object has sensible defaults.
-
-=cut
-
-=head1 Questions / Bug Reports
-
-The code is developed and hosted on gitub in the following location:
-
-=over 8
-
-=item https://github.com/skx/templer
-
-=back
-
-Please raise any issues in the tracker there.
-
-=cut
-
-=head1 LICENSE
-
-This module is free software; you can redistribute it and/or modify it
-under the terms of either:
-
-a) the GNU General Public License as published by the Free Software
-Foundation; either version 2, or (at your option) any later version,
-or
-
-b) the Perl "Artistic License".
-
-=cut
-
-=head1 AUTHOR
-
- Steve
- --
- http://www.steve.org.uk/
-
-=cut
-
-=head1 LICENSE
-
-Copyright (c) 2012 by Steve Kemp.  All rights reserved.
-
-This module is free software;
-you can redistribute it and/or modify it under
-the same terms as Perl itself.
-The LICENSE file contains the full text of the license.
-
-=cut
-
-
+#
+#  Documentation at the foot of the script.
+#
 
 use strict;
 use warnings;
@@ -245,8 +65,9 @@ exit
 #
 #  Help/Manual handling.
 #
-Pod::Usage::pod2usage(1) if ( $CONFIG{ 'help' } );
-Pod::Usage::pod2usage( -verbose => 2 ) if ( $CONFIG{ 'manual' } );
+Pod::Usage::pod2usage( -input => \*DATA ) if ( $CONFIG{ 'help' } );
+Pod::Usage::pod2usage( -input => \*DATA, -verbose => 2 )
+  if ( $CONFIG{ 'manual' } );
 
 
 #
@@ -635,4 +456,187 @@ exit(0);
 
 
 
+
+__DATA__
+
+=head1 NAME
+
+templer - A static-site generator, written in perl.
+
+=cut
+
+=head1 SYNOPSIS
+
+  templer [options]
+
+
+  Help Options:
+
+    --help        Show the help information for this script.
+    --manual      Read the manual for this script.
+
+  Path options:
+
+    --input          Specify the input directory to process.
+    --output         Specify the output directory to build the site to.
+    --layout-path    Specify the location from which to find layouts.
+    --plugin-path    Specify the location from which to load plugins.
+
+  Flags
+
+    --force          Force a rebuild of all pages.
+    --in-place       Specify we're processing pages in-place, ignoring the output dir.
+    --verbose        Be noisy during the execution.
+
+=cut
+
+=head1 ABOUT
+
+Templer is the static-site generator utility I use for my websites.
+
+Templer flexible with input pages, and allows variables to be defined
+on a global or per-page basis, and then inserted into the output.
+
+Given a single template a complete site may be generated with an arbitrary
+number of pages, each sharing a common look and feel.  If required you can
+define a range of templates and select which to use on a per-page basis.
+
+We allow variable interpolation, loops, and conditional expansion in the
+generated output via the use of the L<HTML::Template> module.
+
+The name?  It stuck.  Initially I was thinking "templator" and
+"Templer" popped into my mind, via Knights Templer.
+
+=cut
+
+=head1 Live Usage
+
+This code is in use in three domains I host:
+
+=over 8
+
+=item http://stolen-souls.com/
+
+=item http://blogspam.net/
+
+=item http://steve.org.uk/
+
+=back
+
+Initially there was one version of the C<templer> tool, but slowly the three sites
+required different tweaks and we had three different versions of the site-generator.
+
+The version you're seeing now is unified, containing all the previously site-specific
+changes.  On that basis it should be generally flexible and usable by others.
+
+=cut
+
+
+=head1 Site Structure
+
+A templer-based site consists of a configuration file C<templer.cfg> and
+an input directory.  Input files are expanded through L<HTML::Template>, to
+expand any variables set in the pages themselves, or in the global template.
+Once page-content is expanded it is then inserted into a global layout template.
+
+There are two modes of operation when it comes to processing fiels:
+
+=over 8
+
+=item "In-place"
+
+Files are processed and the suffix is replaced with .html
+
+=item Output Path
+
+Files are generated in a distinct output-tree, and any static
+assets such as JPG, GIF, PNG, CSS, and JS files are copied across too.
+
+=back
+
+This allows you to run in-place in your C<~/public_html> directory or to
+setup an output path which is later synced to your final/live location.
+
+=cut
+
+
+=head1 Code Layout
+
+The implementation uses several simple classes, mostly as wrappers around
+variable parsing:
+
+=over 8
+
+=item Templer::Global
+
+This contains the parsing code for the  global configuration file, which is
+located at the top-level directory of the site.  (It must be named
+C<templer.cfg>).
+
+=item Templer::Site
+
+Given an input directory this module finds and returns C<Templer::Site::Asset> and
+C<Templer::Site::Page> objects for each file present.
+
+=item Templer::Site::Asset
+
+An item which requires zero expansion.  Media, javascript, etc.
+
+=item Templer::Site::Page
+
+A page which requires template expansion.
+
+=back
+
+Note #1: The command-line options override those specified in the global object.
+
+Note #2: The global object has sensible defaults.
+
+=cut
+
+=head1 Questions / Bug Reports
+
+The code is developed and hosted on gitub in the following location:
+
+=over 8
+
+=item https://github.com/skx/templer
+
+=back
+
+Please raise any issues in the tracker there.
+
+=cut
+
+=head1 LICENSE
+
+This module is free software; you can redistribute it and/or modify it
+under the terms of either:
+
+a) the GNU General Public License as published by the Free Software
+Foundation; either version 2, or (at your option) any later version,
+or
+
+b) the Perl "Artistic License".
+
+=cut
+
+=head1 AUTHOR
+
+ Steve
+ --
+ http://www.steve.org.uk/
+
+=cut
+
+=head1 LICENSE
+
+Copyright (c) 2012 by Steve Kemp.  All rights reserved.
+
+This module is free software;
+you can redistribute it and/or modify it under
+the same terms as Perl itself.
+The LICENSE file contains the full text of the license.
+
+=cut
 
