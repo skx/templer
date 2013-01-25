@@ -8,7 +8,7 @@ templer-generate - Generate a stub static-site to be processed via templer.
 
 =head1 SYNOPSIS
 
-  templer [options] path/to/generate
+  templer-generate [options] path/to/generate
 
 
   Help Options:
