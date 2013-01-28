@@ -411,7 +411,7 @@ variables defined within your `templer.cfg` file.
 Problems
 --------
 
-Plus report an issue via the github repository:
+Please report an issue via the github repository:
 
 * https://github.com/skx/templer
 
