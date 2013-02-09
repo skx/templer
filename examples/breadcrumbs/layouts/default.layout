@@ -1,0 +1,20 @@
+<html>
+ <head>
+  <title><!-- tmpl_var name='title' escape='html' --></title>
+ </head>
+ <body>
+  <div style="text-align: center; border: 1px solid black;">
+   <h2><!-- tmpl_var name='title' escape='html' --></h2>
+  </div>
+<!-- tmpl_if name='breadcrumbs' -->
+  <!-- tmpl_var name='breadcrumbs' -->
+<!-- /tmpl_if -->
+  <p>&nbsp;</p>
+  <div style="border: 1px solid black; padding-left: 20px; padding-right: 20px;">
+   <!-- tmpl_var name='content' -->
+  </div>
+  <div style="text-align: right;">
+   <p><!-- tmpl_var name='copyright' --></p>
+  </div>
+ </body>
+</html>
