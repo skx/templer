@@ -105,9 +105,9 @@ sub expand_variables
     #
     foreach my $key ( keys %hash )
     {
-        if (  $key =~ /^crumbs$/i )
+        if ( $key =~ /^crumbs$/i )
         {
-            my $val = $hash{$key};
+            my $val = $hash{ $key };
             print $page->source() . "\n";
 
             my $link = "/";
@@ -128,12 +128,13 @@ sub expand_variables
                 }
 
                 $link =~ s/\/\//\//g;
-                $tmp .= "<li><a href=\"$link\">" . ucfirst($path) . "</a></li>\n";
+                $tmp .=
+                  "<li><a href=\"$link\">" . ucfirst($path) . "</a></li>\n";
             }
             $tmp .= "</ul>\n";
 
             $hash{ 'breadcrumbs' } = $tmp;
-            delete $hash{$key} ;
+            delete $hash{ $key };
         }
     }
 

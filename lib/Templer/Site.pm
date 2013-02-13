@@ -226,6 +226,7 @@ sub _findFiles
     {
         foreach my $file ( sort keys %files )
         {
+            next if ( -d $file );
             next unless ( $file =~ /$args{'must_match'}/ );
             push( @matches, $class->new( file => $file ) );
         }
