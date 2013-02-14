@@ -198,7 +198,7 @@ if ($pre)
 #  Create the output directory if missing, unless we're in-place
 #
 File::Path::mkpath( $out, { verbose => 0, mode => oct(755) } )
-  if ( !-d $out && ( !$CONFIG{ 'in-place' } ) );
+  if ( !-d $out && ( !$inplace ) );
 
 
 #
