@@ -49,6 +49,7 @@ exit
         "manual", \$CONFIG{ 'manual' },
 
         # In/out/in-place
+        "config=s",      \$CONFIG{ 'config' },
         "input=s",       \$CONFIG{ 'input' },
         "output=s",      \$CONFIG{ 'output' },
         "in-place",      \$CONFIG{ 'in-place' },
@@ -94,7 +95,8 @@ if ($@)
 #
 #  Read the global configuration file.
 #
-my $cfg = Templer::Global->new( file => "./templer.cfg" );
+my $cnf = $CONFIG{ 'config' } || "./templer.cfg";
+my $cfg = Templer::Global->new( file => $cnf );
 
 #
 #  Create a site helper - telling it what suffix to look for to
