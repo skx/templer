@@ -1,6 +1,7 @@
 examples/complex/output/
 examples/simple/output/
 examples/symlinks/output/
+examples/breadcrumbs/output/
 debian/templer
 debian/*.log
 debian/*.substvars
