@@ -327,7 +327,6 @@ distribution and may be studied for reference:
    * Allows dynamic Perl to be included in your input pages.
 * Templer::Plugin::Textile
    * Allows input files to be written in Textile.
-
 * Templer::Plugin::Breadcrumbs
    * Setup "breadcrumb" trails in your templates easily.
 * Templer::Plugin::FileContents
