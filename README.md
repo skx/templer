@@ -328,6 +328,8 @@ distribution and may be studied for reference:
 * Templer::Plugin::Textile
    * Allows input files to be written in Textile.
 
+* Templer::Plugin::Breadcrumbs
+   * Setup "breadcrumb" trails in your templates easily.
 * Templer::Plugin::FileContents
    * Set variable values to the contents of files.
 * Templer::Plugin::FileGlob
@@ -343,7 +345,7 @@ Formatter Plugins
 
 The formatting plugins are intentionally simple because they are explicitly
 enabled on a per-page basis.  There is no need to dynamically try them all in
-turn, executing each which matches a particular condition for example.
+turn, executing whichever matches a particular condition, for example.
 
 A standard input page-file might look like this:
 
@@ -361,13 +363,14 @@ like so:
       }
 
 If the named formatter is not present, or does not report itself as "enabled"
-then the markup will be returned without the HTML expansion.  To be explicit
+then the markup will be returned without any expansion.  To be explicit
 any formatter plugin must implement only the following two methods:
 
 * `available`
    * To determine whether this plugin is available.  (i.e. It might only be enabled if the modules it relies upon are present.)
 * `format`
-   * Given some input text return the rendered content.  This method receives all the per-page and global variables too.
+   * Given some input text return the rendered content.
+   * This method receives all the per-page and global variables.
 
 
 
