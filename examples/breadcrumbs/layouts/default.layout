@@ -7,7 +7,11 @@
    <h2><!-- tmpl_var name='title' escape='html' --></h2>
   </div>
 <!-- tmpl_if name='breadcrumbs' -->
-  <!-- tmpl_var name='breadcrumbs' -->
+  <ul>
+  <!-- tmpl_loop name='breadcrumbs' -->
+  <li><a href="<!-- tmpl_var name='link' -->"><!-- tmpl_var name='title' --></a></li>
+  <!-- /tmpl_loop name='breadcrumbs' -->
+  </ul>
 <!-- /tmpl_if -->
   <p>&nbsp;</p>
   <div style="border: 1px solid black; padding-left: 20px; padding-right: 20px;">
