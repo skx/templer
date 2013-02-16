@@ -202,6 +202,12 @@ File::Path::mkpath( $out, { verbose => 0, mode => oct(755) } )
 
 
 #
+#  Record the start time
+#
+my $start = time;
+
+
+#
 #  Find all pages & assets.
 #
 my @pages = $site->pages( directory => $in );
@@ -452,7 +458,21 @@ if ($post)
 #
 # All done.
 #
-print "\nAll done: $rebuilt page(s) updated\n";
+my $end  = time;
+my $time = $end - $start;
+if ( $time < 1 )
+{
+    $time = "less than 1 second";
+}
+elsif ( $time == 1 )
+{
+    $time = "1 second";
+}
+else
+{
+    $time = $time . " seconds";
+}
+print "\nAll done: $rebuilt page(s) updated in $time.\n";
 
 exit(0);
 
