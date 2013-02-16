@@ -135,9 +135,7 @@ sub expand_variables
         {
             my $loop;
 
-            my $val = $hash{ $key };
-            print $page->source() . "\n";
-
+            my $val  = $hash{ $key };
             my $link = "/";
 
             foreach my $path ( split( /,/, $val ) )
