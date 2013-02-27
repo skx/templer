@@ -201,8 +201,7 @@ sub _findFiles
                my $name = $File::Find::name;
                $files{ $name } += 1 unless ( $dotfiles && ( $name =~ /\/\./ ) );
            },
-           follow      => 1,
-           follow_skip => 2,
+           follow      => 0,
            no_chdir    => 1
         },
         $args{ 'directory' } );
