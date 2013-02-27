@@ -140,13 +140,16 @@ to expand variables.
 L<Templer::Plugin::ShellCommand>, L<Templer::Plugin::FileGlob>, and
 L<Templer::Plugin::FileContents> are examples of such plugins.
 
+NOTE: The plugin is instantiated immediately, and kept alive for the duration
+of a templer-run.
+
 =cut
 
 sub register_plugin
 {
     my ( $self, $obj ) = (@_);
 
-    push( @{ $self->{ 'plugins' } }, $obj );
+    push( @{ $self->{ 'plugins' } }, $obj->new() );
 }
 
 
@@ -166,17 +169,35 @@ sub expand_variables
     foreach my $plugin ( @{ $self->{ 'plugins' } } )
     {
         my %in = %$data;
-
-        #
-        # Create & invoke the plugin.
-        #
-        my $object = $plugin->new();
-        $out = $object->expand_variables( $page, \%in );
-
+        $out = $plugin->expand_variables( $page, \%in );
         $data = \%$out;
     }
     return ($data);
 }
+
+
+
+=head2 register_formatter
+
+For each loaded plugin invoke the "cleanup" method, if it exists.
+
+This can be useful if you wish a plugin to generate a site-map, or similar.
+
+=cut
+
+sub cleanup
+{
+    my ($self) = (@_);
+
+    foreach my $plugin ( @{ $self->{ 'plugins' } } )
+    {
+        if ( UNIVERSAL::can( $plugin, "cleanup" ) )
+        {
+            $plugin->cleanup();
+        }
+    }
+}
+
 
 
 =head2 formatter
