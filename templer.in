@@ -137,7 +137,7 @@ if ( $CONFIG{ 'serve' } )
     # Document root
     #
     my $root = $out;
-    $root = $in if ( defined $inplace );
+    $root = $in if ( defined $inplace && $inplace );
 
     if ( !-d $root )
     {
