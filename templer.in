@@ -173,11 +173,12 @@ my $ppath = $CONFIG{ 'plugin-path' } ||
   "./plugins";
 
 #
-#  If we have a plugin direcotry then load the plugins
+#  If we have a plugin plugin then load the plugins beneath it.
 #
+my $PLUGINS = Templer::Plugin::Factory->new();
 if ( -d $ppath )
 {
-    Templer::Plugin::Factory->new()->load_plugins($ppath);
+    $PLUGINS->load_plugins($ppath);
 }
 
 #
@@ -330,8 +331,7 @@ foreach my $page (@pages)
     #
     #  Use the plugin-factory to expand each of the variables.
     #
-    my $plugin = Templer::Plugin::Factory->new();
-    my $ref = $plugin->expand_variables( $page, \%data );
+    my $ref = $PLUGINS->expand_variables( $page, \%data );
     %data = %$ref;
 
 
@@ -437,6 +437,11 @@ unless ($inplace)
 }
 
 
+
+#
+#  Cleanup any plugins.
+#
+$PLUGINS->cleanup();
 
 
 #
