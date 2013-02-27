@@ -236,7 +236,7 @@ foreach my $page (@pages)
     #
     my $dst = $src;
     $dst =~ s/$suffix/.html/g;
-    $dst =~ s/$in/$out/g unless ($inplace);
+    $dst =~ s/^$in/$out/g unless ($inplace);
 
     #
     # Show the transformation.
@@ -411,7 +411,7 @@ unless ($inplace)
         # Strip the input component of the filename(s).
         #
         my $src = $asset->source();
-        $src =~ s/$in//g;
+        $src =~ s/^$in//g;
 
         #
         # If we've got an asset which is a directory that
