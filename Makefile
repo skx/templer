@@ -1,3 +1,6 @@
+DIST_PREFIX = ${TMP}
+VERSION     = 0.4
+BASE        = templer
 
 
 #
@@ -32,12 +35,23 @@ critic: default
 
 #
 # Install to /usr/local/bin
-# 
+#
 install: default
 	cp ./templer ./templer-generate /usr/local/bin
 	chown root.root /usr/local/bin/templer /usr/local/bin/templer-generate
 	chmod 755 /usr/local/bin/templer /usr/local/bin/templer-generate
 
+
+release: tidy clean
+	rm -rf $(DIST_PREFIX)/$(BASE)-$(VERSION)
+	rm -f $(DIST_PREFIX)/$(BASE)-$(VERSION).tar.gz
+	cp -R . $(DIST_PREFIX)/$(BASE)-$(VERSION)
+	rm -rf $(DIST_PREFIX)/$(BASE)-$(VERSION)/debian
+	rm -rf $(DIST_PREFIX)/$(BASE)-$(VERSION)/.git*
+	cd $(DIST_PREFIX) && tar -cvf $(DIST_PREFIX)/$(BASE)-$(VERSION).tar $(BASE)-$(VERSION)/
+	gzip $(DIST_PREFIX)/$(BASE)-$(VERSION).tar
+	mv $(DIST_PREFIX)/$(BASE)-$(VERSION).tar.gz .
+	rm -rf $(DIST_PREFIX)/$(BASE)-$(VERSION)
 
 #
 # Make the main script
