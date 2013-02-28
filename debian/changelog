@@ -1,7 +1,7 @@
 templer (0.4-1) stable; urgency=low
 
- * Added release target to the makefile.
- * Bundle up changes.
+  * Added release target to the makefile.
+  * Bundle up changes.
 
  -- Steve Kemp <steve@steve.org.uk>  Thu, 28 Feb 2013 22:33:44 +0000
 
