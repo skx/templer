@@ -25,12 +25,18 @@ require_ok('Templer::Plugin::Factory');
 #
 #  Load the plugin + dependency
 #
+BEGIN {use_ok('Templer::Global');}
+require_ok('Templer::Global');
 BEGIN {use_ok('Templer::Site::Page');}
 require_ok('Templer::Site::Page');
 BEGIN {use_ok('Templer::Plugin::FileContents');}
 require_ok('Templer::Plugin::FileContents');
 
 
+#
+#  Create a config file
+#
+my $cfg = Templer::Global->new();
 
 #
 #  Instantiate the helper.
@@ -79,7 +85,7 @@ is( $page->field("title"),
 #  Get the data, after plugin-expansion
 #
 my %original = $page->fields();
-my $ref      = $factory->expand_variables( $page, \%original );
+my $ref      = $factory->expand_variables( $cfg, $page, \%original );
 my %updated  = %$ref;
 
 ok( %updated,               "Fetching the fields of hte page succeeded" );

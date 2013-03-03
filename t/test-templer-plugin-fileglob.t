@@ -19,6 +19,8 @@ use File::Temp qw! tempdir !;
 #
 #  Load the factory
 #
+BEGIN {use_ok('Templer::Global');}
+require_ok('Templer::Global');
 BEGIN {use_ok('Templer::Plugin::Factory');}
 require_ok('Templer::Plugin::Factory');
 
@@ -31,6 +33,11 @@ BEGIN {use_ok('Templer::Plugin::FileGlob');}
 require_ok('Templer::Plugin::FileGlob');
 
 
+
+#
+#  Create a config file
+#
+my $cfg = Templer::Global->new();
 
 #
 #  Instantiate the helper.
@@ -85,7 +92,7 @@ is( $page->field("title"),
 #  Get the data, after plugin-expansion
 #
 my %original = $page->fields();
-my $ref      = $factory->expand_variables( $page, \%original );
+my $ref      = $factory->expand_variables( $cfg, $page, \%original );
 my %updated  = %$ref;
 
 ok( %updated,            "Fetching the fields of hte page succeeded" );

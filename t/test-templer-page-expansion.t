@@ -25,7 +25,7 @@ sub new
 
 sub expand_variables
 {
-    my ( $self, $page, $data ) = (@_);
+    my ( $self, $cfg, $page, $data ) = (@_);
 
     my %hash = %$data;
     foreach my $key ( keys %hash )
@@ -41,11 +41,19 @@ Templer::Plugin::Factory->new()->register_plugin("Simple::Class");
 
 package main;
 
+BEGIN {use_ok('Templer::Global');}
+require_ok('Templer::Global');
 BEGIN {use_ok('Templer::Plugin::Factory');}
 require_ok('Templer::Plugin::Factory');
-
 BEGIN {use_ok('Templer::Site::Page');}
 require_ok('Templer::Site::Page');
+
+
+#
+#  The config object.
+#
+my $cfg = Templer::Global->new();
+
 
 #
 #  Instantiate the helper.
@@ -76,7 +84,7 @@ is( $page->field("title"),
 my %original = $page->fields();
 
 my $plugin  = Templer::Plugin::Factory->new();
-my $ref     = $plugin->expand_variables( $page, \%original );
+my $ref     = $plugin->expand_variables( $cfg, $page, \%original );
 my %updated = %$ref;
 
 is( $updated{ 'title' },
