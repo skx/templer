@@ -93,7 +93,7 @@ seem to refer to shell commands.
 
 sub expand_variables
 {
-    my ( $self, $page, $data ) = (@_);
+    my ( $self, $global_cfg, $page, $data ) = (@_);
 
     #
     #  Get the page-variables in the template.

@@ -103,7 +103,7 @@ seem to refer to file-globs.
 
 sub expand_variables
 {
-    my ( $self, $page, $data ) = (@_);
+    my ( $self, $global_cfg, $page, $data ) = (@_);
 
     #
     #  Get the page-variables in the template.
