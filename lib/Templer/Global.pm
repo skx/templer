@@ -113,5 +113,15 @@ sub layout
 }
 
 
+#
+#  Set a global value
+#
+sub set
+{
+    my ( $self, $key, $values ) = (@_);
+    $self->{ $key } = $values;
+}
+
+
 
 1;

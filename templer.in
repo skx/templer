@@ -193,6 +193,8 @@ foreach my $path ( split( /:/, $ipath ) )
 {
     push( @INCLUDES, $path ) if ( -d $path );
 }
+$cfg->set( "include-path", \@INCLUDES );
+
 
 
 #
@@ -345,7 +347,7 @@ foreach my $page (@pages)
     #
     #  Use the plugin-factory to expand each of the variables.
     #
-    my $ref = $PLUGINS->expand_variables( $page, \%data );
+    my $ref = $PLUGINS->expand_variables( $cfg, $page, \%data );
     %data = %$ref;
 
 
