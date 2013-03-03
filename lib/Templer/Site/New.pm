@@ -199,6 +199,8 @@ mkdir output
 
 mkdir layouts
 
+mkdir includes
+
 file input/robots.txt EOF
 User-agent: *
 Crawl-delay: 10
@@ -312,6 +314,60 @@ output = ./output/
 #
 layout-path = ./layouts/
 layout      = default.layout
+#
+##
+
+
+##
+#
+# When pages are processed a layout-template will be used to expand the content
+# into.
+#
+# Each page may specify its own layout if it so wishes, but generally we'd
+# expect only one layout to exist.
+#
+# Here we specify both the path to the layout directory and the layout to use
+# if none is specified:
+#
+#
+# layout-path = ./layouts/
+#
+# layout      = default.layout
+#
+##
+
+
+
+
+##
+#
+# Templer supports plugins for expanding variable definitions
+# inside the input files, or for formating with text systems
+# like Textile, Markdown, etc.
+#
+# There are several plugins included with the system and you
+# can write your own in perl.  Specify the path to load plugins
+# from here.
+#
+plugin-path = ./plugins/
+#
+##
+
+
+##
+#
+# Templer supports including files via the 'read_file' function, along
+# with the built-in support that HTML::Template has for file inclusion
+# via:
+#
+#   <!-- tmpl_include name='file.inc' -->
+#
+# The latter case you may specify a search-path for file inclusion
+# via the include-path setting.
+#
+# include-path = include/:include/local/
+#
+include-path = ./includes
 #
 ##
 
