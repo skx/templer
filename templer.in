@@ -49,12 +49,13 @@ exit
         "manual", \$CONFIG{ 'manual' },
 
         # In/out/in-place
-        "config=s",      \$CONFIG{ 'config' },
-        "input=s",       \$CONFIG{ 'input' },
-        "output=s",      \$CONFIG{ 'output' },
-        "in-place",      \$CONFIG{ 'in-place' },
-        "layout-path=s", \$CONFIG{ 'layout-path' },
-        "plugin-path=s", \$CONFIG{ 'plugin-path' },
+        "config=s",       \$CONFIG{ 'config' },
+        "input=s",        \$CONFIG{ 'input' },
+        "output=s",       \$CONFIG{ 'output' },
+        "in-place",       \$CONFIG{ 'in-place' },
+        "include-path=s", \$CONFIG{ 'include-path' },
+        "layout-path=s",  \$CONFIG{ 'layout-path' },
+        "plugin-path=s",  \$CONFIG{ 'plugin-path' },
 
         # Flags - force a rebuild
         "force",   \$CONFIG{ 'force' },
@@ -155,7 +156,7 @@ if ( $CONFIG{ 'serve' } )
 
 
 #
-#  The template path, and default template
+#  The template path, and default template to use for layout.
 #
 my $tpath = $CONFIG{ 'layout-path' } ||
   $cfg->field("layout-path") ||
@@ -166,11 +167,14 @@ my $dtemplate = $CONFIG{ 'layout' } ||
 
 
 #
-#  The plugin path
+#  The plugin path, and include path.
 #
 my $ppath = $CONFIG{ 'plugin-path' } ||
   $cfg->field("plugin-path") ||
   "./plugins";
+my $ipath = $CONFIG{ 'include-path' } ||
+  $cfg->field("include-path") ||
+  "./includes";
 
 #
 #  If we have a plugin plugin then load the plugins beneath it.
@@ -180,6 +184,16 @@ if ( -d $ppath )
 {
     $PLUGINS->load_plugins($ppath);
 }
+
+#
+#  Setup an array of include-paths.
+#
+my @INCLUDES;
+foreach my $path ( split( /:/, $ipath ) )
+{
+    push( @INCLUDES, $path ) if ( -d $path );
+}
+
 
 #
 #  See if we have pre-build commands
@@ -314,9 +328,9 @@ foreach my $page (@pages)
     #  Load the HTML::Template module against the layout.
     #
     my $tmpl = HTML::Template->new( filename => $tpath . "/" . $template,
-                                    die_on_bad_params      => 0,
+                                    die_on_bad_params => 0,
+                                    path              => [@INCLUDES, $tpath],
                                     search_path_on_include => 1,
-                                    path                   => $tpath,
                                     global_vars            => 1,
                                     loop_context_vars      => 1,
                                   );
@@ -346,9 +360,9 @@ foreach my $page (@pages)
         $dirName = $1;
     }
     my $body = HTML::Template->new( scalarref => \$page->content( \%data ),
-                                    die_on_bad_params      => 0,
+                                    die_on_bad_params => 0,
+                                    path              => [@INCLUDES, $dirName],
                                     search_path_on_include => 1,
-                                    path                   => $dirName,
                                     global_vars            => 1,
                                     loop_context_vars      => 1,
                                   );

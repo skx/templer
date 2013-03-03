@@ -116,6 +116,23 @@ plugin-path = ./plugins/
 ##
 
 
+##
+#
+# Templer supports including files via the 'read_file' function, along
+# with the built-in support that HTML::Template has for file inclusion
+# via:
+#
+#   <!-- tmpl_include name='file.inc' -->
+#
+# The latter case you may specify a search-path for file inclusion
+# via the include-path setting.
+#
+# include-path = include/:include/local/
+#
+include-path = ./includes
+#
+##
+
 
 
 ##
