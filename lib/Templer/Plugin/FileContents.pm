@@ -59,6 +59,9 @@ the same terms as Perl itself.
 
 package Templer::Plugin::FileContents;
 
+use File::Basename;
+
+
 
 =head2
 
@@ -93,7 +96,7 @@ seem to refer to file-inclusion.
 
 sub expand_variables
 {
-    my ( $self, $page, $data ) = (@_);
+    my ( $self, $global_cfg, $page, $data ) = (@_);
 
     #
     #  Get the page-variables in the template.
@@ -127,24 +130,44 @@ sub expand_variables
             {
                 $file = $page->source();
             }
+            elsif ( $file =~ /^\// )
+            {
+
+                # File is absolute - no handling.
+            }
             else
             {
 
                 #
-                #  Otherwise we need to make the file
-                # specified relative to the location
-                # of the input-page.
+                #  Relative file.  We want to look for the file based upon the
+                # global include-path with the current directory appended.
                 #
-                my $dirName = $page->source();
-                if ( $dirName =~ /^(.*)\/(.*)$/ )
-                {
-                    $dirName = $1;
-                }
+                #  In the case of multiple matches the last one
+                # wins.  i.e. The non-global one.
+                #
+                #
 
                 #
-                #  Unless the file is specified with an absolute path.
+                #  Get the global variables from the configuration object.
                 #
-                $file = $dirName . "/" . $file unless ( $file =~ /^\// );
+                my $dirs = $global_cfg->field("include-path");
+                my @dirs = @$dirs;
+
+                #
+                #  Append the directory from the input page.
+                #
+                push( @dirs, File::Basename::dirname( $page->source() ) );
+
+                #
+                #  Iterate
+                #
+                foreach my $dir (@dirs)
+                {
+                    if ( -e $dir . "/" . $file )
+                    {
+                        $file = $dir . "/" . $file;
+                    }
+                }
             }
 
             $hash{ $key } = $self->file_contents($file);
