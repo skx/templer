@@ -265,6 +265,7 @@ if you give in the name of a directory to create & write to:
      ~$ templer-generate my-site
      ~$ tree my-site/
      my-site/
+      ├── include
       ├── input
       │   ├── about.wgn
       │   ├── index.wgn
@@ -316,8 +317,7 @@ Plugins
 Templer allows itself to be extended via the addition of plugins, several
 of which are distributed as part of the core code.
 
-There are two types of plugins which are supported, although there is no
-reason why more families couldn't be added in the future:
+There are two types of plugins which are supported:
 
 * Plugins which are used for formatting.
     * Converting input files from Textile, Markdown, etc, into HTML.
