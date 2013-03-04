@@ -174,8 +174,8 @@ This facility is implemented in the `Templer::Plugin::FileGlob` [plugin](#plugin
 
 
 
-File Inclusion Variables
-------------------------
+File Inclusion
+--------------
 
 The [HTML::Template](http://search.cpan.org/perldoc?HTML%3A%3ATemplate) module supports file inclusion natively, via the following construct:
 
@@ -195,9 +195,17 @@ file.  For example:
 
 This facility is implemented in the `Templer::Plugin::FileContents` [plugin](#plugins).
 
+Included files, whether included via the `read_file` method, or via the native HTML::Template faclity, are searched for in the same fashion:
+
+* If the filename is fully-qualified, then the absolute path-name will be used.
+* Otherwise the include-path will be searched.
+* After the include-path has been searched the file will be looked for in the location relative to the input page location.
+
+This allows you to place all your include-files in a single directory which is outside your web-root.
 
 
-Shell Command Variables
+
+Shell Command Execution
 -----------------------
 
 Pages may also define variables which receive the value of the output of shell commands.  This is done via definitions like this:
