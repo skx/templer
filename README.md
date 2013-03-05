@@ -108,6 +108,22 @@ enable processing the page body with the appropriate filter.   These formatters 
 implemented as [plugins](#plugins), and will be available assuming their
 [dependencies are installed](#installation).
 
+In addition to the `textile` and `markdown` formatters there is a `perl` formatter
+available - providing the [Text::Template](http://search.cpan.org/perldoc?Text%3A%3ATemplate) module is installed - which allows Perl code to be executed, by wrapping it in `{` and `}` characters.  Here is a sample page:
+
+    Title: This page has code in it
+    format: perl
+    ----
+
+    <p>This page has some code in it.</p>
+    <p>I am running on { `hostname` }...</p>
+    <p>I am {
+           my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) =
+                                                               localtime(time);
+           $year += 1900;
+           $year - 1976;
+       } years old.</p>
+
 
 
 Variable Definitions
