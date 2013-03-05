@@ -353,6 +353,8 @@ distribution and may be studied for reference:
    * Allows input files to be written in Textile.
 * Templer::Plugin::Breadcrumbs
    * Setup "breadcrumb" trails in your templates easily.
+   * [Read the documentation](https://raw.github.com/skx/templer/master/lib/Templer/Plugin/Breadcrumbs.pm).
+   * This was added partly as a demo, and partly for [use on my site](http://steve.org.uk/Software/templer/).
 * Templer::Plugin::FileContents
    * Set variable values to the contents of files.
 * Templer::Plugin::FileGlob
