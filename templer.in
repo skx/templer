@@ -71,12 +71,10 @@ my $site = Templer::Site->new( suffix => $suffix );
 
 
 #
-#  The input directory to process, and output path.
+#  Paths/Flags.
 #
-#  [The command line takes precedence.  Always.]
-#
-my $in  = $CONFIG{ 'input' }  || $cfg->field("input")  || "./input/";
-my $out = $CONFIG{ 'output' } || $cfg->field("output") || "./output/";
+my $in      = $cfg->field("input")  || "./input/";
+my $out     = $cfg->field("output") || "./output/";
 my $inplace = $CONFIG{ 'in-place' } || $cfg->field("in-place");
 
 
@@ -120,23 +118,15 @@ if ( $CONFIG{ 'serve' } )
 #
 #  The template path, and default template to use for layout.
 #
-my $tpath = $CONFIG{ 'layout-path' } ||
-  $cfg->field("layout-path") ||
-  "./layouts";
-my $dtemplate = $CONFIG{ 'layout' } ||
-  $cfg->field("layout") ||
-  "default.layout";
+my $tpath =  $cfg->field("layout-path") ||  "./layouts";
+my $dtemplate = $cfg->field("layout") ||  "default.layout";
 
 
 #
 #  The plugin path, and include path.
 #
-my $ppath = $CONFIG{ 'plugin-path' } ||
-  $cfg->field("plugin-path") ||
-  "./plugins";
-my $ipath = $CONFIG{ 'include-path' } ||
-  $cfg->field("include-path") ||
-  "./includes";
+my $ppath =  $cfg->field("plugin-path") ||  "./plugins";
+my $ipath =  $cfg->field("include-path") ||  "./includes";
 
 #
 #  If we have a plugin directory then load the plugins beneath it.
@@ -453,16 +443,9 @@ sub parseCommandLine
             "help",   \$CONFIG{ 'help' },
             "manual", \$CONFIG{ 'manual' },
 
-            # In/out/in-place
-            "config=s",       \$CONFIG{ 'config' },
-            "input=s",        \$CONFIG{ 'input' },
-            "output=s",       \$CONFIG{ 'output' },
-            "in-place",       \$CONFIG{ 'in-place' },
-            "include-path=s", \$CONFIG{ 'include-path' },
-            "layout-path=s",  \$CONFIG{ 'layout-path' },
-            "plugin-path=s",  \$CONFIG{ 'plugin-path' },
-
             # Flags - force a rebuild
+            "config=s",       \$CONFIG{ 'config' },
+            "in-place",       \$CONFIG{ 'in-place' },
             "force",   \$CONFIG{ 'force' },
             "serve=i", \$CONFIG{ 'serve' },
             "quiet",   \$CONFIG{ 'quiet' },
@@ -546,16 +529,9 @@ templer - A static-site generator, written in perl.
     --help        Show the help information for this script.
     --manual      Read the manual for this script.
 
-  Path options:
-
-    --input          Specify the input directory to process.
-    --output         Specify the output directory to build the site to.
-    --layout-path    Specify the location from which to find layouts.
-    --plugin-path    Specify the location from which to load plugins.
-
   Flags
 
-    --force          Force a rebuild of all pages.
+    --force          Force a rebuild of all pages/assets
     --in-place       Specify we're processing pages in-place, ignoring the output dir.
     --quiet          Don't show output.
     --verbose        Be noisy during the execution.
