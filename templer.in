@@ -69,14 +69,16 @@ my $cfg = Templer::Global->new( file => $cnf );
 #
 # These are the default settings.
 #
-my %DEFAULTS = ( "suffix"       => ".skx",
-                 "input"        => "./input/",
-                 "output"       => "./output/",
+my %DEFAULTS = (
                  "in-place"     => 0,
-                 "layout-path"  => "./layouts",
-                 "layout"       => "default.layout",
-                 "plugin-path"  => "./plugins",
                  "include-path" => "./includes",
+                 "input"        => "./input/",
+                 "layout"       => "default.layout",
+                 "layout-path"  => "./layouts",
+                 "output"       => "./output/",
+                 "plugin-path"  => "./plugins",
+                 "suffix"       => ".skx",
+                 "verbose"      => ( $CONFIG{'verbose'} || 0 ),
                );
 
 
