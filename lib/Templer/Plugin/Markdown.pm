@@ -58,6 +58,8 @@ the same terms as Perl itself.
 =cut
 
 
+use strict;
+use warnings;
 
 
 package Templer::Plugin::Markdown;
