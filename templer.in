@@ -118,15 +118,15 @@ if ( $CONFIG{ 'serve' } )
 #
 #  The template path, and default template to use for layout.
 #
-my $tpath =  $cfg->field("layout-path") ||  "./layouts";
-my $dtemplate = $cfg->field("layout") ||  "default.layout";
+my $tpath     = $cfg->field("layout-path") || "./layouts";
+my $dtemplate = $cfg->field("layout")      || "default.layout";
 
 
 #
 #  The plugin path, and include path.
 #
-my $ppath =  $cfg->field("plugin-path") ||  "./plugins";
-my $ipath =  $cfg->field("include-path") ||  "./includes";
+my $ppath = $cfg->field("plugin-path")  || "./plugins";
+my $ipath = $cfg->field("include-path") || "./includes";
 
 #
 #  If we have a plugin directory then load the plugins beneath it.
@@ -444,12 +444,12 @@ sub parseCommandLine
             "manual", \$CONFIG{ 'manual' },
 
             # Flags - force a rebuild
-            "config=s",       \$CONFIG{ 'config' },
-            "in-place",       \$CONFIG{ 'in-place' },
-            "force",   \$CONFIG{ 'force' },
-            "serve=i", \$CONFIG{ 'serve' },
-            "quiet",   \$CONFIG{ 'quiet' },
-            "verbose", \$CONFIG{ 'verbose' },
+            "config=s", \$CONFIG{ 'config' },
+            "in-place", \$CONFIG{ 'in-place' },
+            "force",    \$CONFIG{ 'force' },
+            "serve=i",  \$CONFIG{ 'serve' },
+            "quiet",    \$CONFIG{ 'quiet' },
+            "verbose",  \$CONFIG{ 'verbose' },
         ) );
 
 
