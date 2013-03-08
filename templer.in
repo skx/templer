@@ -56,34 +56,53 @@ for ( my $count = 0 ; $count < 5 ; $count += 1 )
     }
 }
 
+
 #
-#  Read the global configuration file.
+#  Read the global configuration file, which might have been
+# specified upon the command-line, but will otherwise be
+# templer.cfg.
 #
 my $cnf = $CONFIG{ 'config' } || "./templer.cfg";
 my $cfg = Templer::Global->new( file => $cnf );
 
+
 #
-#  Create a site helper - telling it what suffix to look for to
-# identify pages.
+# These are the default settings.
 #
-my $suffix = $cfg->field("suffix") || ".skx";
-my $site = Templer::Site->new( suffix => $suffix );
+my %DEFAULTS = ( "suffix"       => ".skx",
+                 "input"        => "./input/",
+                 "output"       => "./output/",
+                 "in-place"     => 0,
+                 "layout-path"  => "./layouts",
+                 "layout"       => "default.layout",
+                 "plugin-path"  => "./plugins",
+                 "include-path" => "./includes",
+               );
 
 
 #
-#  Paths/Flags.
+#  The defaults will now be over-ridden by anything which is specified
+# in the configuration file that we've loaded/parsed.
 #
-my $in      = $cfg->field("input")  || "./input/";
-my $out     = $cfg->field("output") || "./output/";
-my $inplace = $CONFIG{ 'in-place' } || $cfg->field("in-place");
+my %SITE = $cfg->fields();
+foreach my $field ( keys %SITE )
+{
+    $DEFAULTS{ $field } = $SITE{ $field };
+}
+
+
+#
+#  Create a site helper - telling it what suffix to look for to identify pages.
+#
+my $site = Templer::Site->new( suffix => $DEFAULTS{ 'suffix' } );
 
 
 #
 #  Ensure we have an input directory.
 #
-if ( !-d $in )
+if ( !-d $DEFAULTS{ 'input' } )
 {
-    print "The input directory doesn't exist: $in\n";
+    print "The input directory doesn't exist: $DEFAULTS{'input'}\n";
     exit;
 }
 
@@ -97,8 +116,9 @@ if ( $CONFIG{ 'serve' } )
     #
     # Document root
     #
-    my $root = $out;
-    $root = $in if ( defined $inplace && $inplace );
+    my $root = $DEFAULTS{ 'output' };
+    $root = $DEFAULTS{ 'input' }
+      if ( defined $DEFAULTS{ 'in-place' } && $DEFAULTS{ 'in-place' } );
 
     if ( !-d $root )
     {
@@ -116,34 +136,21 @@ if ( $CONFIG{ 'serve' } )
 
 
 #
-#  The template path, and default template to use for layout.
-#
-my $tpath     = $cfg->field("layout-path") || "./layouts";
-my $dtemplate = $cfg->field("layout")      || "default.layout";
-
-
-#
-#  The plugin path, and include path.
-#
-my $ppath = $cfg->field("plugin-path")  || "./plugins";
-my $ipath = $cfg->field("include-path") || "./includes";
-
-#
 #  If we have a plugin directory then load the plugins beneath it.
 #
 #  NOTE:  The bundled/built-in plugins will always be available.
 #
 my $PLUGINS = Templer::Plugin::Factory->new();
-if ( -d $ppath )
+if ( -d $DEFAULTS{ 'plugin-path' } )
 {
-    $PLUGINS->load_plugins($ppath);
+    $PLUGINS->load_plugins( $DEFAULTS{ 'plugin-path' } );
 }
 
 #
 #  Setup an array of include-paths.
 #
 my @INCLUDES;
-foreach my $path ( split( /:/, $ipath ) )
+foreach my $path ( split( /:/, $DEFAULTS{ 'include-path' } ) )
 {
     push( @INCLUDES, $path ) if ( -d $path );
 }
@@ -160,8 +167,8 @@ runCommands('pre-build');
 #
 #  Create the output directory if missing, unless we're in-place
 #
-File::Path::mkpath( $out, { verbose => 0, mode => oct(755) } )
-  if ( !-d $out && ( !$inplace ) );
+File::Path::mkpath( $DEFAULTS{ 'output' }, { verbose => 0, mode => oct(755) } )
+  if ( !-d $DEFAULTS{ 'output' } && ( !$DEFAULTS{ 'in-place' } ) );
 
 
 #
@@ -173,8 +180,8 @@ my $timer = Templer::Timer->new();
 #
 #  Find all pages & assets.
 #
-my @pages = $site->pages( directory => $in );
-my @assets = $site->assets( directory => $in );
+my @pages = $site->pages( directory => $DEFAULTS{ 'input' } );
+my @assets = $site->assets( directory => $DEFAULTS{ 'input' } );
 
 #
 # Count of pages we've built.
@@ -198,8 +205,9 @@ foreach my $page (@pages)
     # Convert the input path to a suitable output path.
     #
     my $dst = $src;
-    $dst =~ s/$suffix/.html/g;
-    $dst =~ s/^$in/$out/g unless ($inplace);
+    $dst =~ s/$DEFAULTS{'suffix'}/.html/g;
+    $dst =~ s/^$DEFAULTS{'input'}/$DEFAULTS{'output'}/g
+      unless ( $DEFAULTS{ 'in-place' } );
 
     #
     # Show the transformation.
@@ -212,15 +220,17 @@ foreach my $page (@pages)
     # The template to expand the content into will come from the page, or the global
     # configuration
     #
-    my $template = $page->layout() || $cfg->layout() || $dtemplate;
-    print "Layout file is: $tpath/$template\n" if ( $CONFIG{ 'verbose' } );
+    my $template = $page->layout() || $cfg->layout() || $DEFAULTS{ 'layout' };
+    print "Layout file is: $DEFAULTS{'layout-path'}/$template\n"
+      if ( $CONFIG{ 'verbose' } );
 
     #
     # Ensure the template exists.
     #
-    if ( !-e $tpath . "/" . $template )
+    if ( !-e $DEFAULTS{ 'layout-path' } . "/" . $template )
     {
-        print "WARNING: Layout file missing: $tpath/$template\n";
+        print
+          "WARNING: Layout file missing: $DEFAULTS{'layout-path'}/$template\n";
         next;
     }
 
@@ -245,7 +255,7 @@ foreach my $page (@pages)
         }
         else
         {
-            if ( -M $dst > -M $tpath . "/" . $template )
+            if ( -M $dst > -M $DEFAULTS{ 'layout-path' } . "/" . $template )
             {
                 print "Rebuilding as output is older than the layout.\n"
                   if ( $CONFIG{ 'verbose' } );
@@ -275,13 +285,14 @@ foreach my $page (@pages)
     #
     #  Load the HTML::Template module against the layout.
     #
-    my $tmpl = HTML::Template->new( filename => $tpath . "/" . $template,
-                                    die_on_bad_params => 0,
-                                    path              => [@INCLUDES, $tpath],
-                                    search_path_on_include => 1,
-                                    global_vars            => 1,
-                                    loop_context_vars      => 1,
-                                  );
+    my $tmpl = HTML::Template->new(
+                       filename => $DEFAULTS{ 'layout-path' } . "/" . $template,
+                       die_on_bad_params => 0,
+                       path => [@INCLUDES, $DEFAULTS{ 'layout-path' }],
+                       search_path_on_include => 1,
+                       global_vars            => 1,
+                       loop_context_vars      => 1,
+    );
 
 
 
@@ -354,7 +365,7 @@ foreach my $page (@pages)
 #
 #  Now copy all missing assets into place, unless we're running in-place.
 #
-unless ($inplace)
+unless ( $DEFAULTS{ 'in-place' } )
 {
 
     #
@@ -373,13 +384,13 @@ unless ($inplace)
         # Strip the input component of the filename(s).
         #
         my $src = $asset->source();
-        $src =~ s/^$in//g;
+        $src =~ s/^$DEFAULTS{'input'}//g;
 
         #
         # If we've got an asset which is a directory that
         # is already present, for example, we'll skip it.
         #
-        push( @copy, $src ) unless ( -e "$out/$src" );
+        push( @copy, $src ) unless ( -e "$DEFAULTS{'output'}/$src" );
     }
 
     #
@@ -391,8 +402,8 @@ unless ($inplace)
         #
         # The horrible command we're going to execute.
         #
-        my $cmd = "(cd $in && tar -cf - " .
-          join( " ", @copy ) . ") | ( cd $out && tar xf -)";
+        my $cmd = "(cd $DEFAULTS{'input'} && tar -cf - " .
+          join( " ", @copy ) . ") | ( cd $DEFAULTS{'output'} && tar xf -)";
         print "TAR: $cmd " if ( $CONFIG{ 'verbose' } );
         system($cmd );
     }
@@ -445,7 +456,6 @@ sub parseCommandLine
 
             # Flags - force a rebuild
             "config=s", \$CONFIG{ 'config' },
-            "in-place", \$CONFIG{ 'in-place' },
             "force",    \$CONFIG{ 'force' },
             "serve=i",  \$CONFIG{ 'serve' },
             "quiet",    \$CONFIG{ 'quiet' },
