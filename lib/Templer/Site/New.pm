@@ -59,6 +59,12 @@ the same terms as Perl itself.
 
 =cut
 
+
+
+use strict;
+use warnings;
+
+
 package Templer::Site::New;
 
 use File::Path qw(mkpath);

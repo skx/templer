@@ -1,5 +1,9 @@
 
 
+use strict;
+use warnings;
+
+
 #
 #  A package for reading the global configuration file.
 #
