@@ -40,58 +40,15 @@ my %CONFIG;
 #
 #  Parse the command line.
 #
-exit
-  if (
-    !Getopt::Long::GetOptions(
-
-        # Help options
-        "help",   \$CONFIG{ 'help' },
-        "manual", \$CONFIG{ 'manual' },
-
-        # In/out/in-place
-        "config=s",       \$CONFIG{ 'config' },
-        "input=s",        \$CONFIG{ 'input' },
-        "output=s",       \$CONFIG{ 'output' },
-        "in-place",       \$CONFIG{ 'in-place' },
-        "include-path=s", \$CONFIG{ 'include-path' },
-        "layout-path=s",  \$CONFIG{ 'layout-path' },
-        "plugin-path=s",  \$CONFIG{ 'plugin-path' },
-
-        # Flags - force a rebuild
-        "force",   \$CONFIG{ 'force' },
-        "serve:i", \$CONFIG{ 'serve' },
-        "verbose", \$CONFIG{ 'verbose' },
-    ) );
+parseCommandLine();
 
 
 #
-#  Help/Manual handling.
+#  Test that we have required dependencies.
 #
-Pod::Usage::pod2usage( -input => \*DATA ) if ( $CONFIG{ 'help' } );
-Pod::Usage::pod2usage( -input => \*DATA, -verbose => 2 )
-  if ( $CONFIG{ 'manual' } );
+testDependencies();
 
 
-#
-#  Ensure we have the HTML::Template module
-#
-my $module = "use HTML::Template;";
-## no critic (Eval)
-eval($module);
-## use critic
-if ($@)
-{
-    print "The HTML::Template module doesn't seem to be installed.\n";
-
-    if ( ( -d "/etc/apt" ) && ( -x "/usr/bin/apt-get" ) )
-    {
-        print
-          "You seem to be running a Debian-like distribution.  You can install the missing module via:\n";
-        print "\tapt-get update\n";
-        print "\tapt-get install libhtml-template-perl\n";
-    }
-    exit(1);
-}
 
 #
 #  Read the global configuration file.
@@ -483,6 +440,80 @@ my $duration = $timer->elapsed();
 print "\nAll done: $rebuilt page(s) updated in $duration.\n";
 
 exit(0);
+
+
+
+
+#
+#  Parse the command line
+#
+sub parseCommandLine
+{
+
+    #
+    #  Parse the command line.
+    #
+    exit
+      if (
+        !Getopt::Long::GetOptions(
+
+            # Help options
+            "help",   \$CONFIG{ 'help' },
+            "manual", \$CONFIG{ 'manual' },
+
+            # In/out/in-place
+            "config=s",       \$CONFIG{ 'config' },
+            "input=s",        \$CONFIG{ 'input' },
+            "output=s",       \$CONFIG{ 'output' },
+            "in-place",       \$CONFIG{ 'in-place' },
+            "include-path=s", \$CONFIG{ 'include-path' },
+            "layout-path=s",  \$CONFIG{ 'layout-path' },
+            "plugin-path=s",  \$CONFIG{ 'plugin-path' },
+
+            # Flags - force a rebuild
+            "force",   \$CONFIG{ 'force' },
+            "serve:i", \$CONFIG{ 'serve' },
+            "verbose", \$CONFIG{ 'verbose' },
+        ) );
+
+
+    #
+    #  Help/Manual handling.
+    #
+    Pod::Usage::pod2usage( -input => \*DATA ) if ( $CONFIG{ 'help' } );
+    Pod::Usage::pod2usage( -input => \*DATA, -verbose => 2 )
+      if ( $CONFIG{ 'manual' } );
+
+
+}
+
+
+#
+#  Test for required dependencies
+#
+sub testDependencies
+{
+    my $fatal = 0;
+
+    #
+    #  The required modules
+    #
+    foreach my $module (qw!  HTML::Template !)
+    {
+        my $eval = "use $module;";
+
+        ## no critic (Eval)
+        eval($eval);
+        ## use critic
+        if ($@)
+        {
+            print "The $module module doesn't seem to be installed.\n";
+            $fatal = 1;
+        }
+    }
+
+    exit(1) if ($fatal);
+}
 
 
 
