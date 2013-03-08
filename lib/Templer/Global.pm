@@ -1,16 +1,78 @@
 
+=head1 NAME
+
+Templer::Global - The configuration for a templer-based site.
+
+=cut
+
+=head1 SYNOPSIS
+
+    use strict;
+    use warnings;
+
+    use Templer::Global;
+
+    my $site   = Templer::Global->new( file => "./templer.cfg" );
+    my $suffix = $site->field( "suffix" );
+
+=cut
+
+=head1 DESCRIPTION
+
+This class is responsible for parsing the top-level templer.cfg file
+which we assume will be present in each templer-based site.
+
+The file is a simple key=value store, with comments being prefixed by
+the hash ("#") character, and ignored.
+
+=cut
+
+=head1 LICENSE
+
+This module is free software; you can redistribute it and/or modify it
+under the terms of either:
+
+a) the GNU General Public License as published by the Free Software
+Foundation; either version 2, or (at your option) any later version,
+or
+
+b) the Perl "Artistic License".
+
+=cut
+
+=head1 AUTHOR
+
+Steve Kemp <steve@steve.org.uk>
+
+=cut
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright (C) 2012-2013 Steve Kemp <steve@steve.org.uk>.
+
+This library is free software. You can modify and or distribute it under
+the same terms as Perl itself.
+
+=cut
+
+=head1 METHODS
+
+=cut
+
 
 use strict;
 use warnings;
 
 
-#
-#  A package for reading the global configuration file.
-#
-#  We assume that every project contains a "./templer.cfg" file in the
-# top-level directory.  Here we parse that, if present.
-#
 package Templer::Global;
+
+
+=head2 new
+
+Constructor.  The hash of parameters is saved away, and the filename
+specified in the 'file' parameter will be opened and parsed.
+
+=cut
 
 sub new
 {
@@ -33,15 +95,25 @@ sub new
 }
 
 
+=head2 _readGlobalCFG
+
+Read the specified configuration file.  Called by the constructor if
+a filename was specified.
+
+=cut
+
 sub _readGlobalCFG
 {
     my ( $self, $filename ) = (@_);
 
     #
-    #  If the global configuration file doesn't exist that's a shame.
+    #  If the configuration file doesn't exist that's a shame.
     #
     return if ( !-e $filename );
 
+    #
+    #  Open the file, making sure we're UTF-8 safe.
+    #
     open( my $handle, "<:utf8", $filename ) or
       die "Failed to read '$filename' - $!";
     binmode( $handle, ":utf8" );
@@ -52,8 +124,10 @@ sub _readGlobalCFG
         # strip trailing newline.
         $line =~ s/[\r\n]*//g;
 
+        # skip comments.
         next if ( $line =~ /^#/ );
 
+        # If the line is :  key = value
         if ( $line =~ /^([^=]+)=(.*)$/ )
         {
             my $key = $1;
@@ -63,7 +137,7 @@ sub _readGlobalCFG
             $val =~ s/^\s+|\s+$//g;
 
             #
-            # If the line is pre/post-build then save the values
+            # If the line is pre/post-build then save the values as an array
             #
             if ( $key =~ /^(pre|post)-build$/ )
             {
@@ -86,9 +160,12 @@ sub _readGlobalCFG
 
 
 
-#
-# Retrieve a value from the file, by key.
-#
+=head2 field
+
+Retrieve a value from the file, by key.
+
+=cut
+
 sub field
 {
     my ( $self, $field ) = (@_);
@@ -96,9 +173,12 @@ sub field
 }
 
 
-#
-# Retrieve all known key/value pairs.
-#
+=head2 fields
+
+Retrieve all known key/value pairs.
+
+=cut
+
 sub fields
 {
     my ($self) = (@_);
@@ -107,9 +187,20 @@ sub fields
 }
 
 
-#
-# Return the global-layout file.
-#
+=head2 layout
+
+Return the global-layout file.
+
+This is a helper for:
+
+=for example begin
+
+    my $layout = $obj->field( 'layout' );
+
+=for example end
+
+=cut
+
 sub layout
 {
     my ($self) = (@_);
@@ -117,9 +208,12 @@ sub layout
 }
 
 
-#
-#  Set a global value
-#
+=head2 set
+
+Set a global value.
+
+=cut
+
 sub set
 {
     my ( $self, $key, $values ) = (@_);
