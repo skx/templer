@@ -78,7 +78,6 @@ my $site = Templer::Site->new( suffix => $suffix );
 my $in  = $CONFIG{ 'input' }  || $cfg->field("input")  || "./input/";
 my $out = $CONFIG{ 'output' } || $cfg->field("output") || "./output/";
 my $inplace = $CONFIG{ 'in-place' } || $cfg->field("in-place");
-my $srv     = $CONFIG{ 'serve' }    || 0;
 
 
 #
@@ -114,7 +113,7 @@ if ( $CONFIG{ 'serve' } )
     #
     my $port = $CONFIG{ 'serve' } || "8000";
     system("cd $root && python -m SimpleHTTPServer $port");
-    exit(00);
+    exit(0);
 }
 
 
@@ -465,7 +464,7 @@ sub parseCommandLine
 
             # Flags - force a rebuild
             "force",   \$CONFIG{ 'force' },
-            "serve:i", \$CONFIG{ 'serve' },
+            "serve=i", \$CONFIG{ 'serve' },
             "quiet",   \$CONFIG{ 'quiet' },
             "verbose", \$CONFIG{ 'verbose' },
         ) );
