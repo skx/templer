@@ -28,9 +28,9 @@ clean:
 #
 # Run perlcritic against our code
 #
-critic: default
-	perlcritic ./templer
-	perlcritic ./templer-generate
+critic:
+	perlcritic $$(find . -name '*.pm' -o -name '*.in' )
+
 
 
 #
@@ -42,7 +42,7 @@ install: default
 	chmod 755 /usr/local/bin/templer /usr/local/bin/templer-generate
 
 
-release: tidy clean
+release: critic tidy clean
 	rm -rf $(DIST_PREFIX)/$(BASE)-$(VERSION)
 	rm -f $(DIST_PREFIX)/$(BASE)-$(VERSION).tar.gz
 	cp -R . $(DIST_PREFIX)/$(BASE)-$(VERSION)
