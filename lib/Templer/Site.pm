@@ -87,7 +87,11 @@ use warnings;
 
 package Templer::Site;
 
+
 use File::Find;
+use File::Path qw! mkpath !;
+
+
 
 =head2 new
 
@@ -112,6 +116,43 @@ sub new
 
     bless( $self, $class );
     return $self;
+}
+
+
+
+=head2 init
+
+Ensure that the input directory exists.
+
+Create the output directory if we're not running in-place.
+
+=cut
+
+sub init
+{
+    my ($self) = (@_);
+
+    my $input  = $self->{ 'input' };
+    my $output = $self->{ 'output' };
+
+    my $inplace = $self->{ 'in-place' };
+
+    #
+    #  Ensure we have an input directory.
+    #
+    if ( !-d $input )
+    {
+        print "The input directory doesn't exist: $input\n";
+        exit;
+    }
+
+    #
+    #  Create the output directory if missing, unless we're in-place
+    #
+    File::Path::mkpath( $output, { verbose => 0, mode => oct(755) } )
+      if ( !-d $output && ( !$inplace ) );
+
+
 }
 
 
@@ -246,6 +287,8 @@ sub _findFiles
 
     @matches;
 }
+
+
 
 
 1;
