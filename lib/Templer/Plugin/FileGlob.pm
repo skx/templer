@@ -145,7 +145,7 @@ sub expand_variables
             {
                 $dirName = $1;
             }
-            my $pwd = cwd();
+            my $pwd = Cwd::cwd();
             chdir( $dirName . "/" );
 
             #
