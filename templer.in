@@ -163,17 +163,9 @@ $cfg->set( "include-path", \@INCLUDES );
 
 
 #
-#  See if we have pre-build commands
+#  Execute any pre-build commands the user might have defined.
 #
-my $pre = $cfg->field('pre-build');
-if ($pre)
-{
-    foreach my $cmd (@$pre)
-    {
-        $CONFIG{ 'verbose' } && print "Pre-build command: $cmd\n";
-        system($cmd );
-    }
-}
+runCommands('pre-build');
 
 
 #
@@ -428,15 +420,7 @@ $PLUGINS->cleanup();
 #
 #  See if we have post-build commands
 #
-my $post = $cfg->field('post-build');
-if ($post)
-{
-    foreach my $cmd (@$post)
-    {
-        $CONFIG{ 'verbose' } && print "Post-build command: $cmd\n";
-        system($cmd );
-    }
-}
+runCommands("post-build");
 
 
 
@@ -526,7 +510,24 @@ sub testDependencies
 }
 
 
+#
+# Run the commands the user might have specified for pre-build/post-build
+# execution
+#
+sub runCommands
+{
+    my ($type) = (@_);
 
+    my $cmds = $cfg->field($type);
+    if ($cmds)
+    {
+        foreach my $cmd (@$cmds)
+        {
+            $CONFIG{ 'verbose' } && print "$type command: $cmd\n";
+            system($cmd );
+        }
+    }
+}
 
 __DATA__
 
