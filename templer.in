@@ -48,10 +48,11 @@ testDependencies();
 #  If we're not in a templer-directory then go up the filesystem
 # looking for one.  Stop after "a few" attempts.
 #
-for( my $count =0 ; $count< 5; $count += 1 )
+for ( my $count = 0 ; $count < 5 ; $count += 1 )
 {
-    if ( ! ( ( -e "templer.cfg" ) || ( -d "input/" ) ) ){
-        chdir( "../" );
+    if ( !( ( -e "templer.cfg" ) || ( -d "input/" ) ) )
+    {
+        chdir("../");
     }
 }
 
@@ -139,7 +140,9 @@ my $ipath = $CONFIG{ 'include-path' } ||
   "./includes";
 
 #
-#  If we have a plugin plugin then load the plugins beneath it.
+#  If we have a plugin directory then load the plugins beneath it.
+#
+#  NOTE:  The bundled/built-in plugins will always be available.
 #
 my $PLUGINS = Templer::Plugin::Factory->new();
 if ( -d $ppath )
@@ -442,7 +445,8 @@ if ($post)
 # All done.
 #
 my $duration = $timer->elapsed();
-print "\nAll done: $rebuilt page(s) updated in $duration.\n" unless( $CONFIG{'quiet'} );
+print "\nAll done: $rebuilt page(s) updated in $duration.\n"
+  unless ( $CONFIG{ 'quiet' } );
 
 exit(0);
 
@@ -478,7 +482,7 @@ sub parseCommandLine
             # Flags - force a rebuild
             "force",   \$CONFIG{ 'force' },
             "serve:i", \$CONFIG{ 'serve' },
-            "quiet", \$CONFIG{ 'quiet' },
+            "quiet",   \$CONFIG{ 'quiet' },
             "verbose", \$CONFIG{ 'verbose' },
         ) );
 
