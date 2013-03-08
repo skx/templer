@@ -6,9 +6,6 @@
 use strict;
 use warnings;
 
-use Cwd;
-use File::Basename;
-use File::Find;
 use File::Path qw! mkpath !;
 use Getopt::Long;
 use Pod::Usage;
