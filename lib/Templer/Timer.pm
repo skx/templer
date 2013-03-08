@@ -1,16 +1,78 @@
+
+=head1 NAME
+
+Templer::Timer - A utility class for recording build-time.
+
+=cut
+
+=head1 SYNOPSIS
+
+    use strict;
+    use warnings;
+
+    use Templer::Timer;
+
+    my $obj = Templer::Timer->new();
+    sleep( 3 );
+
+    print $obj->elapsed();
+
+=cut
+
+=head1 DESCRIPTION
+
+This class is a simple utility for reporting the time elapsed since
+the object was created.
+
+It is used to report on the build-time of a templer site.
+
+=cut
+
+=head1 LICENSE
+
+This module is free software; you can redistribute it and/or modify it
+under the terms of either:
+
+a) the GNU General Public License as published by the Free Software
+Foundation; either version 2, or (at your option) any later version,
+or
+
+b) the Perl "Artistic License".
+
+=cut
+
+=head1 AUTHOR
+
+Steve Kemp <steve@steve.org.uk>
+
+=cut
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright (C) 2013 Steve Kemp <steve@steve.org.uk>.
+
+This library is free software. You can modify and or distribute it under
+the same terms as Perl itself.
+
+=cut
+
+=head1 METHODS
+
+=cut
+
 use strict;
 use warnings;
 
-#
-#  A utility class for recording a time-duration.
-#
-#
+
 package Templer::Timer;
+
 
 
 =begin doc
 
-Constructor.  Record the creation time of this object.
+Constructor.
+
+Record the creation time of this object.
 
 =end doc
 
