@@ -80,9 +80,14 @@ the same terms as Perl itself.
 =cut
 
 
+use strict;
+use warnings;
+
+
+
 package Templer::Site;
 
-
+use File::Find;
 
 =head2 new
 
