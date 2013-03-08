@@ -32,8 +32,6 @@ package main;
 my %CONFIG;
 
 
-
-
 #
 #  Parse the command line.
 #
@@ -46,6 +44,16 @@ parseCommandLine();
 testDependencies();
 
 
+#
+#  If we're not in a templer-directory then go up the filesystem
+# looking for one.  Stop after "a few" attempts.
+#
+for( my $count =0 ; $count< 5; $count += 1 )
+{
+    if ( ! ( ( -e "templer.cfg" ) || ( -d "input/" ) ) ){
+        chdir( "../" );
+    }
+}
 
 #
 #  Read the global configuration file.
@@ -434,7 +442,7 @@ if ($post)
 # All done.
 #
 my $duration = $timer->elapsed();
-print "\nAll done: $rebuilt page(s) updated in $duration.\n";
+print "\nAll done: $rebuilt page(s) updated in $duration.\n" unless( $CONFIG{'quiet'} );
 
 exit(0);
 
@@ -470,6 +478,7 @@ sub parseCommandLine
             # Flags - force a rebuild
             "force",   \$CONFIG{ 'force' },
             "serve:i", \$CONFIG{ 'serve' },
+            "quiet", \$CONFIG{ 'quiet' },
             "verbose", \$CONFIG{ 'verbose' },
         ) );
 
@@ -544,6 +553,7 @@ templer - A static-site generator, written in perl.
 
     --force          Force a rebuild of all pages.
     --in-place       Specify we're processing pages in-place, ignoring the output dir.
+    --quiet          Don't show output.
     --verbose        Be noisy during the execution.
 
 =cut
