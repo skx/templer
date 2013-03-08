@@ -219,9 +219,9 @@ File::Path::mkpath( $out, { verbose => 0, mode => oct(755) } )
 
 
 #
-#  Record the start time
+#  Record the start time.
 #
-my $start = time;
+my $timer = Templer::Timer->new();
 
 
 #
@@ -479,21 +479,8 @@ if ($post)
 #
 # All done.
 #
-my $end  = time;
-my $time = $end - $start;
-if ( $time < 1 )
-{
-    $time = "less than 1 second";
-}
-elsif ( $time == 1 )
-{
-    $time = "1 second";
-}
-else
-{
-    $time = $time . " seconds";
-}
-print "\nAll done: $rebuilt page(s) updated in $time.\n";
+my $duration = $timer->elapsed();
+print "\nAll done: $rebuilt page(s) updated in $duration.\n";
 
 exit(0);
 
