@@ -13,8 +13,9 @@ use Test::More qw! no_plan !;
 use File::Temp qw! tempdir !;
 
 
-package main;
-
+#
+#  Load the module.
+#
 BEGIN {use_ok('Templer::Site::New');}
 require_ok('Templer::Site::New');
 
@@ -31,27 +32,66 @@ isa_ok( $helper, "Templer::Site::New", "It is the correct type" );
 my $dir = tempdir( CLEANUP => 1 );
 ok( -d $dir, "Created temporary directory" );
 
-foreach my $file (
-    qw! input input/index.wgn input/about.wgn input/robots.txt templer.cfg layouts/default.layout !
-  )
-{
-    ok( !-e $dir . "/" . $file, "The input directory doesn't have: $file" );
-}
 
 #
-#  Create the site
+#  These are the files/directories we expect to be created.
+#
+#  The hash-values are the type of created thing we expect:
+#
+#    1   =>  Directory.
+#    0   =>  File.
+my %EXPECTED = (
+    "input"                  => 1,
+    "output"                 => 1,
+    "includes"               => 1,
+    "layouts"                => 1,
+    "input/index.wgn"        => 0,
+    "input/about.wgn"        => 0,
+    "input/robots.txt"       => 0,
+    "layouts/default.layout" => 0,
+    "templer.cfg"            => 0,
+
+               );
+
+
+
+#
+#  Test that the entries don't exist at the moment.
+#
+foreach my $file ( sort keys %EXPECTED )
+{
+    ok( !-e $dir . "/" . $file,
+        "Before the site was constructed file was missing: $file" );
+}
+
+
+#
+#  Now create the new site.
 #
 ok( $helper->create($dir), "Creating the new site succeeded" );
 
 
 #
-#  Test it appeared
+#  Test that they were present
 #
-foreach my $file (
-    qw! input input/index.wgn input/about.wgn input/robots.txt templer.cfg layouts/default.layout !
-  )
+foreach my $file ( sort keys %EXPECTED )
 {
-    ok( -e $dir . "/" . $file, "The file now exists: $file" );
+    my $type = $EXPECTED{ $file };
+
+    ok( -e $dir . "/" . $file, "File created, as expected: $file" );
+
+    if ( $type == 0 )
+    {
+        ok( !-d $dir . "/" . $file, "Entry is a file - $file" );
+    }
+    elsif ( $type == 1 )
+    {
+        ok( -d $dir . "/" . $file, "Entry is a directory - $file" );
+    }
+    else
+    {
+        ok( undef, "The test-type made no sense" );
+    }
 }
 
 #
