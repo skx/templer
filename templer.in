@@ -69,8 +69,7 @@ my $cfg = Templer::Global->new( file => $cnf );
 #
 # These are the default settings.
 #
-my %DEFAULTS = (
-                 "in-place"     => 0,
+my %DEFAULTS = ( "in-place"     => 0,
                  "include-path" => "./includes",
                  "input"        => "./input/",
                  "layout"       => "default.layout",
@@ -78,7 +77,7 @@ my %DEFAULTS = (
                  "output"       => "./output/",
                  "plugin-path"  => "./plugins",
                  "suffix"       => ".skx",
-                 "verbose"      => ( $CONFIG{'verbose'} || 0 ),
+                 "verbose"      => ( $CONFIG{ 'verbose' } || 0 ),
                );
 
 
@@ -94,47 +93,22 @@ foreach my $field ( keys %SITE )
 
 
 #
-#  Create a site helper - telling it what suffix to look for to identify pages.
+#  If we're running a HTTP-server do it now, since we've got
+# all the data we need.
 #
-my $site = Templer::Site->new( suffix => $DEFAULTS{ 'suffix' } );
-
-
-#
-#  Ensure we have an input directory.
-#
-if ( !-d $DEFAULTS{ 'input' } )
-{
-    print "The input directory doesn't exist: $DEFAULTS{'input'}\n";
-    exit;
-}
+runHTTPD() if ( $CONFIG{ 'serve' } );
 
 
 #
-#  Start a HTTP server
+#  Now we've setup the defaults, and updated them via the configuration
+# file we're ready to actually build/rebuild the templer-site.
 #
-if ( $CONFIG{ 'serve' } )
-{
-
-    #
-    # Document root
-    #
-    my $root = $DEFAULTS{ 'output' };
-    $root = $DEFAULTS{ 'input' }
-      if ( defined $DEFAULTS{ 'in-place' } && $DEFAULTS{ 'in-place' } );
-
-    if ( !-d $root )
-    {
-        print "Document root doesn't exist: $root\n";
-        exit 0;
-    }
-
-    #
-    #  This is appalling.
-    #
-    my $port = $CONFIG{ 'serve' } || "8000";
-    system("cd $root && python -m SimpleHTTPServer $port");
-    exit(0);
-}
+#  We'll create the Templer::Site object to do that, the init method
+# will ensure we have the input directory, and create the output directory
+# if it is missing and required.
+#
+my $site = Templer::Site->new(%DEFAULTS);
+$site->init();
 
 
 #
@@ -165,12 +139,6 @@ $cfg->set( "include-path", \@INCLUDES );
 #
 runCommands('pre-build');
 
-
-#
-#  Create the output directory if missing, unless we're in-place
-#
-File::Path::mkpath( $DEFAULTS{ 'output' }, { verbose => 0, mode => oct(755) } )
-  if ( !-d $DEFAULTS{ 'output' } && ( !$DEFAULTS{ 'in-place' } ) );
 
 
 #
@@ -522,6 +490,38 @@ sub runCommands
         }
     }
 }
+
+
+
+#
+#  Launch python(!!) to run a HTTP-server.
+#
+sub runHTTPD
+{
+
+    #
+    # Document root
+    #
+    my $root = $DEFAULTS{ 'output' };
+    $root = $DEFAULTS{ 'input' }
+      if ( defined $DEFAULTS{ 'in-place' } && $DEFAULTS{ 'in-place' } );
+
+    if ( !-d $root )
+    {
+        print "Document root doesn't exist: $root\n";
+        exit 0;
+    }
+
+    #
+    #  This is appalling.
+    #
+    my $port = $CONFIG{ 'serve' } || "8000";
+    system("cd $root && python -m SimpleHTTPServer $port");
+    exit(0);
+}
+
+
+
 
 __DATA__
 
