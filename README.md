@@ -103,6 +103,10 @@ The special variable `layout` may be used to specify a different layout template
 the current page.  If there is no per-page layout specified then the global layout
 declared in the `templer.cfg` file will be used.
 
+The special variable 'output' may be used to specify an alternative output file.  For
+example the input file `index.wgn` would normally become `index.html`, but you could make it become
+something else.
+
 The special variable `format` may be given a value of `textile` or `markdown` to
 enable processing the page body with the appropriate filter.   These formatters are
 implemented as [plugins](#plugins), and will be available assuming their

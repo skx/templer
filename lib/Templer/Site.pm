@@ -383,9 +383,23 @@ sub build
         # Convert the input path to a suitable output path.
         #
         my $dst = $src;
-        $dst =~ s/$self->{'suffix'}/.html/g;
-        $dst =~ s/^$self->{'input'}/$self->{'output'}/g
-          unless ( $self->{ 'in-place' } );
+
+        #
+        #  The page might have its own idea of where it wants to
+        # go - so set that if it is set.
+        #
+        if ( $page->field("output") )
+        {
+            $dst = $self->{ 'output' } . "/" . $page->field("output");
+        }
+        else
+        {
+            $dst =~ s/^$self->{'input'}/$self->{'output'}/g
+              unless ( $self->{ 'in-place' } );
+
+            $dst =~ s/$self->{'suffix'}/.html/g;
+        }
+
 
         #
         # Show the transformation.
