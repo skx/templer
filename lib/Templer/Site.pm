@@ -90,12 +90,30 @@ package Templer::Site;
 
 use File::Find;
 use File::Path qw! mkpath !;
-
+use HTML::Template;
 
 
 =head2 new
 
-Constructor
+Constructor, this should be given a hash of arguments for example:
+
+=over 8
+
+=item input
+
+The input directory to process.
+
+=item output
+
+The output directory to write to.
+
+=item suffix
+
+The suffixe that will discover "Pages", for example '.skx', or '.tmplr'.
+
+=cut
+
+=back
 
 =cut
 
@@ -294,6 +312,17 @@ sub _findFiles
 }
 
 
+
+=head2 build
+
+Build the site.
+
+This is the method which does all the page-expansion, site-generation, etc.
+
+The return value is the count of pages built.
+
+=cut
+
 sub build
 {
     my ($self) = (@_);
@@ -306,8 +335,12 @@ sub build
     my $PLUGINS = Templer::Plugin::Factory->new();
     if ( -d $self->{ 'plugin-path' } )
     {
+        print "Loading plugins from :  $self->{ 'plugin-path' }\n"
+          if ( $self->{ 'verbose' } );
+
         $PLUGINS->load_plugins( $self->{ 'plugin-path' } );
     }
+
 
     #
     #  Setup an array of include-paths.
@@ -319,18 +352,16 @@ sub build
     }
     $self->{ 'cfg' }->set( "include-path", \@INCLUDES );
 
-    #my $f = $cfg->field( "include-path" );
-    #my @f = ( $f ? @$f : () );
-
-
 
     #
-    #  Find all pages & assets.
+    #  Find all the pages we'll process.
+    #
+    #  (Assets are copied later.)
     #
     my @pages = $self->pages( directory => $self->{ 'input' } );
 
     #
-    # Count of pages we've built.
+    # Count of pages we've built, returned to the caller.
     #
     my $rebuilt = 0;
 
@@ -502,7 +533,6 @@ sub build
         #
         #  Output the expanded template to the destination file.
         #
-        print "Writing to $dst\n" if ( $self->{ 'verbose' } );
         open my $handle, ">:utf8", $dst or die "Failed to write to '$dst' - $!";
         binmode( $handle, ":utf8" );
         print $handle $tmpl->output();
@@ -521,13 +551,21 @@ sub build
 }
 
 
+=head2 copyAssets
+
+Copy all assets from the input directory to the output directory.
+
+This method will use tar to do so semi-efficiently.
+
+=cut
+
 sub copyAssets
 {
     my ($self) = (@_);
 
 
     #
-    #  Now copy all missing assets into place, unless we're running in-place.
+    #  If we're running in-place then we don't need to copy assets.
     #
     return if ( $self->{ 'in-place' } );
 
