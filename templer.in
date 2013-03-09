@@ -108,19 +108,7 @@ runHTTPD() if ( $CONFIG{ 'serve' } );
 # if it is missing and required.
 #
 my $site = Templer::Site->new(%DEFAULTS);
-$site->init();
-
-
-#
-#  If we have a plugin directory then load the plugins beneath it.
-#
-#  NOTE:  The bundled/built-in plugins will always be available.
-#
-my $PLUGINS = Templer::Plugin::Factory->new();
-if ( -d $DEFAULTS{ 'plugin-path' } )
-{
-    $PLUGINS->load_plugins( $DEFAULTS{ 'plugin-path' } );
-}
+$site->init($cfg);
 
 #
 #  Setup an array of include-paths.
@@ -140,7 +128,6 @@ $cfg->set( "include-path", \@INCLUDES );
 runCommands('pre-build');
 
 
-
 #
 #  Record the start time.
 #
@@ -148,244 +135,14 @@ my $timer = Templer::Timer->new();
 
 
 #
-#  Find all pages & assets.
+#  Rebuild the site
 #
-my @pages = $site->pages( directory => $DEFAULTS{ 'input' } );
-my @assets = $site->assets( directory => $DEFAULTS{ 'input' } );
-
-#
-# Count of pages we've built.
-#
-my $rebuilt = 0;
+my $rebuilt = $site->build();
 
 #
-#  For each page we've found.
+#  Copy the assets
 #
-foreach my $page (@pages)
-{
-
-    #
-    # The path of the page, on-disk.
-    #
-    my $src = $page->source();
-
-    print "\nProcessing page: $src\n" if ( $CONFIG{ 'verbose' } );
-
-    #
-    # Convert the input path to a suitable output path.
-    #
-    my $dst = $src;
-    $dst =~ s/$DEFAULTS{'suffix'}/.html/g;
-    $dst =~ s/^$DEFAULTS{'input'}/$DEFAULTS{'output'}/g
-      unless ( $DEFAULTS{ 'in-place' } );
-
-    #
-    # Show the transformation.
-    #
-    print "File: $src\n" if ( $CONFIG{ 'verbose' } );
-    print "Dest: $dst\n" if ( $CONFIG{ 'verbose' } );
-
-
-    #
-    # The template to expand the content into will come from the page, or the global
-    # configuration
-    #
-    my $template = $page->layout() || $cfg->layout() || $DEFAULTS{ 'layout' };
-    print "Layout file is: $DEFAULTS{'layout-path'}/$template\n"
-      if ( $CONFIG{ 'verbose' } );
-
-    #
-    # Ensure the template exists.
-    #
-    if ( !-e $DEFAULTS{ 'layout-path' } . "/" . $template )
-    {
-        print
-          "WARNING: Layout file missing: $DEFAULTS{'layout-path'}/$template\n";
-        next;
-    }
-
-
-    #
-    #  If the destination is missing or old then we must rebuild.
-    #
-    my $rebuild = 0;
-    if ( !-e $dst )
-    {
-        $rebuild = 1;
-        print "Forcing rebuild because $dst is missing.\n"
-          if ( $CONFIG{ 'verbose' } );
-    }
-    else
-    {
-        if ( -M $src < -M $dst )
-        {
-            print "Rebuilding as page is newer than the output.\n"
-              if ( $CONFIG{ 'verbose' } );
-            $rebuild = 1;
-        }
-        else
-        {
-            if ( -M $dst > -M $DEFAULTS{ 'layout-path' } . "/" . $template )
-            {
-                print "Rebuilding as output is older than the layout.\n"
-                  if ( $CONFIG{ 'verbose' } );
-                $rebuild = 1;
-            }
-        }
-    }
-
-
-    #
-    # Is the rebuild being forced?
-    #
-    $rebuild = 1 if ( $CONFIG{ 'force' } );
-
-    #
-    #  Skip this page if we don't need to build it.
-    #
-    next unless ($rebuild);
-
-
-    #
-    # Keep track of rebuilt pages.
-    #
-    $rebuilt += 1;
-
-
-    #
-    #  Load the HTML::Template module against the layout.
-    #
-    my $tmpl = HTML::Template->new(
-                       filename => $DEFAULTS{ 'layout-path' } . "/" . $template,
-                       die_on_bad_params => 0,
-                       path => [@INCLUDES, $DEFAULTS{ 'layout-path' }],
-                       search_path_on_include => 1,
-                       global_vars            => 1,
-                       loop_context_vars      => 1,
-    );
-
-
-
-    #
-    #  The template-data we'll expand for the page/template.
-    #
-    my %data = ( $cfg->fields(), $page->fields() );
-
-    #
-    #  Use the plugin-factory to expand each of the variables.
-    #
-    my $ref = $PLUGINS->expand_variables( $cfg, $page, \%data );
-    %data = %$ref;
-
-
-    #
-    #  Load the HTLM::Template module against the body of the page.
-    #
-    #  (Includes are relative to the path of the input.)
-    #
-    my $dirName = $page->source();
-    if ( $dirName =~ /^(.*)\/(.*)$/ )
-    {
-        $dirName = $1;
-    }
-    my $body = HTML::Template->new( scalarref => \$page->content( \%data ),
-                                    die_on_bad_params => 0,
-                                    path              => [@INCLUDES, $dirName],
-                                    search_path_on_include => 1,
-                                    global_vars            => 1,
-                                    loop_context_vars      => 1,
-                                  );
-
-
-    #
-    #  Template-expand the body of the page.
-    #
-    $body->param( \%data );
-    $data{ 'content' } = $body->output();
-
-
-    #
-    # Make the (updated) global and per-page data available
-    # to the template object.
-    #
-    $tmpl->param( \%data );
-
-    #
-    # Make sure the output path exists.
-    #
-    my $path = $dst;
-    if ( $path =~ /^(.*)\/(.*)$/ )
-    {
-        $path = $1;
-        File::Path::mkpath( $path, { verbose => 0, mode => oct(755) } )
-          if ( !-d $path );
-    }
-
-    #
-    #  Output the expanded template to the destination file.
-    #
-    print "Writing to $dst\n" if ( $CONFIG{ 'verbose' } );
-    open my $handle, ">:utf8", $dst or die "Failed to write to '$dst' - $!";
-    binmode( $handle, ":utf8" );
-    print $handle $tmpl->output();
-    close $handle;
-}
-
-
-#
-#  Now copy all missing assets into place, unless we're running in-place.
-#
-unless ( $DEFAULTS{ 'in-place' } )
-{
-
-    #
-    #  The files we're going to copy.
-    #
-    my @copy;
-
-
-    #
-    # We're going to build-up a command line to pass to tar
-    #
-    foreach my $asset (@assets)
-    {
-
-        #
-        # Strip the input component of the filename(s).
-        #
-        my $src = $asset->source();
-        $src =~ s/^$DEFAULTS{'input'}//g;
-
-        #
-        # If we've got an asset which is a directory that
-        # is already present, for example, we'll skip it.
-        #
-        push( @copy, $src ) unless ( -e "$DEFAULTS{'output'}/$src" );
-    }
-
-    #
-    # Run the copy, unless all files are present.
-    #
-    if ( scalar @copy ne 0 )
-    {
-
-        #
-        # The horrible command we're going to execute.
-        #
-        my $cmd = "(cd $DEFAULTS{'input'} && tar -cf - " .
-          join( " ", @copy ) . ") | ( cd $DEFAULTS{'output'} && tar xf -)";
-        print "TAR: $cmd " if ( $CONFIG{ 'verbose' } );
-        system($cmd );
-    }
-}
-
-
-
-#
-#  Cleanup any plugins.
-#
-$PLUGINS->cleanup();
-
+$site->copyAssets();
 
 #
 #  See if we have post-build commands

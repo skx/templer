@@ -130,25 +130,30 @@ Create the output directory if we're not running in-place.
 
 sub init
 {
-    my ($self) = (@_);
+    my ( $self, $cfg ) = (@_);
 
-    my $input  = $self->{ 'input' };
-    my $output = $self->{ 'output' };
-
-    my $inplace = $self->{ 'in-place' };
+    #
+    #  Save the config reference
+    #
+    $self->{ 'cfg' } = $cfg;
 
     #
     #  Ensure we have an input directory.
     #
+    my $input = $self->{ 'input' };
     if ( !-d $input )
     {
         print "The input directory doesn't exist: $input\n";
         exit;
     }
 
+
     #
     #  Create the output directory if missing, unless we're in-place
     #
+    my $output  = $self->{ 'output' };
+    my $inplace = $self->{ 'in-place' };
+
     File::Path::mkpath( $output, { verbose => 0, mode => oct(755) } )
       if ( !-d $output && ( !$inplace ) );
 
@@ -289,6 +294,288 @@ sub _findFiles
 }
 
 
+sub build
+{
+    my ($self) = (@_);
+
+    #
+    #  If we have a plugin directory then load the plugins beneath it.
+    #
+    #  NOTE:  The bundled/built-in plugins will always be available.
+    #
+    my $PLUGINS = Templer::Plugin::Factory->new();
+    if ( -d $self->{ 'plugin-path' } )
+    {
+        $PLUGINS->load_plugins( $self->{ 'plugin-path' } );
+    }
+
+    #
+    #  Setup an array of include-paths.
+    #
+    my @INCLUDES;
+    foreach my $path ( split( /:/, $self->{ 'include-path' } ) )
+    {
+        push( @INCLUDES, $path ) if ( -d $path );
+    }
+    $self->{ 'cfg' }->set( "include-path", \@INCLUDES );
+
+    #my $f = $cfg->field( "include-path" );
+    #my @f = ( $f ? @$f : () );
+
+
+
+    #
+    #  Find all pages & assets.
+    #
+    my @pages = $self->pages( directory => $self->{ 'input' } );
+
+    #
+    # Count of pages we've built.
+    #
+    my $rebuilt = 0;
+
+    #
+    #  For each page we've found.
+    #
+    foreach my $page (@pages)
+    {
+
+        #
+        # The path of the page, on-disk.
+        #
+        my $src = $page->source();
+
+        print "\nProcessing page: $src\n" if ( $self->{ 'verbose' } );
+
+        #
+        # Convert the input path to a suitable output path.
+        #
+        my $dst = $src;
+        $dst =~ s/$self->{'suffix'}/.html/g;
+        $dst =~ s/^$self->{'input'}/$self->{'output'}/g
+          unless ( $self->{ 'in-place' } );
+
+        #
+        # Show the transformation.
+        #
+        print "File: $src\n" if ( $self->{ 'verbose' } );
+        print "Dest: $dst\n" if ( $self->{ 'verbose' } );
+
+
+        #
+        # The template to expand the content into will come from the page, or the global
+        # configuration
+        #
+        my $template = $page->layout() ||
+          $self->{ 'cfg' }->layout() ||
+          $self->{ 'layout' };
+        print "Layout file is: $self->{'layout-path'}/$template\n"
+          if ( $self->{ 'verbose' } );
+
+        #
+        # Ensure the template exists.
+        #
+        if ( !-e $self->{ 'layout-path' } . "/" . $template )
+        {
+            print
+              "WARNING: Layout file missing: $self->{'layout-path'}/$template\n";
+            next;
+        }
+
+
+        #
+        #  If the destination is missing or old then we must rebuild.
+        #
+        my $rebuild = 0;
+        if ( !-e $dst )
+        {
+            $rebuild = 1;
+            print "Forcing rebuild because $dst is missing.\n"
+              if ( $self->{ 'verbose' } );
+        }
+        else
+        {
+            if ( -M $src < -M $dst )
+            {
+                print "Rebuilding as page is newer than the output.\n"
+                  if ( $self->{ 'verbose' } );
+                $rebuild = 1;
+            }
+            else
+            {
+                if ( -M $dst > -M $self->{ 'layout-path' } . "/" . $template )
+                {
+                    print "Rebuilding as output is older than the layout.\n"
+                      if ( $self->{ 'verbose' } );
+                    $rebuild = 1;
+                }
+            }
+        }
+
+
+        #
+        # Is the rebuild being forced?
+        #
+        $rebuild = 1 if ( $self->{ 'force' } );
+
+        #
+        #  Skip this page if we don't need to build it.
+        #
+        next unless ($rebuild);
+
+
+        #
+        # Keep track of rebuilt pages.
+        #
+        $rebuilt += 1;
+
+
+        #
+        #  Load the HTML::Template module against the layout.
+        #
+        my $tmpl = HTML::Template->new(
+                         filename => $self->{ 'layout-path' } . "/" . $template,
+                         die_on_bad_params => 0,
+                         path => [@INCLUDES, $self->{ 'layout-path' }],
+                         search_path_on_include => 1,
+                         global_vars            => 1,
+                         loop_context_vars      => 1,
+        );
+
+
+
+        #
+        #  The template-data we'll expand for the page/template.
+        #
+        my %data = ( $self->{ 'cfg' }->fields(), $page->fields() );
+
+        #
+        #  Use the plugin-factory to expand each of the variables.
+        #
+        my $ref = $PLUGINS->expand_variables( $self->{ 'cfg' }, $page, \%data );
+        %data = %$ref;
+
+
+        #
+        #  Load the HTLM::Template module against the body of the page.
+        #
+        #  (Includes are relative to the path of the input.)
+        #
+        my $dirName = $page->source();
+        if ( $dirName =~ /^(.*)\/(.*)$/ )
+        {
+            $dirName = $1;
+        }
+        my $body = HTML::Template->new( scalarref => \$page->content( \%data ),
+                                        die_on_bad_params => 0,
+                                        path => [@INCLUDES, $dirName],
+                                        search_path_on_include => 1,
+                                        global_vars            => 1,
+                                        loop_context_vars      => 1,
+                                      );
+
+
+        #
+        #  Template-expand the body of the page.
+        #
+        $body->param( \%data );
+        $data{ 'content' } = $body->output();
+
+
+        #
+        # Make the (updated) global and per-page data available
+        # to the template object.
+        #
+        $tmpl->param( \%data );
+
+        #
+        # Make sure the output path exists.
+        #
+        my $path = $dst;
+        if ( $path =~ /^(.*)\/(.*)$/ )
+        {
+            $path = $1;
+            File::Path::mkpath( $path, { verbose => 0, mode => oct(755) } )
+              if ( !-d $path );
+        }
+
+        #
+        #  Output the expanded template to the destination file.
+        #
+        print "Writing to $dst\n" if ( $self->{ 'verbose' } );
+        open my $handle, ">:utf8", $dst or die "Failed to write to '$dst' - $!";
+        binmode( $handle, ":utf8" );
+        print $handle $tmpl->output();
+        close $handle;
+    }
+
+    #
+    #  Cleanup any plugins.
+    #
+    $PLUGINS->cleanup();
+
+    #
+    #  Return count of rebuilt pages.
+    #
+    return ($rebuilt);
+}
+
+
+sub copyAssets
+{
+    my ($self) = (@_);
+
+
+    #
+    #  Now copy all missing assets into place, unless we're running in-place.
+    #
+    return if ( $self->{ 'in-place' } );
+
+    #
+    #  The assets.
+    #
+    my @assets = $self->assets( directory => $self->{ 'input' } );
+
+    #
+    #  The files we're going to copy.
+    #
+    my @copy;
+
+
+    #
+    # We're going to build-up a command line to pass to tar
+    #
+    foreach my $asset (@assets)
+    {
+
+        #
+        # Strip the input component of the filename(s).
+        #
+        my $src = $asset->source();
+        $src =~ s/^$self->{'input'}//g;
+
+        #
+        # If we've got an asset which is a directory that
+        # is already present, for example, we'll skip it.
+        #
+        push( @copy, $src ) unless ( -e "$self->{'output'}/$src" );
+    }
+
+    #
+    # Run the copy, unless all files are present.
+    #
+    if ( scalar @copy ne 0 )
+    {
+
+        #
+        # The horrible command we're going to execute.
+        #
+        my $cmd = "(cd $self->{'input'} && tar -cf - " .
+          join( " ", @copy ) . ") | ( cd $self->{'output'} && tar xf -)";
+        print "TAR: $cmd " if ( $self->{ 'verbose' } );
+        system($cmd );
+    }
+}
 
 
 1;
