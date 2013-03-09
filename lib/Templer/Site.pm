@@ -91,8 +91,6 @@ package Templer::Site;
 use File::Find;
 use File::Path qw! mkpath !;
 use HTML::Template;
-use Templer::Site::Asset;
-use Templer::Site::Page;
 
 
 

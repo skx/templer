@@ -17,6 +17,9 @@ use File::Path qw! mkpath !;
 
 BEGIN {use_ok('Templer::Site');}
 require_ok('Templer::Site');
+BEGIN {use_ok('Templer::Site::Asset');}
+require_ok('Templer::Site::Asset');
+
 
 
 #
