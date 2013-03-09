@@ -1,12 +1,13 @@
 #!/usr/bin/perl
 #
-#  Documentation at the foot of the script.
+#  NOTE: Documentation at the foot of the script.
 #
+
 
 use strict;
 use warnings;
 
-use File::Path qw! mkpath !;
+
 use Getopt::Long;
 use Pod::Usage;
 
@@ -48,7 +49,7 @@ testDependencies();
 #  If we're not in a templer-directory then go up the filesystem
 # looking for one.  Stop after "a few" attempts.
 #
-for ( my $count = 0 ; $count < 5 ; $count += 1 )
+for ( my $count = 0 ; $count < 10 ; $count += 1 )
 {
     if ( !( ( -e "templer.cfg" ) || ( -d "input/" ) ) )
     {
@@ -110,17 +111,6 @@ runHTTPD() if ( $CONFIG{ 'serve' } );
 my $site = Templer::Site->new(%DEFAULTS);
 $site->init($cfg);
 
-#
-#  Setup an array of include-paths.
-#
-my @INCLUDES;
-foreach my $path ( split( /:/, $DEFAULTS{ 'include-path' } ) )
-{
-    push( @INCLUDES, $path ) if ( -d $path );
-}
-$cfg->set( "include-path", \@INCLUDES );
-
-
 
 #
 #  Execute any pre-build commands the user might have defined.
@@ -135,17 +125,18 @@ my $timer = Templer::Timer->new();
 
 
 #
-#  Rebuild the site
+#  Build/rebuild the site.
 #
 my $rebuilt = $site->build();
 
 #
-#  Copy the assets
+#  Copy the assets into place.
 #
 $site->copyAssets();
 
+
 #
-#  See if we have post-build commands
+#  Run any post-build commands the user might have defined.
 #
 runCommands("post-build");
 
@@ -196,9 +187,8 @@ sub parseCommandLine
     Pod::Usage::pod2usage( -input => \*DATA ) if ( $CONFIG{ 'help' } );
     Pod::Usage::pod2usage( -input => \*DATA, -verbose => 2 )
       if ( $CONFIG{ 'manual' } );
-
-
 }
+
 
 
 #
@@ -227,6 +217,7 @@ sub testDependencies
 
     exit(1) if ($fatal);
 }
+
 
 
 #
@@ -328,23 +319,27 @@ The name?  It stuck.  Initially I was thinking "templator" and
 
 =head1 Live Usage
 
-This code is in use in three domains I host:
+This code is in use on several domains I host/maintain:
 
 =over 8
 
-=item http://stolen-souls.com/
-
 =item http://blogspam.net/
+
+=item http://kvm-hosting.org/
 
 =item http://steve.org.uk/
 
+=item http://stolen-souls.com/
+
 =back
 
-Initially there was one version of the C<templer> tool, but slowly the three sites
-required different tweaks and we had three different versions of the site-generator.
+Originally I had one utility to generate the HTML for each of those sites, called
+'webgen'.  Over time this single version divererged into several, as I made ad-hoc
+changes to cope with the different sites.
 
-The version you're seeing now is unified, containing all the previously site-specific
-changes.  On that basis it should be generally flexible and usable by others.
+Templer was created to replace my previous script, ensuring that each of the
+site-specific requirements would continue to be satisified, on that basis it
+should be generally flexible and usable by others.
 
 =cut
 
@@ -352,11 +347,12 @@ changes.  On that basis it should be generally flexible and usable by others.
 =head1 Site Structure
 
 A templer-based site consists of a configuration file C<templer.cfg> and
-an input directory.  Input files are expanded through L<HTML::Template>, to
+an input directory.  Input files are processed with L<HTML::Template>, to
 expand any variables set in the pages themselves, or in the global template.
+
 Once page-content is expanded it is then inserted into a global layout template.
 
-There are two modes of operation when it comes to processing fiels:
+There are two modes of operation when it comes to processing files:
 
 =over 8
 
@@ -386,14 +382,19 @@ variable parsing:
 
 =item Templer::Global
 
-This contains the parsing code for the  global configuration file, which is
+This contains the parsing code for the global configuration file, which is
 located at the top-level directory of the site.  (It must be named
 C<templer.cfg>).
+
+=item Templer::Plugin::Factory
+
+A class-factory for loading/invoking plugin methods.
 
 =item Templer::Site
 
 Given an input directory this module finds and returns C<Templer::Site::Asset> and
-C<Templer::Site::Page> objects for each file present.
+C<Templer::Site::Page> objects for each file present.  This module is also where
+all the actual building occurs.
 
 =item Templer::Site::Asset
 
@@ -402,6 +403,10 @@ An item which requires zero expansion.  Media, javascript, etc.
 =item Templer::Site::Page
 
 A page which requires template expansion.
+
+=item Templer::Timer
+
+A utility to report upon time-durations.
 
 =back
 
