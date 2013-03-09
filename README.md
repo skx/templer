@@ -254,7 +254,7 @@ like so:
         $ cd templer
         $ make
 
-This `make` (or `make default`) command is required to generate the script by concatenating the various modules which make up the code into a single script.  The code is deliberately contained in a single script to ease deployment, but developed in a modular fashion to ease testing.
+This `make` (or `make default`) command is required to generate the script by concatenating the various modules which make up the code into a single script.  The code is deliberately contained in a single script to ease deployment, but developed in a modular fashion to ease testing.  (You can see a brief overview of [the logical structure](#object-hierarchy) later.)
 
 The dependencies are minimal, to ease installation:
 
@@ -446,15 +446,15 @@ In brief the control flow goes like this:
 
 * `templer` runs, parses the command line, etc.
 * A `Templer::Global` object is created to read the `templer.cfg` file.
-* A `Templer::Site` object is created, with a reference to the default options, and the prebviously created `Templer::Global` object.
+* A `Templer::Site` object is created, with a reference to the default options, and the previously created `Templer::Global` object.
 * A `Templer::Timer` object is created to record the build-time.
 * The build process is contained in `Templer::Site::build()`:
      * A `Templer::Plugin::Factory` object is created to load plugins.
      * A `Templer::Site::Page` object is created for each appropriate input.
      * Each page is output.
+     * The plugins are unloaded.
 * The assets are copied via `Templer::Site::copyAssets()`.
-* The plugins are unloaded.
-* The site is done.
+* The build-time/build-count is reported and the process is complete.
 
 
 
