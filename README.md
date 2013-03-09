@@ -103,7 +103,7 @@ The special variable `layout` may be used to specify a different layout template
 the current page.  If there is no per-page layout specified then the global layout
 declared in the `templer.cfg` file will be used.
 
-The special variable 'output' may be used to specify an alternative output file.  For
+The special variable `output` may be used to specify an alternative output file.  For
 example the input file `index.wgn` would normally become `index.html`, but you could make it become
 something else.
 
@@ -317,7 +317,7 @@ The generated "complex" example is the single best reference to the facilities a
 Rebuilding a site
 -----------------
 
-If you're inside the directory containing your `templer.cfg` file simply
+If you're beneath the directory containing your `templer.cfg` file simply
 run `templer` with no arguments.  You may optionally add flags to control
 what happens:
 
@@ -329,6 +329,8 @@ what happens:
 In the general case `templer` should rebuild only the files which are needed
 to be built, if you teak an include-file, or similar, it is possible you will
 need to explicitly force a rebuild.
+
+> Previously it was required that you run `templer` from the top-level of your site, this has now changed.  `templer` will walk upwards from the current working directory and attempt to find the site-root by itself.
 
 
 Plugins
