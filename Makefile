@@ -1,5 +1,5 @@
 DIST_PREFIX = ${TMP}
-VERSION     = 0.4
+VERSION     = 0.5
 BASE        = templer
 
 
