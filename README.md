@@ -435,6 +435,28 @@ It should be noted for completeness that the same expansion happens on global
 variables defined within your `templer.cfg` file.
 
 
+Object Hierarchy
+----------------
+
+Although `templer` is distributed and used as a single script it is written
+using a series of objects.  Bundling into a single binary allows for easier
+distribution, installation and usage.
+
+In brief the control flow goes like this:
+
+* `templer` runs, parses the command line, etc.
+* A `Templer::Global` object is created to read the `templer.cfg` file.
+* A `Templer::Site` object is created, with a reference to the default options, and the prebviously created `Templer::Global` object.
+* A `Templer::Timer` object is created to record the build-time.
+* The build process is contained in `Templer::Site::build()`:
+     * A `Templer::Plugin::Factory` object is created to load plugins.
+     * A `Templer::Site::Page` object is created for each appropriate input.
+     * Each page is output.
+* The assets are copied via `Templer::Site::copyAssets()`.
+* The plugins are unloaded.
+* The site is done.
+
+
 
 Problems
 --------
