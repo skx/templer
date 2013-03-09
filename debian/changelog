@@ -1,3 +1,13 @@
+templer (0.5-1) stable; urgency=low
+
+  * Simplified the command-line handling, by moving all options to
+    the configuration file.
+  * Work in sub-directories, not just the top-level directory.
+  * Reorganized code to be more logical.
+  * Pages may setup their own output filename.
+
+ -- Steve Kemp <steve@steve.org.uk>  Sat, 09 Mar 2013 15:16:17 +0000
+
 templer (0.4-1) stable; urgency=low
 
   * Added release target to the makefile.
