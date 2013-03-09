@@ -5,7 +5,8 @@ Maintainer: Steve Kemp <steve@steve.org.uk>
 Build-Depends: debhelper (>> 7.0.0)
 Standards-Version: 3.9.1
 Homepage: http://www.steve.org.uk/Software/templer/
-
+Vcs-Git: git://github.com/skx/templer.git
+Vcs-browser: https://github.com/skx/templer.git
 
 Package: templer
 Architecture: all
