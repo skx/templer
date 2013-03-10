@@ -327,8 +327,12 @@ what happens:
      * To force a rebuild of the site.
 
 In the general case `templer` should rebuild only the files which are needed
-to be built, if you teak an include-file, or similar, it is possible you will
-need to explicitly force a rebuild.
+to be built.  A page will be rebuilt if:
+
+* The page source is edited.
+* The layout the page uses is edited.
+* Any include-file the page includes is edited.
+     * This applies to those includes read via [read_file](#file-inclusion) rather than via `HTML::Template` includes
 
 > Previously it was required that you run `templer` from the top-level of your site, this has now changed.  `templer` will walk upwards from the current working directory and attempt to find the site-root by itself.
 
