@@ -175,6 +175,11 @@ sub expand_variables
             }
 
             $hash{ $key } = $self->file_contents($file);
+
+            #
+            #  The page dependency also includes the filename now.
+            #
+            $page->add_dependency( $file );
         }
     }
 

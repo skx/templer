@@ -274,5 +274,32 @@ sub layout
 }
 
 
+=head2 dependencies
+
+Return the dependencies of the current page.
+
+=cut
+
+sub dependencies
+{
+    my ($self) = (@_);
+
+    $self->{'dependencies'} ? @{$self->{'dependencies'}} : () ;
+}
+
+
+=head2 add_dependency
+
+Add a dependency to the current page.  This is used so that the file-inclusion
+plugin can add such a thing.
+
+=cut
+
+sub add_dependency
+{
+    my( $self, $file ) = ( @_ );
+    push ( @{$self->{'dependencies'}}, $file );
+}
+
 
 1;
