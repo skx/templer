@@ -79,6 +79,7 @@ my %DEFAULTS = ( "in-place"     => 0,
                  "plugin-path"  => "./plugins",
                  "suffix"       => ".skx",
                  "verbose"      => ( $CONFIG{ 'verbose' } || 0 ),
+                 "force"        => ( $CONFIG{ 'force' } || 0 ),
                );
 
 
