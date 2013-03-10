@@ -179,7 +179,7 @@ sub expand_variables
             #
             #  The page dependency also includes the filename now.
             #
-            $page->add_dependency( $file );
+            $page->add_dependency($file);
         }
     }
 

@@ -284,7 +284,7 @@ sub dependencies
 {
     my ($self) = (@_);
 
-    $self->{'dependencies'} ? @{$self->{'dependencies'}} : () ;
+    $self->{ 'dependencies' } ? @{ $self->{ 'dependencies' } } : ();
 }
 
 
@@ -297,8 +297,8 @@ plugin can add such a thing.
 
 sub add_dependency
 {
-    my( $self, $file ) = ( @_ );
-    push ( @{$self->{'dependencies'}}, $file );
+    my ( $self, $file ) = (@_);
+    push( @{ $self->{ 'dependencies' } }, $file );
 }
 
 
