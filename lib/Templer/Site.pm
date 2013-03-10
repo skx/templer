@@ -361,6 +361,12 @@ sub build
     #
     my @pages = $self->pages( directory => $self->{ 'input' } );
 
+
+    #
+    #  Template caceh
+    #
+    my %CACHE;
+
     #
     # Count of pages we've built, returned to the caller.
     #
@@ -479,15 +485,30 @@ sub build
         #
         #  Load the HTML::Template module against the layout.
         #
-        my $tmpl = HTML::Template->new(
+        #  Look in the cache first.
+        #
+        if ( !$CACHE{ $self->{ 'layout-path' } . "/" . $template } )
+        {
+
+            #
+            #  Not in the cache.  Load it up.
+            #
+            $CACHE{ $self->{ 'layout-path' } . "/" . $template } =
+              HTML::Template->new(
                          filename => $self->{ 'layout-path' } . "/" . $template,
                          die_on_bad_params => 0,
                          path => [@INCLUDES, $self->{ 'layout-path' }],
                          search_path_on_include => 1,
                          global_vars            => 1,
                          loop_context_vars      => 1,
-        );
+              );
+        }
 
+
+        #
+        #  Fetch from cache.
+        #
+        my $tmpl = $CACHE{ $self->{ 'layout-path' } . "/" . $template };
 
 
         #
