@@ -363,14 +363,14 @@ sub build
 
 
     #
-    #  Template caceh
-    #
-    my %CACHE;
-
-    #
-    # Count of pages we've built, returned to the caller.
+    #  A count of the pages we've rebuilt.
     #
     my $rebuilt = 0;
+
+    #
+    #  Template cache
+    #
+    my %CACHE;
 
     #
     #  For each page we've found.
@@ -382,8 +382,8 @@ sub build
         # The path of the page, on-disk.
         #
         my $src = $page->source();
-
         print "\nProcessing page: $src\n" if ( $self->{ 'verbose' } );
+
 
         #
         # Convert the input path to a suitable output path.
@@ -415,8 +415,8 @@ sub build
 
 
         #
-        # The template to expand the content into will come from the page, or the global
-        # configuration
+        # The template to expand the content into will come from the page, or
+        # the global configuration object.
         #
         my $template = $page->layout() ||
           $self->{ 'cfg' }->layout() ||
@@ -433,53 +433,6 @@ sub build
               "WARNING: Layout file missing: $self->{'layout-path'}/$template\n";
             next;
         }
-
-
-        #
-        #  If the destination is missing or old then we must rebuild.
-        #
-        my $rebuild = 0;
-        if ( !-e $dst )
-        {
-            $rebuild = 1;
-            print "Forcing rebuild because $dst is missing.\n"
-              if ( $self->{ 'verbose' } );
-        }
-        else
-        {
-            if ( -M $src < -M $dst )
-            {
-                print "Rebuilding as page is newer than the output.\n"
-                  if ( $self->{ 'verbose' } );
-                $rebuild = 1;
-            }
-            else
-            {
-                if ( -M $dst > -M $self->{ 'layout-path' } . "/" . $template )
-                {
-                    print "Rebuilding as output is older than the layout.\n"
-                      if ( $self->{ 'verbose' } );
-                    $rebuild = 1;
-                }
-            }
-        }
-
-
-        #
-        # Is the rebuild being forced?
-        #
-        $rebuild = 1 if ( $self->{ 'force' } );
-
-        #
-        #  Skip this page if we don't need to build it.
-        #
-        next unless ($rebuild);
-
-
-        #
-        # Keep track of rebuilt pages.
-        #
-        $rebuilt += 1;
 
 
         #
@@ -514,6 +467,8 @@ sub build
         #
         #  The template-data we'll expand for the page/template.
         #
+        #  (All fields from the page, and from the configuration file.)
+        #
         my %data = ( $self->{ 'cfg' }->fields(), $page->fields() );
 
         #
@@ -521,6 +476,51 @@ sub build
         #
         my $ref = $PLUGINS->expand_variables( $self->{ 'cfg' }, $page, \%data );
         %data = %$ref;
+
+
+        #
+        #  At this point we can tell if we need to rebuild the page.
+        #
+        #  We want to build the page if:
+        #
+        #    *  The output page is missing.
+        #
+        #    * The input page, or any dependancy is newer than the output.
+        #
+        my $rebuild = 0;
+        $rebuild = 1 if ( !-e $dst );
+
+        if ( !$rebuild )
+        {
+
+            #
+            #  Get the dependencies of the page - add in the page source,
+            # and the template path.
+            #
+            my @deps = ( $self->{ 'layout-path' } . "/" . $template,
+                         $page->source(), $page->dependencies() );
+
+            foreach my $d (@deps)
+            {
+                if ( -M $d < -M $dst )
+                {
+                    $self->{ 'verbose' } &&
+                      print "Triggering rebuild $d is more recent than $dst\n";
+                    $rebuild = 1;
+                }
+            }
+        }
+
+        #
+        #  Forced rebuild via the command-line.
+        #
+        $rebuild = 1 if ( $self->{ 'force' } );
+
+        #
+        #  OK skip if we're not rebuilding, otherwise increase the count.
+        #
+        next unless ($rebuild);
+        $rebuilt += 1;
 
 
         #
