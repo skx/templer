@@ -1,7 +1,6 @@
 DIST_PREFIX = ${TMP}
-VERSION     = 0.6
 BASE        = templer
-
+VERSION     = $(shell sh -c 'git describe --abbrev=0 --tags | tr -d "release-"')
 
 #
 # Default action is to build the two binary scripts
@@ -43,6 +42,7 @@ install: default
 
 
 release: critic tidy clean
+	echo "Release is $(VERSION)"
 	rm -rf $(DIST_PREFIX)/$(BASE)-$(VERSION)
 	rm -f $(DIST_PREFIX)/$(BASE)-$(VERSION).tar.gz
 	cp -R . $(DIST_PREFIX)/$(BASE)-$(VERSION)
