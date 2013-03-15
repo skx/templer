@@ -203,8 +203,7 @@ The [HTML::Template](http://search.cpan.org/perldoc?HTML%3A%3ATemplate) module s
       <!-- tmpl_include name='/etc/passwd' -->
       <p>That was my password file.</p>
 
-In addition to this you may define a variable to contain the contents of a specified
-file.  For example:
+In addition to this you may define a variable to contain the contents of a specified file.  For example:
 
       Title: This file has my passwords!
       Passwd: read_file( "/etc/passwd" )
@@ -215,7 +214,7 @@ file.  For example:
 
 This facility is implemented in the `Templer::Plugin::FileContents` [plugin](#plugins).
 
-Included files, whether included via the `read_file` method, or via the native HTML::Template faclity, are searched for in the same fashion:
+Include files, whether included via the `read_file` method, or via the native HTML::Template faclity, are searched for in the same fashion:
 
 * If the filename is fully-qualified, then the absolute path-name will be used.
 * Otherwise the include-path will be searched.
@@ -223,6 +222,7 @@ Included files, whether included via the `read_file` method, or via the native H
 
 This allows you to place all your include-files in a single directory which is outside your web-root.
 
+> **TIP**: The advantage of choosing to use `read_file` over the native HTML::Template support is that with the former the output page will be automatically rebuilt if you modify the include file.
 
 
 Shell Command Execution
@@ -258,7 +258,7 @@ like so:
         $ cd templer
         $ make
 
-This `make` (or `make default`) command is required to generate the script by concatenating the various modules which make up the code into a single script.  The code is deliberately contained in a single script to ease deployment, but developed in a modular fashion to ease testing.  (You can see a brief overview of [the logical structure](#object-hierarchy) later.)
+The `make` (or `make default`) command is required to generate the script by concatenating the various modules which make up the code into a single script.  The code is deliberately contained in a single script to ease deployment, but developed in a modular fashion to ease testing.  (You can see a brief overview of [the logical structure](#object-hierarchy) later.)
 
 The dependencies are minimal, to ease installation:
 
