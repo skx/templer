@@ -46,14 +46,17 @@ testDependencies();
 
 
 #
-#  If we're not in a templer-directory then go up the filesystem
-# looking for one.  Stop after "a few" attempts.
+# Unless config file already specified, if we're not in a templer-directory
+# then go up the filesystem looking for one.  Stop after "a few" attempts.
 #
-for ( my $count = 0 ; $count < 10 ; $count += 1 )
+if (!defined($CONFIG{'config'}))
 {
-    if ( !( ( -e "templer.cfg" ) || ( -d "input/" ) ) )
+    for ( my $count = 0 ; $count < 10 ; $count += 1 )
     {
-        chdir("../");
+        if ( !( ( -e "templer.cfg" ) || ( -d "input/" ) ) )
+        {
+            chdir("../");
+        }
     }
 }
 
@@ -292,6 +295,7 @@ templer - A static-site generator, written in perl.
 
   Flags
 
+    --config=I<FILE> Use I<FILE> as global config file
     --force          Force a rebuild of all pages/assets
     --in-place       Specify we're processing pages in-place, ignoring the output dir.
     --quiet          Don't show output.
