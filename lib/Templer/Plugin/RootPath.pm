@@ -103,11 +103,11 @@ sub expand_variables
     # Compute the path to the web-root
     #
     my $root_path = $page->source();
-    $root_path =~ s{^${$global_cfg}{input}}{.}; # Remove leading input path
-    $root_path =~ s{[^/]+$}{};                  # Remove trailing pagename
-    $root_path =~ s{/[^/]+}{/..}g;              # Replace directories by ..
-    $root_path =~ s{/$}{};                      # Remove trailing /
-    $root_path =~ s{^./}{};                     # Remove leading ./
+    $root_path =~ s{^${$global_cfg}{input}}{.};    # Remove leading input path
+    $root_path =~ s{[^/]+$}{};                     # Remove trailing pagename
+    $root_path =~ s{/[^/]+}{/..}g;                 # Replace directories by ..
+    $root_path =~ s{/$}{};                         # Remove trailing /
+    $root_path =~ s{^./}{};                        # Remove leading ./
 
     #
     #  Get the page-variables in the template.
@@ -151,5 +151,4 @@ sub expand_variables
 #
 #  Register the plugin.
 #
-Templer::Plugin::Factory->new()
-  ->register_plugin("Templer::Plugin::RootPath");
+Templer::Plugin::Factory->new()->register_plugin("Templer::Plugin::RootPath");

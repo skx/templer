@@ -101,9 +101,9 @@ sub expand_variables
     #
     # Get properties of the source file
     #
-    my ($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,
-        $atime,$mtime,$ctime,$blksize,$blocks)
-      = stat($page->source());
+    my ( $dev,  $ino,   $mode,  $nlink, $uid,     $gid, $rdev,
+         $size, $atime, $mtime, $ctime, $blksize, $blocks
+       ) = stat( $page->source() );
     my @mtime = localtime($mtime);
 
     #
@@ -143,5 +143,4 @@ sub expand_variables
 #
 #  Register the plugin.
 #
-Templer::Plugin::Factory->new()
-  ->register_plugin("Templer::Plugin::Timestamp");
+Templer::Plugin::Factory->new()->register_plugin("Templer::Plugin::Timestamp");
