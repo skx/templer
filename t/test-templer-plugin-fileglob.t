@@ -95,7 +95,7 @@ my %original = $page->fields();
 my $ref      = $factory->expand_variables( $cfg, $page, \%original );
 my %updated  = %$ref;
 
-ok( %updated,            "Fetching the fields of hte page succeeded" );
+ok( %updated,            "Fetching the fields of the page succeeded" );
 ok( $updated{ 'files' }, "The fields contain a file reference" );
 
 foreach my $obj ( @{ $updated{ 'files' } } )
