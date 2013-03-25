@@ -1,5 +1,7 @@
 Title: Software Page
 Crumbs: Home, software, example
+css: path_to(css)
 ----
 
 <p>This "site" was created by templer.</p>
+<p>The CSS files are stored in <!-- tmpl_var name='css' --></p>
