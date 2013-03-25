@@ -90,7 +90,7 @@ Variables are written in the file in the form "key: value", and are
 internally stored within the Page object as a hash.
 
 This method iterates over each key & value and updates any that
-seem to refer to shell commands.
+seem to refer to timestamps.
 
 =cut
 
