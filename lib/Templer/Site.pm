@@ -166,6 +166,17 @@ sub init
         exit;
     }
 
+    #
+    # Ensure input directory contains a unique trailing /
+    #
+    $self->{ 'input' } .= "/";
+    $self->{ 'input' } =~ s{/+$}{/};
+
+    #
+    # Ensure output directory contains a unique trailing /
+    #
+    $self->{ 'output' } .= "/";
+    $self->{ 'output' } =~ s{/+$}{/};
 
     #
     #  Create the output directory if missing, unless we're in-place
@@ -175,7 +186,6 @@ sub init
 
     File::Path::mkpath( $output, { verbose => 0, mode => oct(755) } )
       if ( !-d $output && ( !$inplace ) );
-
 
 }
 
@@ -391,7 +401,7 @@ sub build
         #
         if ( $page->field("output") )
         {
-            $dst = $self->{ 'output' } . "/" . $page->field("output");
+            $dst = $self->{ 'output' } . $page->field("output");
         }
         else
         {
