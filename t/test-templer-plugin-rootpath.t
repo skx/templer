@@ -86,7 +86,7 @@ my %updated  = %$ref;
 
 ok( %updated,        "Fetching the fields of the page succeeded" );
 ok( $updated{'css'}, "There is a path_to(css) variable" );
-ok( $updated{'css'}, "./css", "Which has the right value" );
+is( $updated{'css'}, "/css", "Which has the right value" );
 
 #
 # All done.
