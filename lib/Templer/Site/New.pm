@@ -203,6 +203,8 @@ mkdir input
 
 mkdir output
 
+mkdir plugins
+
 mkdir layouts
 
 mkdir includes
