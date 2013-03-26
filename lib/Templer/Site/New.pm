@@ -368,10 +368,18 @@ plugin-path = ./plugins/
 #
 #   <!-- tmpl_include name='file.inc' -->
 #
-# The latter case you may specify a search-path for file inclusion
-# via the include-path setting.
+# In both cases you may specify a search-path for file inclusion
+# via the include-path setting:
 #
 # include-path = include/:include/local/
+#
+# Given the choice you should prefer the templer-provided file-inclusion
+# method over the HTML::Template facility, because this will force pages to
+# be rebuilt when the included-files are changed.
+#
+# Using a HTML::Template include-file you'll need to explicitly force a
+# rebuild if you modify an included file, but not the parent.
+#
 #
 include-path = ./includes
 #
