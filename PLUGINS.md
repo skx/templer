@@ -1,39 +1,53 @@
 Plugins
 --------
-Plugins
--------
 
-Templer allows itself to be extended via the addition of plugins, several
-of which are distributed as part of the core code.
+Templer allows itself to be extended via the addition of plugins.
+
+The following formatting plugins are distributed as part of the project:
+
+* `Templer::Plugin::Markdown`
+   * Allows input files to be written in Markdown.
+* `Templer::Plugin::Perl`
+   * Allows dynamic Perl to be included in your input pages.
+* `Templer::Plugin::Textile`
+   * Allows input files to be written in Textile.
+
+The following variable plugins are distributed as part of the project:
+
+* `Templer::Plugin::Breadcrumbs`
+   * Setup "breadcrumb" trails in your templates easily.
+   * [Read the documentation](https://raw.github.com/skx/templer/master/lib/Templer/Plugin/Breadcrumbs.pm).
+   * This was added partly as a demo, and partly for [use on my site](http://steve.org.uk/Software/templer/).
+* `Templer::Plugin::FileContents`
+   * Set variable values to the contents of files.
+* `Templer::Plugin::FileGlob`
+   * Set variable values to lists of files, based on a globbing pattern.
+* `Templer::Plugin::ShellCommand`
+   * Set variable values to the output of shell commands.
+* `Templer::Plugin::RootPath`
+   * Allow access to your site prefix, without hardcoding it.
+* `Templer::Plugin::Timestamp`
+   * Allow pages to contain their own modification timestamp.
+
+If you wish you may contain write your own plugins, contained beneath your
+templer-site.  The default [templer.cfg](templer.cfg.sample) documents the 
+`plugin-path` setting.
+
+
+
+
+Plugin Types
+------------
 
 There are two types of plugins which are supported:
 
 * Plugins which are used for formatting.
-    * Converting input files from Textile, Markdown, etc, into HTML.
+    * These convert your input files from Textile, Markdown, etc, into HTML.
 
-* Plugins which extend the variable definitions.
+* Plugins which present variables for use in your template(s).
     * Creating variables that refer to file contents, file globs, etc.
 
-There is a slightly different API for the two plugin-families, but both
-are as simple as I could make them. The following plugins are included in the
-distribution and may be studied for reference:
-
-* Templer::Plugin::Markdown
-   * Allows input files to be written in Markdown.
-* Templer::Plugin::Perl
-   * Allows dynamic Perl to be included in your input pages.
-* Templer::Plugin::Textile
-   * Allows input files to be written in Textile.
-* Templer::Plugin::Breadcrumbs
-   * Setup "breadcrumb" trails in your templates easily.
-   * [Read the documentation](https://raw.github.com/skx/templer/master/lib/Templer/Plugin/Breadcrumbs.pm).
-   * This was added partly as a demo, and partly for [use on my site](http://steve.org.uk/Software/templer/).
-* Templer::Plugin::FileContents
-   * Set variable values to the contents of files.
-* Templer::Plugin::FileGlob
-   * Set variable values to lists of files, based on a globbing pattern.
-* Templer::Plugin::ShellCommand
-   * Set variable values to the output of shell commands.
+Although similar there is a different API for the two plugin-families.
 
 
 
@@ -65,7 +79,8 @@ then the markup will be returned without any expansion.  To be explicit
 any formatter plugin must implement only the following two methods:
 
 * `available`
-   * To determine whether this plugin is available.  (i.e. It might only be enabled if the modules it relies upon are present.)
+   * To determine whether this plugin is available.
+   * i.e. It might only be enabled if the modules it relies upon are present.
 * `format`
    * Given some input text return the rendered content.
    * This method receives all the per-page and global variables.
@@ -106,4 +121,11 @@ variable(s) were loaded, which may be useful in some situations.
 
 It should be noted for completeness that the same expansion happens on global
 variables defined within your `templer.cfg` file.
+
+
+Help?
+-----
+
+If you need help writing a plugin, or whish me to supply one for you and your needs,
+please do get in touch.
 
