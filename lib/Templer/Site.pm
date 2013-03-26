@@ -171,12 +171,14 @@ sub init
     #
     $self->{ 'input' } .= "/";
     $self->{ 'input' } =~ s{/+$}{/};
+    $self->{ 'cfg' }->set( 'input', $self->{ 'input' } );
 
     #
     # Ensure output directory contains a unique trailing /
     #
     $self->{ 'output' } .= "/";
     $self->{ 'output' } =~ s{/+$}{/};
+    $self->{ 'cfg' }->set( 'output', $self->{ 'output' } );
 
     #
     #  Create the output directory if missing, unless we're in-place
@@ -513,7 +515,7 @@ sub build
 
 
         #
-        #  Load the HTLM::Template module against the body of the page.
+        #  Load the HTML::Template module against the body of the page.
         #
         #  (Includes are relative to the path of the input.)
         #
