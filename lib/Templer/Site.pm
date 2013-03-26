@@ -171,12 +171,14 @@ sub init
     #
     $self->{ 'input' } .= "/";
     $self->{ 'input' } =~ s{/+$}{/};
+    $self->{ 'cfg' }->set( 'input', $self->{ 'input' } );
 
     #
     # Ensure output directory contains a unique trailing /
     #
     $self->{ 'output' } .= "/";
     $self->{ 'output' } =~ s{/+$}{/};
+    $self->{ 'cfg' }->set( 'output', $self->{ 'output' } );
 
     #
     #  Create the output directory if missing, unless we're in-place
