@@ -172,7 +172,7 @@ sub init
     $self->{ 'input' } .= "/";
     $self->{ 'input' } =~ s{/+$}{/};
     $self->{ 'cfg' }->set( 'input', $self->{ 'input' } )
-        if ( $self->{'cfg'} );
+      if ( $self->{ 'cfg' } );
 
     #
     # Ensure output directory contains a unique trailing /
@@ -180,7 +180,7 @@ sub init
     $self->{ 'output' } .= "/";
     $self->{ 'output' } =~ s{/+$}{/};
     $self->{ 'cfg' }->set( 'output', $self->{ 'output' } )
-        if ( $self->{'cfg'} );
+      if ( $self->{ 'cfg' } );
 
     #
     #  Create the output directory if missing, unless we're in-place

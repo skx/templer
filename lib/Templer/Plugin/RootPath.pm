@@ -103,11 +103,11 @@ sub expand_variables
     # Compute the path to the web-root
     #
     my $root_path = $page->source();
-    $root_path =~ s{^${$global_cfg}{input}}{./};   # Change leading input path
-    $root_path =~ s{[^/]+$}{};                     # Remove trailing pagename
-    $root_path =~ s{/[^/]+}{/..}g;                 # Replace directories by ..
-    $root_path =~ s{/$}{};                         # Remove trailing /
-    $root_path =~ s{^./}{};                        # Remove leading ./ if still there
+    $root_path =~ s{^${$global_cfg}{input}}{./};    # Change leading input path
+    $root_path =~ s{[^/]+$}{};                      # Remove trailing pagename
+    $root_path =~ s{/[^/]+}{/..}g;                  # Replace directories by ..
+    $root_path =~ s{/$}{};                          # Remove trailing /
+    $root_path =~ s{^./}{};    # Remove leading ./ if still there
 
     #
     #  Get the page-variables in the template.
