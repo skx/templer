@@ -513,7 +513,7 @@ sub build
 
 
         #
-        #  Load the HTLM::Template module against the body of the page.
+        #  Load the HTML::Template module against the body of the page.
         #
         #  (Includes are relative to the path of the input.)
         #
