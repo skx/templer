@@ -1,0 +1,7 @@
+Title: Markdown and perl
+format: perl, markdown
+----
+
+This is **bold**
+
+The magic number is _{ 42 }_.

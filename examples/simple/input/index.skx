@@ -4,3 +4,4 @@ Title: The first page
 <p>This is my first page.</p>
 <p>This page is simple.</p>
 <p>Look at <a href="about.html">my about page?</a></p>
+<p>The <a href="foo.html">foo page</a> was built via Markdown and Perl.</p>

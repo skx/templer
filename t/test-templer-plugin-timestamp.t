@@ -29,8 +29,8 @@ require_ok('Templer::Plugin::Factory');
 #
 BEGIN {use_ok('Templer::Site::Page');}
 require_ok('Templer::Site::Page');
-BEGIN {use_ok('Templer::Plugin::Timestamp');}
-require_ok('Templer::Plugin::Timestamp');
+BEGIN {use_ok('Templer::Plugin::TimeStamp');}
+require_ok('Templer::Plugin::TimeStamp');
 
 
 

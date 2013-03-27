@@ -22,6 +22,7 @@ clean:
 	-@test -d ./output && rm -rf ./output/ || true
 	-@test -e ./templer && rm -f templer || true
 	-@test -e ./templer-generate && rm -f templer-generate || true
+	-@cd examples && make clean
 
 
 #
@@ -56,7 +57,7 @@ release: critic tidy clean
 #
 # Make the main script
 #
-templer: lib/Templer/Global.pm lib/Templer/Timer.pm lib/Templer/Plugin/Factory.pm lib/Templer/Plugin/Markdown.pm lib/Templer/Plugin/Textile.pm lib/Templer/Plugin/FileContents.pm lib/Templer/Plugin/FileGlob.pm lib/Templer/Plugin/Breadcrumbs.pm lib/Templer/Plugin/Perl.pm lib/Templer/Plugin/Macros.pm lib/Templer/Plugin/ShellCommand.pm lib/Templer/Plugin/Timestamp.pm lib/Templer/Plugin/RootPath.pm lib/Templer/Site.pm lib/Templer/Site/Asset.pm lib/Templer/Site/Page.pm templer.in
+templer: lib/Templer/Global.pm lib/Templer/Timer.pm lib/Templer/Plugin/Factory.pm lib/Templer/Plugin/Markdown.pm lib/Templer/Plugin/Textile.pm lib/Templer/Plugin/FileContents.pm lib/Templer/Plugin/FileGlob.pm lib/Templer/Plugin/Breadcrumbs.pm lib/Templer/Plugin/Perl.pm lib/Templer/Plugin/ShellCommand.pm lib/Templer/Plugin/TimeStamp.pm lib/Templer/Plugin/RootPath.pm lib/Templer/Site.pm lib/Templer/Site/Asset.pm lib/Templer/Site/Page.pm templer.in
 	echo '#!/usr/bin/perl -w' > templer ;
 	echo 'use strict;' >> templer; \
 	echo 'use warnings;' >> templer; \
@@ -66,12 +67,11 @@ templer: lib/Templer/Global.pm lib/Templer/Timer.pm lib/Templer/Plugin/Factory.p
 	    lib/Templer/Plugin/Markdown.pm \
 	    lib/Templer/Plugin/Perl.pm \
 	    lib/Templer/Plugin/Textile.pm \
-	    lib/Templer/Plugin/Macros.pm \
 	    lib/Templer/Plugin/FileContents.pm \
 	    lib/Templer/Plugin/FileGlob.pm \
 	    lib/Templer/Plugin/Breadcrumbs.pm \
 	    lib/Templer/Plugin/ShellCommand.pm \
-	    lib/Templer/Plugin/Timestamp.pm \
+	    lib/Templer/Plugin/TimeStamp.pm \
 	    lib/Templer/Plugin/RootPath.pm \
         lib/Templer/Site.pm \
         lib/Templer/Site/Asset.pm \
@@ -102,7 +102,7 @@ tidy:
 # Run the test suite.
 #
 test:
-	prove --shuffle t/
+	prove t/
 
 
 #
@@ -111,14 +111,3 @@ test:
 uninstall:
 	rm /usr/local/bin/templer          || true
 	rm /usr/local/bin/templer-generate || true
-
-
-
-#
-# Rebuild & publish the examples
-#
-examples: clean default
-	cd ./examples/simple/   ; ../../templer --force
-	cd ./examples/complex/  ; ../../templer --force
-	cd ./examples/symlinks/ ; ../../templer --force
-	rsync -qazr -e "ssh -C" ./examples/ s-steve@steve.org.uk:htdocs/Software/templer/examples/

@@ -33,7 +33,7 @@ numbers of optional side-menus, for example.
 
 Although this tool was written and used with the intent you'd write your
 site-content in HTML you can write your input pages in Textile or Markdown
-if you prefer (these inputs are supported via [plugins](#plugins)).
+if you prefer (these inputs are supported via [plugins](PLUGINS.md)).
 
 
 Concepts
@@ -96,25 +96,31 @@ a sample page:
     <p>This is the body of the page</p>
 
 
-The header of the page is delimited from the body by four dashes (`----`) and can
-contain an arbitrary number of variable definitions - although by default we'd only
-expect to see the page title being set.
+The header of the page is delimited from the body by four dashes (`----`) and
+can contain an arbitrary number of variable definitions.
 
-The special variable `layout` may be used to specify a different layout template for
-the current page.  If there is no per-page layout specified then the global layout
-declared in the `templer.cfg` file will be used.
 
-The special variable `output` may be used to specify an alternative output file.  For
-example the input file `index.wgn` would normally become `index.html`, but you could make it become
-something else.
+Special Page Variables
+-----------------------
 
-The special variable `format` may be given a value of `textile` or `markdown` to
-enable processing the page body with the appropriate filter.   These formatters are
-implemented as [plugins](PLUGINS.md), and will be available assuming their
-[dependencies are installed](#installation).
+In your page you can define, and refer to, an arbitrary number of variables
+but some names are reserved - and any variable with one of those names will
+be treated specially:
 
-In addition to the `textile` and `markdown` formatters there is a `perl` formatter
-available - providing the [Text::Template](http://search.cpan.org/perldoc?Text%3A%3ATemplate) module is installed - which allows Perl code to be executed, by wrapping it in `{` and `}` characters.  Here is a sample page:
+The special variable `layout` may be used to specify a different layout
+template for the current page.  If there is no per-page layout specified then
+the global layout declared in the `templer.cfg` file will be used.
+
+The special variable `output` may be used to specify an alternative output
+file.  For example the input file `index.wgn` would normally become
+`index.html`, but you could make it become something else.
+
+The special variable `format` may be given a value of `textile`, `markdown`, or
+`perl` to enable processing the page body with the appropriate filter.   These
+formatters are implemented as [plugins](PLUGINS.md), and will be available
+assuming their [dependencies are installed](#installation).
+
+Textile and markdown are well-known, and allow you to write your page content naturally.  The perl-formatter is used to allow you to write dynamic content in Perl in your page-body, via the [Text::Template](http://search.cpan.org/perldoc?Text%3A%3ATemplate) module.   Perl code to be executed is wrapped in `{` and `}` characters.  Here is a sample page:
 
     Title: This page has code in it
     format: perl
@@ -129,6 +135,7 @@ available - providing the [Text::Template](http://search.cpan.org/perldoc?Text%3
            $year - 1976;
        } years old.</p>
 
+> NOTE:  Formatters may be chained.  For example "format: perl, markdown".
 
 
 Variable Definitions
@@ -147,7 +154,7 @@ page-body, using the standard  [HTML::Template](http://search.cpan.org/perldoc?H
 > The only surprise here is that we referred to the variable called "Name" as "name".  All
 variable-names are transformed to lower-case for consistency.
 
-As well as simple "name: value" pairs there are also additional options:
+As well as simple "name: value" pairs there are also additional options implemented in [plugins](PLUGINS.md);
 
 * A variable may refer to the contents of a given file.
     * Using `read_file`.
@@ -155,6 +162,9 @@ As well as simple "name: value" pairs there are also additional options:
     * Using `file_glob`.
 * A variable may contain the output of running a command.
     * Using `run_command`.
+* A variable may be based on the timestamp of the input page.
+    * Using `timestamp`.
+
 
 In addition to declaring variables in a page-header you may also declare
 __global__ variables in your `templer.cfg` file.  This is demonstrated in
@@ -300,7 +310,7 @@ If you prefer you may go through the process manually creating a directory,
 adding the [`templer.cfg`](https://raw.github.com/skx/templer/master/templer.cfg.sample)
 to it, and then creating the input tree and layout directory.
 
-There are two examples provided with the distribution to illustrate the
+There are several [examples](examples/) provided with the distribution to illustrate the
 software.  These example sites are built automatically every evening and
 uploaded online - so you may easily compare the input and the generated
 output:
@@ -309,10 +319,8 @@ output:
    * The online [generated output](http://www.steve.org.uk/Software/templer/examples/simple/output/).
 * [complex example source](https://github.com/skx/templer/tree/master/examples/complex)
    * The online [generated output](http://www.steve.org.uk/Software/templer/examples/complex/output/).
+   * The generated "complex" example is designed to be a standalone introduction to templer.
 
-The generated "complex" example is the single best reference to the facilities and usage of the software, as it is intended as an introduction in its own right:
-
-  *  [The reference site](http://www.steve.org.uk/Software/templer/examples/complex/output/).
 
 
 Rebuilding a site
@@ -360,6 +368,22 @@ In brief the control flow goes like this:
 * The assets are copied via `Templer::Site::copyAssets()`.
 * The build-time/build-count is reported and the process is complete.
 
+Each of the modules has a simple test-case associated with it.  To test functionality, especially after making changes, please run the test-suite:
+
+    $ make test
+    prove --shuffle t/
+    t/style-no-tabs.t ........................... ok
+    t/test-dependencies.t ....................... ok
+    ..
+    ..
+    t/test-templer-plugin-filecontents.t ........ ok
+    t/test-templer-site.t ....................... ok
+    t/test-templer-plugin-timestamp.t ........... ok
+    All tests successful.
+    Files=15, Tests=286,  1 wallclock secs ( 0.11 usr  0.01 sys +  0.88 cusr  0.14 csys =  1.14 CPU)
+    Result: PASS
+
+Any test-case failure is a bug, and should be reported as such.
 
 
 Problems
