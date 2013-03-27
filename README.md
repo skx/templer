@@ -361,25 +361,19 @@ In brief the control flow goes like this:
 Each of the modules has a simple test-case associated with it.  To test functionality, especially after making changes, please run the test-suite:
 
     $ make test
-prove --shuffle t/
-t/style-no-tabs.t ........................... ok
-t/test-dependencies.t ....................... ok
-t/test-templer-plugin-rootpath.t ............ ok
-t/style-no-trailing-whitespace.t ............ ok
-t/test-pod-syntax.t ......................... ok
-t/test-templer-plugin-factory-formatters.t .. ok
-t/test-templer-site-new.t ................... ok
-t/test-templer-plugin-factory.t ............. ok
-t/test-templer-plugin-shellcommand.t ........ ok
-t/test-templer-page-expansion.t ............. ok
-t/test-templer-asset-copying.t .............. ok
-t/test-templer-plugin-fileglob.t ............ ok
-t/test-templer-plugin-filecontents.t ........ ok
-t/test-templer-site.t ....................... ok
-t/test-templer-plugin-timestamp.t ........... ok
-All tests successful.
-Files=15, Tests=286,  1 wallclock secs ( 0.11 usr  0.01 sys +  0.88 cusr  0.14 csys =  1.14 CPU)
+    prove --shuffle t/
+    t/style-no-tabs.t ........................... ok
+    t/test-dependencies.t ....................... ok
+    ..
+    ..
+    t/test-templer-plugin-filecontents.t ........ ok
+    t/test-templer-site.t ....................... ok
+    t/test-templer-plugin-timestamp.t ........... ok
+    All tests successful.
+    Files=15, Tests=286,  1 wallclock secs ( 0.11 usr  0.01 sys +  0.88 cusr  0.14 csys =  1.14 CPU)
 Result: PASS
+
+Any test-case failure is a bug, and should be reported as such.
 
 
 Problems
