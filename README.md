@@ -371,7 +371,7 @@ Each of the modules has a simple test-case associated with it.  To test function
     t/test-templer-plugin-timestamp.t ........... ok
     All tests successful.
     Files=15, Tests=286,  1 wallclock secs ( 0.11 usr  0.01 sys +  0.88 cusr  0.14 csys =  1.14 CPU)
-Result: PASS
+    Result: PASS
 
 Any test-case failure is a bug, and should be reported as such.
 
