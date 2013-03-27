@@ -44,6 +44,28 @@ input = ./input/
 ##
 
 
+##
+#
+# By default all pages will be written in HTML.
+#
+# If you have the appropriate depedencies installed you can instead
+# write your input pages in textile/markdown.  Just add to the page
+#
+#    Title: my title
+#    Format: textile
+#    ----
+#    ... your content here ..
+#
+# If all pages are going to be setup in one format you may prefer
+# to change this default
+#
+format = html
+# format = markdown
+# format = perl
+# format = textile
+#
+##
+#
 
 
 ##
