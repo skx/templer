@@ -7,7 +7,9 @@
 
 use strict;
 use Test::More;
+## no critic (Eval)
 eval "use Test::Pod 1.00";
+## use critic
 plan skip_all => "Test::Pod 1.00 required for testing POD" if $@;
 
 #
