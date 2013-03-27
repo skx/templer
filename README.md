@@ -154,7 +154,7 @@ page-body, using the standard  [HTML::Template](http://search.cpan.org/perldoc?H
 > The only surprise here is that we referred to the variable called "Name" as "name".  All
 variable-names are transformed to lower-case for consistency.
 
-As well as simple "name: value" pairs there are also additional options:
+As well as simple "name: value" pairs there are also additional options implemented in [plugins](PLUGINS.md);
 
 * A variable may refer to the contents of a given file.
     * Using `read_file`.
@@ -162,6 +162,9 @@ As well as simple "name: value" pairs there are also additional options:
     * Using `file_glob`.
 * A variable may contain the output of running a command.
     * Using `run_command`.
+* A variable may be based on the timestamp of the input page.
+    * Using `timestamp`.
+
 
 In addition to declaring variables in a page-header you may also declare
 __global__ variables in your `templer.cfg` file.  This is demonstrated in
