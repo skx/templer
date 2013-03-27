@@ -11,7 +11,7 @@
    <!-- tmpl_var name='content' -->
   </div>
   <div style="text-align: right;">
-   <p><!-- tmpl_var name='copyright' --></p>
+   <p><!-- tmpl_var name='copyright' --> <!-- tmpl_var name='year' --></p>
   </div>
  </body>
 </html>
