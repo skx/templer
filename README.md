@@ -96,25 +96,31 @@ a sample page:
     <p>This is the body of the page</p>
 
 
-The header of the page is delimited from the body by four dashes (`----`) and can
-contain an arbitrary number of variable definitions - although by default we'd only
-expect to see the page title being set.
+The header of the page is delimited from the body by four dashes (`----`) and
+can contain an arbitrary number of variable definitions.
 
-The special variable `layout` may be used to specify a different layout template for
-the current page.  If there is no per-page layout specified then the global layout
-declared in the `templer.cfg` file will be used.
 
-The special variable `output` may be used to specify an alternative output file.  For
-example the input file `index.wgn` would normally become `index.html`, but you could make it become
-something else.
+Special Page Variables
+-----------------------
 
-The special variable `format` may be given a value of `textile` or `markdown` to
-enable processing the page body with the appropriate filter.   These formatters are
-implemented as [plugins](PLUGINS.md), and will be available assuming their
-[dependencies are installed](#installation).
+In your page you can define, and refer to, an arbitrary number of variables
+but some names are reserved - and any variable with one of those names will
+be treated specially:
 
-In addition to the `textile` and `markdown` formatters there is a `perl` formatter
-available - providing the [Text::Template](http://search.cpan.org/perldoc?Text%3A%3ATemplate) module is installed - which allows Perl code to be executed, by wrapping it in `{` and `}` characters.  Here is a sample page:
+The special variable `layout` may be used to specify a different layout
+template for the current page.  If there is no per-page layout specified then
+the global layout declared in the `templer.cfg` file will be used.
+
+The special variable `output` may be used to specify an alternative output
+file.  For example the input file `index.wgn` would normally become
+`index.html`, but you could make it become something else.
+
+The special variable `format` may be given a value of `textile`, `markdown`, or
+`perl` to enable processing the page body with the appropriate filter.   These
+formatters are implemented as [plugins](PLUGINS.md), and will be available
+assuming their [dependencies are installed](#installation).
+
+Textile and markdown are well-known, and allow you to write your page content naturally.  The perl-formatter is used to allow you to write dynamic content in Perl in your page-body, via the [Text::Template](http://search.cpan.org/perldoc?Text%3A%3ATemplate) module.   Perl code to be executed is wrapped in `{` and `}` characters.  Here is a sample page:
 
     Title: This page has code in it
     format: perl
@@ -129,6 +135,7 @@ available - providing the [Text::Template](http://search.cpan.org/perldoc?Text%3
            $year - 1976;
        } years old.</p>
 
+> NOTE:  Formatters may be chained.  For example "format: perl, markdown".
 
 
 Variable Definitions
