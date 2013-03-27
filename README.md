@@ -33,7 +33,7 @@ numbers of optional side-menus, for example.
 
 Although this tool was written and used with the intent you'd write your
 site-content in HTML you can write your input pages in Textile or Markdown
-if you prefer (these inputs are supported via [plugins](#plugins)).
+if you prefer (these inputs are supported via [plugins](PLUGINS.md)).
 
 
 Concepts
