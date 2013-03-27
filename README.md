@@ -300,7 +300,7 @@ If you prefer you may go through the process manually creating a directory,
 adding the [`templer.cfg`](https://raw.github.com/skx/templer/master/templer.cfg.sample)
 to it, and then creating the input tree and layout directory.
 
-There are two examples provided with the distribution to illustrate the
+There are several [examples](examples/) provided with the distribution to illustrate the
 software.  These example sites are built automatically every evening and
 uploaded online - so you may easily compare the input and the generated
 output:
@@ -309,10 +309,8 @@ output:
    * The online [generated output](http://www.steve.org.uk/Software/templer/examples/simple/output/).
 * [complex example source](https://github.com/skx/templer/tree/master/examples/complex)
    * The online [generated output](http://www.steve.org.uk/Software/templer/examples/complex/output/).
+   * The generated "complex" example is designed to be a standalone introduction to templer.
 
-The generated "complex" example is the single best reference to the facilities and usage of the software, as it is intended as an introduction in its own right:
-
-  *  [The reference site](http://www.steve.org.uk/Software/templer/examples/complex/output/).
 
 
 Rebuilding a site
