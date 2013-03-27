@@ -70,7 +70,7 @@ templer: lib/Templer/Global.pm lib/Templer/Timer.pm lib/Templer/Plugin/Factory.p
 	    lib/Templer/Plugin/FileGlob.pm \
 	    lib/Templer/Plugin/Breadcrumbs.pm \
 	    lib/Templer/Plugin/ShellCommand.pm \
-	    lib/Templer/Plugin/Timestamp.pm \
+	    lib/Templer/Plugin/TimeStamp.pm \
 	    lib/Templer/Plugin/RootPath.pm \
         lib/Templer/Site.pm \
         lib/Templer/Site/Asset.pm \
