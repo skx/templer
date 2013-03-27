@@ -22,6 +22,7 @@ clean:
 	-@test -d ./output && rm -rf ./output/ || true
 	-@test -e ./templer && rm -f templer || true
 	-@test -e ./templer-generate && rm -f templer-generate || true
+	-@cd examples && make clean
 
 
 #
