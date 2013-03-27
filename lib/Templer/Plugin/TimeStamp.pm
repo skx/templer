@@ -60,6 +60,8 @@ the same terms as Perl itself.
 use strict;
 use warnings;
 
+use POSIX qw{strftime};
+
 
 package Templer::Plugin::TimeStamp;
 
@@ -99,17 +101,14 @@ sub expand_variables
     my ( $self, $global_cfg, $page, $data ) = (@_);
 
     #
-    # Get properties of the source file
-    #
-    my ( $dev,  $ino,   $mode,  $nlink, $uid,     $gid, $rdev,
-         $size, $atime, $mtime, $ctime, $blksize, $blocks
-       ) = stat( $page->source() );
-    my @mtime = localtime($mtime);
-
-    #
     #  Get the page-variables in the template.
     #
     my %hash = %$data;
+
+    #
+    #  The mtime of the page-source.  Cached.
+    #
+    my $mtime;
 
     #
     #  Look for a value of "timestamp" in each key.
@@ -118,6 +117,10 @@ sub expand_variables
     {
         if ( $hash{ $key } =~ /^timestamp\((.*)\)/ )
         {
+
+            #
+            #  The format to use.
+            #
             my $ts = $1;
 
             #
@@ -126,10 +129,18 @@ sub expand_variables
             $ts =~ s/^\s+|\s+$//g;
 
             #
+            # Get mtime of the source file - if we've not already done so.
+            #
+            if ( !$mtime )
+            {
+                $mtime = ( stat( $page->source() ) )[9];
+            }
+
+            #
             # Store formatted modification time
             #
-            use POSIX qw{strftime};
-            $hash{ $key } = strftime $ts, @mtime;
+            my @mtime = localtime($mtime);
+            $hash{ $key } = POSIX::strftime $ts, @mtime;
         }
     }
 
