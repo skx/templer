@@ -179,7 +179,7 @@ sub content
     #  The content we read from the page.
     #
     my $content = $self->{ 'content' };
-    my $format = $self->{ 'format' } || undef;
+    my $format = $self->{ 'format' } || $data->{ 'format' } || undef;
 
     #
     #  Do we have a formatter plugin for this type?
