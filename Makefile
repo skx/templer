@@ -102,7 +102,7 @@ tidy:
 # Run the test suite.
 #
 test:
-	prove --shuffle t/
+	prove t/
 
 
 #
@@ -111,14 +111,3 @@ test:
 uninstall:
 	rm /usr/local/bin/templer          || true
 	rm /usr/local/bin/templer-generate || true
-
-
-
-#
-# Rebuild & publish the examples
-#
-examples: clean default
-	cd ./examples/simple/   ; ../../templer --force
-	cd ./examples/complex/  ; ../../templer --force
-	cd ./examples/symlinks/ ; ../../templer --force
-	rsync -qazr -e "ssh -C" ./examples/ s-steve@steve.org.uk:htdocs/Software/templer/examples/
