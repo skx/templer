@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-Templer::Plugin::Timestamp - A plugin to get timestamp of source files
+Templer::Plugin::TimeStamp - A plugin to get TimeStamp of source files
 
 =cut
 
@@ -61,7 +61,7 @@ use strict;
 use warnings;
 
 
-package Templer::Plugin::Timestamp;
+package Templer::Plugin::TimeStamp;
 
 
 =head2
@@ -143,4 +143,4 @@ sub expand_variables
 #
 #  Register the plugin.
 #
-Templer::Plugin::Factory->new()->register_plugin("Templer::Plugin::Timestamp");
+Templer::Plugin::Factory->new()->register_plugin("Templer::Plugin::TimeStamp");
