@@ -137,9 +137,9 @@ sub format
             #
             # Line contains a macro definition
             #
-            if (  /^<!--\s+#define\s+([^\s]+)\s+(.*)\s+-->$/
-               || /^<!--\s+#define\s+"([^"]+)"\s+(.*)\s+-->$/
-               || /^<!--\s+#define\s+'([^']+)'\s+(.*)\s+-->$/)
+            if (    /^<!--\s+#define\s+"([^"]+)"\s+(.*)\s+-->$/
+                 || /^<!--\s+#define\s+'([^']+)'\s+(.*)\s+-->$/
+                 || /^<!--\s+#define\s+([^\s]+)\s+(.*)\s+-->$/)
             {
                 my $pattern = $1;
                 my $replace = $2;
