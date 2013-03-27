@@ -455,6 +455,7 @@ sub build
                          search_path_on_include => 1,
                          global_vars            => 1,
                          loop_context_vars      => 1,
+                         utf8                   => 1,
           );
 
         #
@@ -532,6 +533,7 @@ sub build
                                         search_path_on_include => 1,
                                         global_vars            => 1,
                                         loop_context_vars      => 1,
+                                        utf8                   => 1,
                                       );
 
 
