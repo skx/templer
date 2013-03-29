@@ -66,13 +66,15 @@ is( scalar @known, 1, "There is now one known formatters" );
 
 
 #
-#  Get the formatter by name
+#  Get the formatter by name, testing that mixed case works
 #
-my $f = $factory->formatter("tmp");
-isa_ok( $f, "Simple::Class" );
-
+foreach my $name (qw! tmp TMP tMp !)
+{
+    my $f = $factory->formatter($name);
+    isa_ok( $f, "Simple::Class", "Fetching the plugin by name - $name" );
+    is( $f->hello(), "world", "The stub class behaves as expected" );
+}
 
 #
 #  TODO: Variable-Plugin tests.
 #
-is( $f->hello(), "world", "The stub class behaves as expected" );
