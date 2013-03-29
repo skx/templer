@@ -100,7 +100,7 @@ seem to refer to file-inclusion.
 
 sub expand_variables
 {
-    my ( $self, $global_cfg, $page, $data ) = (@_);
+    my ( $self, $site, $page, $data ) = (@_);
 
     #
     #  Get the page-variables in the template.
@@ -154,7 +154,7 @@ sub expand_variables
                 #
                 #  Get the global variables from the configuration object.
                 #
-                my $dirs = $global_cfg->field("include-path");
+                my $dirs = $site->get("include-path");
                 my @dirs = @$dirs;
 
                 #

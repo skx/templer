@@ -357,8 +357,10 @@ distribution, installation and usage.
 In brief the control flow goes like this:
 
 * `templer` runs, parses the command line, etc.
-* A `Templer::Global` object is created to read the `templer.cfg` file.
-* A `Templer::Site` object is created, with a reference to the default options, and the previously created `Templer::Global` object.
+* A `Templer::Global` object is created to read the `templer.cfg` file, or the file passed via `--config=foo`.
+* The options from the command-line and the config file are merged.
+* From this point onwards `Templer::Global` is ignored.
+* A `Templer::Site` object is created, using the merged config values.
 * A `Templer::Timer` object is created to record the build-time.
 * The build process is contained in `Templer::Site::build()`:
      * A `Templer::Plugin::Factory` object is created to load plugins.

@@ -29,7 +29,7 @@ clean:
 # Run perlcritic against our code
 #
 critic:
-	perlcritic $$(find . -name '*.pm' -o -name '*.in' )
+	perlcritic $$(find . -name '*.pm' -o -name '*.in' ) t/*.t
 
 
 

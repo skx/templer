@@ -8,6 +8,10 @@
 # --
 #
 
+use strict;
+use warnings;
+
+
 use Test::More qw( no_plan );
 
 
@@ -29,6 +33,12 @@ require_ok('HTML::Template');
 
 BEGIN {use_ok('Pod::Usage');}
 require_ok('Pod::Usage');
+
+BEGIN {use_ok('Test::More');}
+require_ok('Test::More');
+
+BEGIN {use_ok('Test::Exception');}
+require_ok('Test::Exception');
 
 BEGIN {use_ok('strict');}
 require_ok('strict');

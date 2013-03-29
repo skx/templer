@@ -49,8 +49,8 @@ sub checkFile
     my $isPerl  = 0;
 
     # Read the file.
-    open( INPUT, "<", $file );
-    foreach my $line (<INPUT>)
+    open( my $handle, "<", $file );
+    foreach my $line (<$handle>)
     {
         if ( ( $line =~ /\/bin\/sh/ ) ||
              ( $line =~ /\/bin\/bash/ ) )
@@ -62,7 +62,7 @@ sub checkFile
             $isPerl = 1;
         }
     }
-    close(INPUT);
+    close($handle);
 
     #
     #  We don't care about files which are neither perl nor shell.
@@ -90,9 +90,9 @@ sub countTabCharacters
     my ($file) = (@_);
     my $count = 0;
 
-    open( FILE, "<", $file ) or
+    open( my $handle, "<", $file ) or
       die "Cannot open $file - $!";
-    foreach my $line (<FILE>)
+    foreach my $line (<$handle>)
     {
 
         # We will count multiple tab characters in a single line.
@@ -102,7 +102,7 @@ sub countTabCharacters
             $line = $1 . $2;
         }
     }
-    close(FILE);
+    close($handle);
 
     return ($count);
 }

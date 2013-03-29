@@ -43,7 +43,8 @@ Assets are represented by instances of the C<Templer::Site::Assets> class.
 =back
 
 This class contains helpers for finding and returning arrays of
-both such objects.
+both such objects, and the code necessary to work with them and build
+a site.
 
 =cut
 
@@ -149,12 +150,7 @@ Create the output directory if we're not running in-place.
 
 sub init
 {
-    my ( $self, $cfg ) = (@_);
-
-    #
-    #  Save the config reference
-    #
-    $self->{ 'cfg' } = $cfg;
+    my ($self) = (@_);
 
     #
     #  Ensure we have an input directory.
@@ -171,16 +167,12 @@ sub init
     #
     $self->{ 'input' } .= "/";
     $self->{ 'input' } =~ s{/+$}{/};
-    $self->{ 'cfg' }->set( 'input', $self->{ 'input' } )
-      if ( $self->{ 'cfg' } );
 
     #
     # Ensure output directory contains a unique trailing /
     #
     $self->{ 'output' } .= "/";
     $self->{ 'output' } =~ s{/+$}{/};
-    $self->{ 'cfg' }->set( 'output', $self->{ 'output' } )
-      if ( $self->{ 'cfg' } );
 
     #
     #  Create the output directory if missing, unless we're in-place
@@ -365,7 +357,7 @@ sub build
     {
         push( @INCLUDES, $path ) if ( -d $path );
     }
-    $self->{ 'cfg' }->set( "include-path", \@INCLUDES );
+    $self->set( "include-path", \@INCLUDES );
 
 
     #
@@ -428,7 +420,6 @@ sub build
         # the global configuration object.
         #
         my $template = $page->layout() ||
-          $self->{ 'cfg' }->layout() ||
           $self->{ 'layout' };
         print "Layout file is: $self->{'layout-path'}/$template\n"
           if ( $self->{ 'verbose' } );
@@ -463,12 +454,12 @@ sub build
         #
         #  (All fields from the page, and from the configuration file.)
         #
-        my %data = ( $self->{ 'cfg' }->fields(), $page->fields() );
+        my %data = ( $self->fields(), $page->fields() );
 
         #
         #  Use the plugin-factory to expand each of the variables.
         #
-        my $ref = $PLUGINS->expand_variables( $self->{ 'cfg' }, $page, \%data );
+        my $ref = $PLUGINS->expand_variables( $self, $page, \%data );
         %data = %$ref;
 
 
@@ -645,6 +636,54 @@ sub copyAssets
         system($cmd );
     }
 }
+
+
+=head2 set
+
+Store/update a key/value pair in our internal store.
+
+This allows the values passed in the constructor to be updated/added to.
+
+=cut
+
+sub set
+{
+    my ( $self, $key, $values ) = (@_);
+    $self->{ $key } = $values;
+}
+
+
+=head2 fields
+
+Get all known key + value pairs from our store.
+
+This is called to get all global variables for template interpolation
+as part of the build.  (The global variables and the per-page variables
+are each fetched and expanded via plugins prior to getting sent to the
+HTML::Template object.).
+
+=cut
+
+sub fields
+{
+    my ($self) = (@_);
+
+    %$self;
+}
+
+
+=head2 get
+
+Get a single value from our store of variables.
+
+=cut
+
+sub get
+{
+    my ( $self, $field ) = (@_);
+    return ( $self->{ $field } );
+}
+
 
 
 1;

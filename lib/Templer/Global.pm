@@ -25,6 +25,11 @@ which we assume will be present in each templer-based site.
 The file is a simple key=value store, with comments being prefixed by
 the hash ("#") character, and ignored.
 
+This object is created when templer is started so that the options may
+be parsed/read.  Once that happens the options are merged with the
+command-line flags, and this object isn't touched again.  Instead all
+configuration will happen via the Templer::Site object.
+
 =cut
 
 =head1 LICENSE
@@ -69,8 +74,10 @@ package Templer::Global;
 
 =head2 new
 
-Constructor.  The hash of parameters is saved away, and the filename
-specified in the 'file' parameter will be opened and parsed.
+Constructor.
+
+Any parameters specified in our single hash-argument are saved away,
+the filename specified in the 'file' parameter will be opened and parsed.
 
 =cut
 
@@ -93,6 +100,7 @@ sub new
     $self->_readGlobalCFG( $self->{ 'file' } ) if ( $self->{ 'file' } );
     return $self;
 }
+
 
 
 =head2 _readGlobalCFG
