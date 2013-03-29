@@ -637,11 +637,32 @@ sub copyAssets
     }
 }
 
+
+=head2 set
+
+Store/update a key/value pair in our internal store.
+
+This allows the values passed in the constructor to be updated/added to.
+
+=cut
+
 sub set
 {
     my ( $self, $key, $values ) = (@_);
     $self->{ $key } = $values;
 }
+
+
+=head2 fields
+
+Get all known key + value pairs from our store.
+
+This is called to get all global variables for template interpolation
+as part of the build.  (The global variables and the per-page variables
+are each fetched and expanded via plugins prior to getting sent to the
+HTML::Template object.).
+
+=cut
 
 sub fields
 {
@@ -650,10 +671,19 @@ sub fields
     %$self;
 }
 
+
+=head2 get
+
+Get a single value from our store of variables.
+
+=cut
+
 sub get
 {
     my ( $self, $field ) = (@_);
     return ( $self->{ $field } );
 }
+
+
 
 1;
