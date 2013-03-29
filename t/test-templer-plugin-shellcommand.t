@@ -15,8 +15,8 @@ use Test::More qw! no_plan !;
 #
 #  Load the factory
 #
-BEGIN {use_ok('Templer::Global');}
-require_ok('Templer::Global');
+BEGIN {use_ok('Templer::Site');}
+require_ok('Templer::Site');
 BEGIN {use_ok('Templer::Plugin::Factory');}
 require_ok('Templer::Plugin::Factory');
 
@@ -31,7 +31,7 @@ require_ok('Templer::Plugin::ShellCommand');
 #
 #  The config object
 #
-my $cfg = Templer::Global->new();
+my $site = Templer::Site->new();
 
 
 #
@@ -52,7 +52,7 @@ my %input = ( "title" => "This is my page title.",
 #
 #  Expand the variables
 #
-my $ref = $factory->expand_variables( $cfg, undef, \%input );
+my $ref = $factory->expand_variables( $site, undef, \%input );
 ok( $ref, "Calling the plugin returned something sane." );
 
 #

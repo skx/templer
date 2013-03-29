@@ -104,11 +104,11 @@ sub expand_variables
     #
     my $root_path = $page->source();
     my $input     = $site->get("input");
-    $root_path =~ s{^$input}{./};    # Change leading input path
-    $root_path =~ s{[^/]+$}{};          # Remove trailing pagename
-    $root_path =~ s{/[^/]+}{/..}g;      # Replace directories by ..
-    $root_path =~ s{/$}{};              # Remove trailing /
-    $root_path =~ s{^./}{};             # Remove leading ./ if still there
+    $root_path =~ s{^$input}{./};     # Change leading input path
+    $root_path =~ s{[^/]+$}{};        # Remove trailing pagename
+    $root_path =~ s{/[^/]+}{/..}g;    # Replace directories by ..
+    $root_path =~ s{/$}{};            # Remove trailing /
+    $root_path =~ s{^./}{};           # Remove leading ./ if still there
 
     #
     #  Get the page-variables in the template.
