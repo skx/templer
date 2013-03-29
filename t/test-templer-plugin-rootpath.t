@@ -16,8 +16,8 @@ use File::Temp qw! tempdir !;
 #
 #  Load the factory
 #
-BEGIN {use_ok('Templer::Global');}
-require_ok('Templer::Global');
+BEGIN {use_ok('Templer::Site');}
+require_ok('Templer::Site');
 BEGIN {use_ok('Templer::Plugin::Factory');}
 require_ok('Templer::Plugin::Factory');
 
@@ -37,9 +37,9 @@ require_ok('Templer::Plugin::RootPath');
 my $dir = tempdir( CLEANUP => 1 );
 
 #
-#  Create a config file
+#  Create a site object.
 #
-my $cfg = Templer::Global->new( input => $dir );
+my $site = Templer::Site->new( input => $dir );
 
 #
 #  Instantiate the helper.
@@ -81,7 +81,7 @@ is( $page->field("title"),
 #  Get the data, after plugin-expansion
 #
 my %original = $page->fields();
-my $ref      = $factory->expand_variables( $cfg, $page, \%original );
+my $ref      = $factory->expand_variables( $site, $page, \%original );
 my %updated  = %$ref;
 
 ok( %updated,          "Fetching the fields of the page succeeded" );

@@ -113,7 +113,7 @@ runHTTPD() if ( $CONFIG{ 'serve' } );
 # if it is missing and required.
 #
 my $site = Templer::Site->new(%DEFAULTS);
-$site->init($cfg);
+$site->init();
 
 
 #

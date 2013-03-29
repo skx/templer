@@ -165,14 +165,14 @@ Expand variables via all loaded plugins.
 
 sub expand_variables
 {
-    my ( $self, $global_cfg, $page, $data ) = (@_);
+    my ( $self, $site, $page, $data ) = (@_);
 
     my $out;
 
     foreach my $plugin ( @{ $self->{ 'plugins' } } )
     {
         my %in = %$data;
-        $out = $plugin->expand_variables( $global_cfg, $page, \%in );
+        $out = $plugin->expand_variables( $site, $page, \%in );
         $data = \%$out;
     }
     return ($data);

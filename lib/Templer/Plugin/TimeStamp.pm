@@ -98,7 +98,7 @@ seem to refer to timestamps.
 
 sub expand_variables
 {
-    my ( $self, $global_cfg, $page, $data ) = (@_);
+    my ( $self, $site, $page, $data ) = (@_);
 
     #
     #  Get the page-variables in the template.
