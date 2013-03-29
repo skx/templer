@@ -27,6 +27,7 @@ require_ok('Templer::Site::Asset');
 #
 my $tmp = tempdir( CLEANUP => 1 );
 ok( -d $tmp, "We created a temporary directory" );
+note("Temporary directory is: $tmp");
 
 #
 #  Make the input-subdirectory
@@ -72,6 +73,8 @@ sub createFile
     my ($file) = (@_);
 
     ok( !-e $file, "The file didn't exist prior to creation" );
+
+    note("File to be created is : $file");
 
     open( my $handle, ">", $file ) or
       die "Failed to write: $file - $!";
