@@ -18,7 +18,7 @@ Templer::Site::Asset - An interface to a site asset.
 
 =head1 DESCRIPTION
 
-An asset is anything in the input directory which is *not* a page.
+An asset is anything beneath the input directory which is *not* a page.
 
 Assuming we're not running in "in-place" mode then assets are copied
 over to a suitable filename in the output tree.
@@ -74,7 +74,7 @@ package Templer::Site::Asset;
 The constructor.
 
 The single appropriate argument is the hash-key "file", pointing to the
-page-file on-disk.
+file on-disk.
 
 =cut
 
