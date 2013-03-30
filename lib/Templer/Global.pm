@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-Templer::Global - The configuration for a templer-based site.
+Templer::Global - Configuration-file parser for templer.
 
 =cut
 
@@ -20,15 +20,14 @@ Templer::Global - The configuration for a templer-based site.
 =head1 DESCRIPTION
 
 This class is responsible for parsing the top-level templer.cfg file
-which we assume will be present in each templer-based site.
+which we assume will be present in a templer-based site.
 
 The file is a simple key=value store, with comments being prefixed by
 the hash ("#") character, and ignored.
 
 This object is created when templer is started so that the options may
 be parsed/read.  Once that happens the options are merged with the
-command-line flags, and this object isn't touched again.  Instead all
-configuration will happen via the Templer::Site object.
+command-line flags, and this object isn't touched again.
 
 =cut
 
@@ -172,6 +171,9 @@ sub _readGlobalCFG
 
 Retrieve a value from the file, by key.
 
+This is only called by templer to retrieve the pre/post-build
+commands to execute.
+
 =cut
 
 sub field
@@ -185,6 +187,9 @@ sub field
 
 Retrieve all known key/value pairs.
 
+This is called by templer to retrieve all global settings, which
+can then be merged with its defaults.
+
 =cut
 
 sub fields
@@ -193,41 +198,6 @@ sub fields
 
     %$self;
 }
-
-
-=head2 layout
-
-Return the global-layout file.
-
-This is a helper for:
-
-=for example begin
-
-    my $layout = $obj->field( 'layout' );
-
-=for example end
-
-=cut
-
-sub layout
-{
-    my ($self) = (@_);
-    $self->field("layout");
-}
-
-
-=head2 set
-
-Set a global value.
-
-=cut
-
-sub set
-{
-    my ( $self, $key, $values ) = (@_);
-    $self->{ $key } = $values;
-}
-
 
 
 1;

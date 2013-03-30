@@ -18,10 +18,11 @@ Templer::Site::Page - An interface to a site page.
 
 =head1 DESCRIPTION
 
-A page is any non-directory beneath the input-directory which matches the pattern
-specified by the user (defaults to "*.skx").
+A page is any non-directory beneath the input-directory which matches the
+pattern specified by the user (defaults to "*.skx").
 
-Pages are processed via the L<HTML::Template> module to create the suitable output.
+Pages are processed via the L<HTML::Template> module to create the suitable
+output.
 
 In C<templer> the page objects are created by the L<Templer::Site> module.
 

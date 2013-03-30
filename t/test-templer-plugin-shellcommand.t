@@ -49,27 +49,33 @@ my %input = ( "title" => "This is my page title.",
               "bar"   => "baz"
             );
 
-#
-#  Expand the variables
-#
-my $ref = $factory->expand_variables( $site, undef, \%input );
-ok( $ref, "Calling the plugin returned something sane." );
+SKIP:
+{
+    skip "/bin/ls was not found." if ( !-x "/bin/lss" );
 
-#
-#  Get the updated values which we expect to be unchanged.
-#
-is( $ref->{ 'title' },
-    "This is my page title.",
-    "After calling the plugin the sane value is unchanged." );
-is( $ref->{ 'bar' },
-    "baz", "After calling the plugin the sane value is unchanged." );
+    #
+    #  Expand the variables
+    #
+    my $ref = $factory->expand_variables( $site, undef, \%input );
+    ok( $ref, "Calling the plugin returned something sane." );
 
-#
-#  Now see if our "foo" value was replaced by the output of the shell
-# command.
-#
-my $shell = $ref->{ 'foo' };
-ok( $shell, "The shell command execution returned something." );
-ok( $shell =~ /passwd/,    "Which looks a little sane." );
-ok( $shell =~ /fstab/,     "And a little more sane." );
-ok( $shell =~ /hostname/i, "It did good." );
+    #
+    #  Get the updated values which we expect to be unchanged.
+    #
+    is( $ref->{ 'title' },
+        "This is my page title.",
+        "After calling the plugin the sane value is unchanged." );
+
+    is( $ref->{ 'bar' },
+        "baz", "After calling the plugin the sane value is unchanged." );
+
+    #
+    #  Now see if our "foo" value was replaced by the output of the shell
+    # command.
+    #
+    my $shell = $ref->{ 'foo' };
+    ok( length($shell), "The shell command execution returned something." );
+    ok( $shell =~ /passwd/,    "Which looks a little sane." );
+    ok( $shell =~ /fstab/,     "And a little more sane." );
+    ok( $shell =~ /hostname/i, "It did good." );
+}
