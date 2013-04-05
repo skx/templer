@@ -65,11 +65,20 @@ isa_ok( $factory, "Templer::Plugin::Factory" );
 #
 #  Create a page
 #
-my $page = Templer::Site::Page->new( "foo"   => "bar",
-                                     "title" => "This is the page title." );
+my $page = Templer::Site::Page->new(
+                                 "foo"     => "bar",
+                                 "layout"  => "default.layout",
+                                 "content" => "<p>This is my page content.</p>",
+                                 "title"   => "This is the page title."
+);
 
 ok( $page, "Page found" );
 isa_ok( $page, "Templer::Site::Page", "And has the correct type" );
+is( $page->layout(), "default.layout", "The page has the correct layout" );
+is( $page->content(),
+    "<p>This is my page content.</p>",
+    "The page has the correct content" );
+ok( !$page->dependencies(), "The stub page has no dependencies" );
 
 #
 #  Get the title, and ensure it is OK.

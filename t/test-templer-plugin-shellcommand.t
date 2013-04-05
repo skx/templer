@@ -51,7 +51,7 @@ my %input = ( "title" => "This is my page title.",
 
 SKIP:
 {
-    skip "/bin/ls was not found." if ( !-x "/bin/lss" );
+    skip "/bin/ls was not found." unless ( -x "/bin/ls" );
 
     #
     #  Expand the variables

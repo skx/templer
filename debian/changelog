@@ -1,3 +1,14 @@
+templer (0.6.5-1) stable; urgency=low
+
+  * New plugins:
+    - RootPath
+    - TimeStamp
+  * Cleaned up and simplified coding.
+  * Additional test-cases.
+  * Rebuild pages when referenced include-files change.
+
+ -- Steve Kemp <steve@steve.org.uk>  Mon, 1 Apr 2013 11:20:02 +0000
+
 templer (0.6-1) stable; urgency=low
 
   * Updated to keep track of dependencies for input-pages.
