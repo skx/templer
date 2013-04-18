@@ -391,7 +391,7 @@ Any test-case failure is a bug, and should be reported as such.
 Problems
 --------
 
-Please report an issue via the github repository:
+Please report any issue via the github repository:
 
 * https://github.com/skx/templer
 
