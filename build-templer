@@ -1,0 +1,68 @@
+#!/usr/bin/perl -w
+#
+#  Concatenate our various files together to make a single
+# script called "templer".
+#
+# Steve
+# --
+#
+
+use strict;
+use warnings;
+
+
+#
+# Open templer for output.
+#
+open( my $handle, ">", "templer" );
+print $handle <<EOF;
+#!/usr/bin/perl -w
+use strict;
+use warnings;
+
+EOF
+
+
+#
+# Add up each of these files to the generated script.
+#
+foreach my $file ( qw! lib/Templer/Global.pm
+                   lib/Templer/Timer.pm
+                   lib/Templer/Plugin/Factory.pm
+                   lib/Templer/Plugin/Markdown.pm
+                   lib/Templer/Plugin/Hash.pm
+                   lib/Templer/Plugin/HTML.pm
+                   lib/Templer/Plugin/Perl.pm
+                   lib/Templer/Plugin/Textile.pm
+                   lib/Templer/Plugin/FileContents.pm
+                   lib/Templer/Plugin/FileGlob.pm
+                   lib/Templer/Plugin/Breadcrumbs.pm
+                   lib/Templer/Plugin/ShellCommand.pm
+                   lib/Templer/Plugin/TimeStamp.pm
+                   lib/Templer/Plugin/RootPath.pm
+                   lib/Templer/Site.pm
+                   lib/Templer/Site/Asset.pm
+                   lib/Templer/Site/Page.pm
+                   templer.in !
+                 )
+{
+    open( my $tmp, "<", $file ) or
+      die "Failed to open file - $file - $!";
+    while ( my $line = <$tmp> )
+    {
+        print $handle $line;
+    }
+    close($tmp);
+}
+
+
+#
+#  Make the file executable.
+#
+chmod( 0755, $handle );
+
+#
+#  All done.
+#
+close($handle);
+
