@@ -99,17 +99,17 @@ foreach my $field ( keys %SITE )
 #
 #  Add in any definitions we've received.
 #
-if ( $CONFIG{'defines'} )
+if ( $CONFIG{ 'defines' } )
 {
-    my $defs = $CONFIG{'defines'};
+    my $defs = $CONFIG{ 'defines' };
 
-    foreach my $kv ( @$defs )
+    foreach my $kv (@$defs)
     {
         if ( $kv =~ /^([^=]+)=(.*)$/ )
         {
             my $key = $1;
             my $val = $2;
-            $DEFAULTS{lc $key} = $val;
+            $DEFAULTS{ lc $key } = $val;
         }
     }
 }
@@ -227,7 +227,7 @@ sub parseCommandLine
     #
     foreach my $kv (@defines)
     {
-        push( @{$CONFIG{'defines'}}, $kv );
+        push( @{ $CONFIG{ 'defines' } }, $kv );
     }
 }
 
