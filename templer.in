@@ -96,6 +96,24 @@ foreach my $field ( keys %SITE )
     $DEFAULTS{ $field } = $SITE{ $field };
 }
 
+#
+#  Add in any definitions we've received.
+#
+if ( $CONFIG{'defines'} )
+{
+    my $defs = $CONFIG{'defines'};
+
+    foreach my $kv ( @$defs )
+    {
+        if ( $kv =~ /^([^=]+)=(.*)$/ )
+        {
+            my $key = $1;
+            my $val = $2;
+            $DEFAULTS{lc $key} = $val;
+        }
+    }
+}
+
 
 #
 #  If we're running a HTTP-server do it now, since we've got
@@ -164,6 +182,7 @@ exit(0);
 #
 sub parseCommandLine
 {
+    my @defines;
 
     #
     #  Parse the command line.
@@ -176,12 +195,23 @@ sub parseCommandLine
             "help",   \$CONFIG{ 'help' },
             "manual", \$CONFIG{ 'manual' },
 
-            # Flags - force a rebuild
+            # load the config file
             "config=s", \$CONFIG{ 'config' },
-            "force",    \$CONFIG{ 'force' },
-            "serve=i",  \$CONFIG{ 'serve' },
-            "quiet",    \$CONFIG{ 'quiet' },
-            "verbose",  \$CONFIG{ 'verbose' },
+
+            # define a variable
+            "define=s", \@defines,
+
+            # force a rebuild
+            "force", \$CONFIG{ 'force' },
+
+            # undocumented.
+            "serve=i", \$CONFIG{ 'serve' },
+
+            # run quietly.
+            "quiet", \$CONFIG{ 'quiet' },
+
+            # run verbosely.
+            "verbose", \$CONFIG{ 'verbose' },
         ) );
 
 
@@ -191,6 +221,14 @@ sub parseCommandLine
     Pod::Usage::pod2usage( -input => \*DATA ) if ( $CONFIG{ 'help' } );
     Pod::Usage::pod2usage( -input => \*DATA, -verbose => 2 )
       if ( $CONFIG{ 'manual' } );
+
+    #
+    #  Poke in definitions
+    #
+    foreach my $kv (@defines)
+    {
+        push( @{$CONFIG{'defines'}}, $kv );
+    }
 }
 
 
