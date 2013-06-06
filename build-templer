@@ -34,6 +34,7 @@ foreach my $file ( qw! lib/Templer/Global.pm
                    lib/Templer/Plugin/HTML.pm
                    lib/Templer/Plugin/Perl.pm
                    lib/Templer/Plugin/Textile.pm
+                   lib/Templer/Plugin/Macros.pm
                    lib/Templer/Plugin/FileContents.pm
                    lib/Templer/Plugin/FileGlob.pm
                    lib/Templer/Plugin/Breadcrumbs.pm
