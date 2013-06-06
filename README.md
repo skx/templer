@@ -167,8 +167,11 @@ As well as simple "name: value" pairs there are also additional options implemen
 
 
 In addition to declaring variables in a page-header you may also declare
-__global__ variables in your `templer.cfg` file.  This is demonstrated in
-the sample [`templer.cfg`](https://raw.github.com/skx/templer/master/templer.cfg.sample) file.
+__global__ variables in your `templer.cfg` file, or upon the command-line
+via `--define foo=bar`.
+
+Defining global variables is demonstrated in the sample [`templer.cfg`](https://raw.github.com/skx/templer/master/templer.cfg.sample) file.
+
 
 
 
@@ -334,6 +337,8 @@ what happens:
      * To see more details of what is happening.
 * `templer --force`
      * To force a rebuild of the site.
+* `templer --define foo=bar`
+     * Define the variable `foo` for use in your templates.  This will over-ride any setting of foo in the configuration file you've loaded.
 
 In the general case `templer` should rebuild only the files which are needed
 to be built.  A page will be rebuilt if:
@@ -391,7 +396,7 @@ Any test-case failure is a bug, and should be reported as such.
 Problems
 --------
 
-Please report an issue via the github repository:
+Please report any issue via the github repository:
 
 * https://github.com/skx/templer
 
