@@ -135,7 +135,7 @@ Textile and markdown are well-known, and allow you to write your page content na
            $year - 1976;
        } years old.</p>
 
-> NOTE:  Formatters may be chained.  For example "format: perl, markdown".
+> **NOTE**:  Formatters may be chained.  For example "`format: perl, markdown`".
 
 
 Variable Definitions
@@ -151,8 +151,7 @@ page-body, using the standard  [HTML::Template](http://search.cpan.org/perldoc?H
      ----
      <p>Hello, my name is <!-- tmpl_var name='name' -->.</p>
 
-> The only surprise here is that we referred to the variable called "Name" as "name".  All
-variable-names are transformed to lower-case for consistency.
+> **NOTE**: All variable-names are transformed to lower-case for consistency, which is why we refer to the variable `name` rather than the defined `Name`.
 
 As well as simple "name: value" pairs there are also additional options implemented in [plugins](PLUGINS.md);
 
