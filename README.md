@@ -189,7 +189,9 @@ the pattern `img/*.jpg`:
      ---
      <!-- tmpl_if name='images' -->
        <!-- tmpl_loop name='images' -->
-        <p><img src="<!-- tmpl_var name='file' -->" /> </p>
+        <p><img src="<!-- tmpl_var name='file' -->"
+                height="<!-- tmpl_var name='height' -->"
+                width="<!-- tmpl_var name='width' -->" /> </p>
        <!-- /tmpl_loop -->
      <!-- tmpl_else -->
        <p>No images were found.</p>
