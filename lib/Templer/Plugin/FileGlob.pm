@@ -28,6 +28,24 @@ to the specified pattern.
 The intended use-case is inline-gallery generation, but more uses
 would surely be discovered.
 
+For each loop created there will be the variables:
+
+=over 8
+
+=item file
+
+The name of the file.
+
+=item height
+
+The height of the image, if the file is an image and L<Image::Size> is available.
+
+=item width
+
+The width of the image, if the file is an image and L<Image::Size> is available.
+
+=back
+
 =cut
 
 =head1 LICENSE
