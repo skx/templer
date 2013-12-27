@@ -205,6 +205,20 @@ the pattern `img/*.jpg`:
 
 This facility is implemented in the `Templer::Plugin::FileGlob` [plugin](PLUGINS.md).
 
+The file glob is primarily designed for handling image-galleries, which is why it will set the `height` and `width` attributes if your glob matches `*.jpg`, `*.png`, etc.  However it can also be used for non-images.
+
+If your glob matches files which are not images it will populate the member `content`, being the text-content of the matching files.  This allows you to include files easily.  For example:
+
+
+    Title: This is my news-page
+    news: file_glob( news-*.txt )
+    ----
+    <p>Here are the recent events:</p>
+    <!-- tmpl_loop name='news' -->
+    <p><!-- tmpl_var name='content' --></p>
+    <!-- /tmpl_loop -->
+
+This assumes you have files such as <tt>news-20130912.txt</tt>, etc, and will show the contents of each file in (glob)order.</p>
 
 
 File Inclusion
