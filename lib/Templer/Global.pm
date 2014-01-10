@@ -52,7 +52,7 @@ Steve Kemp <steve@steve.org.uk>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2012-2013 Steve Kemp <steve@steve.org.uk>.
+Copyright (C) 2012-2014 Steve Kemp <steve@steve.org.uk>.
 
 This library is free software. You can modify and or distribute it under
 the same terms as Perl itself.
@@ -142,6 +142,25 @@ sub _readGlobalCFG
             $key = lc($key);
             $key =~ s/^\s+|\s+$//g;
             $val =~ s/^\s+|\s+$//g;
+
+            #
+            # command expansion?
+            #
+            if ( $val =~ /(.*)`([^`]+)`(.*)/ )
+            {
+
+                # store
+                my $pre  = $1;
+                my $cmd  = $2;
+                my $post = $3;
+
+                # get output
+                my $output = `$cmd`;
+                chomp($output);
+
+                # build up replacement.
+                $val = $pre . $output . $post;
+            }
 
             #
             # If the line is pre/post-build then save the values as an array
