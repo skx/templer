@@ -338,7 +338,7 @@ The dependencies are minimal, to ease installation:
       *  This may be installed, on a Debian system, with `apt-get install libtext-template-perl`.
    * The [Redis](http://search.cpan.org/perldoc?Redis) module is required if you wish to use the Redis plugin.
       *  This may be installed, on a Debian system, with `apt-get install libredis-perl`.
-   * The [XML::Feed](http://search.cpan.org/perldoc?XML%3A%3A) module is required if you wish to use the RSS plugin.
+   * The [XML::Feed](http://search.cpan.org/perldoc?XML%3A%3AFeed) module is required if you wish to use the RSS plugin.
       *  This may be installed, on a Debian system, with `apt-get install libxml-feed-perl`.
 
 
