@@ -163,7 +163,8 @@ As well as simple "name: value" pairs there are also additional options implemen
     * Using `run_command`.
 * A variable may be based on the timestamp of the input page.
     * Using `timestamp`.
-
+* A variable may contain the contents of a remote RSS feed.
+    * Using `rss(count, URL)`.
 
 In addition to declaring variables in a page-header you may also declare
 __global__ variables in your `templer.cfg` file, or upon the command-line
@@ -267,6 +268,21 @@ Pages may also define variables which receive the value of the output of shell c
 
 This facility is implemented in the `Templer::Plugin::ShellCommand` [plugin](PLUGINS.md).
 
+Remote RSS Feeds
+----------------
+
+Pages may use snippets of RSS feeds, limiting them to the given
+number of entries.  For example:
+
+      title: About my site
+      feed: rss(4, http://blog.steve.org.uk/index.rss )
+      ----
+      <p>This page is about my site, here are my recent blog posts:</p>
+      <ul>
+      <!-- tmpl_loop name='feed' -->
+            <li><a href="<!-- tmpl_var name='link' -->"><!-- tmpl_var name='title' --></a></li>
+      <!-- /tmpl_loop -->
+      </ul>
 
 
 Installation

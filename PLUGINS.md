@@ -28,11 +28,13 @@ The following variable plugins are distributed as part of the project:
    * Set variable values to the output of shell commands.
 * `Templer::Plugin::RootPath`
    * Allow access to your site prefix, without hardcoding it.
+* `Templer::Plugin::RSS`
+   * Allow pages to include remote RSS feed data.
 * `Templer::Plugin::Timestamp`
    * Allow pages to contain their own modification timestamp.
 
 If you wish you may contain write your own plugins, contained beneath your
-templer-site.  The default [templer.cfg](templer.cfg.sample) documents the 
+templer-site.  The default [templer.cfg](templer.cfg.sample) documents the
 `plugin-path` setting.
 
 
