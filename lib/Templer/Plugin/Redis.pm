@@ -135,8 +135,6 @@ sub expand_variables
             $rkey =~ s/^\s+|\s+$//g;
             $rkey =~ s/^["']|['"]$//g;
 
-            print "GETting : $rkey\n";
-
             if ( $self->{ 'redis' } )
             {
                 $hash{ $key } = $self->{ 'redis' }->get($rkey);
