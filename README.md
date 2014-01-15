@@ -165,6 +165,8 @@ As well as simple "name: value" pairs there are also additional options implemen
     * Using `timestamp`.
 * A variable may contain the contents of a remote RSS feed.
     * Using `rss(count, URL)`.
+* A variable may contain the result of a key-lookup from a Redis server.
+    * Using `redis_get('foo')`.
 
 In addition to declaring variables in a page-header you may also declare
 __global__ variables in your `templer.cfg` file, or upon the command-line
@@ -268,6 +270,7 @@ Pages may also define variables which receive the value of the output of shell c
 
 This facility is implemented in the `Templer::Plugin::ShellCommand` [plugin](PLUGINS.md).
 
+
 Remote RSS Feeds
 ----------------
 
@@ -283,6 +286,20 @@ number of entries.  For example:
             <li><a href="<!-- tmpl_var name='link' -->"><!-- tmpl_var name='title' --></a></li>
       <!-- /tmpl_loop -->
       </ul>
+
+
+Redis Lookups
+-------------
+
+If you have a redis-server running upon the local system you may
+configure page-variables to retrieve their values via lookups against it.
+
+For example:
+
+      title: Site Statistics
+      count: redis_get( "global_count" )
+      ----
+      <p>There are <!-- tmpL-var name='count' --> entries.</p>
 
 
 Installation
@@ -319,6 +336,8 @@ The dependencies are minimal, to ease installation:
       *  This may be installed, on a Debian system, with `apt-get install libtext-textile-perl`.
    * The [Text::Template](http://search.cpan.org/perldoc?Text%3A%3ATemplate) module is required if you wish to include dynamic perl in your input pages.
       *  This may be installed, on a Debian system, with `apt-get install libtext-template-perl`.
+   * The [Redis](http://search.cpan.org/perldoc?Redis) module is required if you wish to use the Redis plugin.
+      *  This may be installed, on a Debian system, with `apt-get install libredis-perl`.
 
 
 Creating a new site

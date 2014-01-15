@@ -30,6 +30,8 @@ The following variable plugins are distributed as part of the project:
    * Allow access to your site prefix, without hardcoding it.
 * `Templer::Plugin::RSS`
    * Allow pages to include remote RSS feed data.
+* `Templer::Plugin::Redis`
+   * Allow variables to be retrieved from a Redis store running on the local system.
 * `Templer::Plugin::Timestamp`
    * Allow pages to contain their own modification timestamp.
 
