@@ -11,7 +11,7 @@ Vcs-browser: https://github.com/skx/templer.git
 Package: templer
 Architecture: all
 Depends: ${misc:Depends}, libhtml-template-perl, perl, perl-modules
-Recommends: libimage-size-perl, libtext-textile-perl, libtext-markdown-perl
+Recommends: libimage-size-perl, libtext-textile-perl, libtext-markdown-perl, libxml-feed-perl
 Description: Static-site generator, written in perl.
  This package provides you with the templer command, which can build
  static-websites with ease.
@@ -29,6 +29,8 @@ Description: Static-site generator, written in perl.
   * File contents.
  .
   * Shell command output.
+ .
+  * Remote RSS feeds.
  .
  Layouts may be defined on a per-page basis, and all output is passed through
  the standard HTML::Template module.
