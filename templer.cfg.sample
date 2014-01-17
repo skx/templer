@@ -1,4 +1,12 @@
-
+##
+##  This is the sample configuration file for a Templer-generated
+## website.
+##
+##  Templer is documented on the following github repository:
+##
+##    https://github.com/skx/templer/
+##
+##
 
 
 
@@ -183,21 +191,17 @@ include-path = ./includes
 #
 #  For example this:
 #
-#    copyright = Steve Kemp
+#    copyright = Steve Kemp `date +%Y`
 #
 #  Means you can use this in your layout, or your page text:
 #
 #    <!-- tmpl_var name='copyright' -->
 #
-#  Similarly you might wish to include a last-modified date in the layout
-# and this could be achieved by wruting this:
 #
-#   <p>Page last rebuilt at <!-- tmpl_var name='date' --></p>
-#
-#  Providing you uncomment this line:
-#
-#  date = run_command( date '+%A %e %B %Y' )
+#  Notice that commands, surrounded in backticks (`) are executed and
+# their output is substituted inline in the way you might expect.
+# In this case we have the current year inserted into the copyright
+# string every time the site is rebuilt.
 #
 #
-
 
