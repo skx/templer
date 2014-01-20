@@ -89,6 +89,7 @@ use warnings;
 package Templer::Site;
 
 
+use Data::Dumper;
 use File::Find;
 use File::Path qw! mkpath !;
 use HTML::Template;
@@ -461,6 +462,13 @@ sub build
         #
         my $ref = $PLUGINS->expand_variables( $self, $page, \%data );
         %data = %$ref;
+
+
+        if ( $self->{ 'debug' } )
+        {
+            print "Post-expansion variables on : $src\n";
+            print "\t" . Dumper( \%data );
+        }
 
 
         #
