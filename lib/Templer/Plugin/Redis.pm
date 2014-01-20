@@ -19,7 +19,11 @@ The following is a good example use of this plugin
 =head1 DESCRIPTION
 
 This plugin allows template variables to be values retrieved from
-redis-fetches.
+a redis store.
+
+It is assumed that redis will be running on the localhost, if it is
+not you may set the environmental variable C<REDIS_SERVER> to point
+to your IP:port pair.
 
 =cut
 
@@ -87,7 +91,16 @@ sub new
 
     if ( !$@ )
     {
-        $self->{ 'redis' } = new Redis;
+
+        #
+        #  OK the module was loaded, but Redis might not be
+        # running locally, or accessible remotely so in those
+        # cases we'll be disabled.
+        #
+        #  NOTE: Redis will use $ENV{'REDIS_SERVER'} if that is
+        # set, otherwise defaulting to 127.0.0.1:6379.
+        #
+        eval {$self->{ 'redis' } = new Redis()};
     }
 
     return $self;
@@ -135,7 +148,11 @@ sub expand_variables
             $rkey =~ s/^\s+|\s+$//g;
             $rkey =~ s/^["']|['"]$//g;
 
-            if ( $self->{ 'redis' } )
+            #
+            #  If we have redis, and it is alive/connected, then use it.
+            #
+            if ( $self->{ 'redis' } &&
+                 $self->{ 'redis' }->ping() )
             {
                 $hash{ $key } = $self->{ 'redis' }->get($rkey);
             }
