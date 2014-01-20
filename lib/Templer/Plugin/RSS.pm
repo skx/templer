@@ -121,6 +121,13 @@ sub expand_variables
 {
     my ( $self, $site, $page, $data ) = (@_);
 
+
+    #
+    #  Get the page-variables in the template.
+    #
+    my %hash = %$data;
+
+
     #
     #  Load XML::Feed if we can
     #
@@ -131,14 +138,9 @@ sub expand_variables
     ## use critic
 
     #
-    #  If there were errors then we're done and cannot fetch RSS feeds.
+    #  If there were errors loading the module then we're done.
     #
-    return if ($@);
-
-    #
-    #  Get the page-variables in the template.
-    #
-    my %hash = %$data;
+    return ( \%hash ) if ($@);
 
     #
     #  Look for a value of "read_file" in each key.

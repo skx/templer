@@ -82,6 +82,7 @@ my %DEFAULTS = ( "in-place"     => 0,
                  "plugin-path"  => "./plugins",
                  "suffix"       => ".skx",
                  "verbose"      => ( $CONFIG{ 'verbose' } || 0 ),
+                 "debug"        => ( $CONFIG{ 'debug' } || 0 ),
                  "force"        => ( $CONFIG{ 'force' } || 0 ),
                );
 
@@ -212,6 +213,7 @@ sub parseCommandLine
 
             # run verbosely.
             "verbose", \$CONFIG{ 'verbose' },
+            "debug",   \$CONFIG{ 'debug' },
         ) );
 
 
