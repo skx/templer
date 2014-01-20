@@ -93,7 +93,6 @@ pod2usage( -verbose => 2 ) if ( $CONFIG{ 'manual' } );
 my $base = shift;
 if ( !defined($base) )
 {
-    print "Usage: $0 directory\n";
     pod2usage(1);
 }
 
