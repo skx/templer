@@ -22,15 +22,21 @@ The following variable plugins are distributed as part of the project:
    * Set variable values to the contents of files.
 * `Templer::Plugin::FileGlob`
    * Set variable values to lists of files, based on a globbing pattern.
+   * If the glob matches images then heights and widths will be available to your HTML.
+   * If the glob doesn't match images then the contents of the files will also be made available.
 * `Templer::Plugin::ShellCommand`
    * Set variable values to the output of shell commands.
 * `Templer::Plugin::RootPath`
    * Allow access to your site prefix, without hardcoding it.
+* `Templer::Plugin::RSS`
+   * Allow pages to include remote RSS feed data.
+* `Templer::Plugin::Redis`
+   * Allow variables to be retrieved from a Redis store running on the local system.
 * `Templer::Plugin::Timestamp`
    * Allow pages to contain their own modification timestamp.
 
 If you wish you may contain write your own plugins, contained beneath your
-templer-site.  The default [templer.cfg](templer.cfg.sample) documents the 
+templer-site.  The default [templer.cfg](templer.cfg.sample) documents the
 `plugin-path` setting.
 
 

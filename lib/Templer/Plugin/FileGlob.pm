@@ -28,6 +28,24 @@ to the specified pattern.
 The intended use-case is inline-gallery generation, but more uses
 would surely be discovered.
 
+For each loop created there will be the variables:
+
+=over 8
+
+=item file
+
+The name of the file.
+
+=item height
+
+The height of the image, if the file is an image and L<Image::Size> is available.
+
+=item width
+
+The width of the image, if the file is an image and L<Image::Size> is available.
+
+=back
+
 =cut
 
 =head1 LICENSE
@@ -182,6 +200,23 @@ sub expand_variables
                           imgsize( $dirName . "/" . $img );
                     }
                 }
+                else
+                {
+
+                    #
+                    #  If it isn't an image we'll make the content available
+                    #
+                    if ( open( my $handle, "<:utf8", $img ) )
+                    {
+                        binmode( $handle, ":utf8" );
+                        while ( my $line = <$handle> )
+                        {
+                            $meta{ 'content' } .= $line;
+                        }
+                        close($handle);
+                    }
+                }
+
                 push( @$ref, \%meta );
             }
 

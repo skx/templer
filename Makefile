@@ -42,7 +42,7 @@ install: default
 	chmod 755 /usr/local/bin/templer /usr/local/bin/templer-generate
 
 
-release: critic tidy clean
+release: tidy clean
 	echo "Release is $(VERSION)"
 	rm -rf $(DIST_PREFIX)/$(BASE)-$(VERSION)
 	rm -f $(DIST_PREFIX)/$(BASE)-$(VERSION).tar.gz

@@ -135,7 +135,7 @@ Textile and markdown are well-known, and allow you to write your page content na
            $year - 1976;
        } years old.</p>
 
-> NOTE:  Formatters may be chained.  For example "format: perl, markdown".
+> **NOTE**:  Formatters may be chained.  For example "`format: perl, markdown`".
 
 
 Variable Definitions
@@ -151,8 +151,7 @@ page-body, using the standard  [HTML::Template](http://search.cpan.org/perldoc?H
      ----
      <p>Hello, my name is <!-- tmpl_var name='name' -->.</p>
 
-> The only surprise here is that we referred to the variable called "Name" as "name".  All
-variable-names are transformed to lower-case for consistency.
+> **NOTE**: All variable-names are transformed to lower-case for consistency, which is why we refer to the variable `name` rather than the defined `Name`.
 
 As well as simple "name: value" pairs there are also additional options implemented in [plugins](PLUGINS.md);
 
@@ -164,7 +163,10 @@ As well as simple "name: value" pairs there are also additional options implemen
     * Using `run_command`.
 * A variable may be based on the timestamp of the input page.
     * Using `timestamp`.
-
+* A variable may contain the contents of a remote RSS feed.
+    * Using `rss(count, URL)`.
+* A variable may contain the result of a key-lookup from a Redis server.
+    * Using `redis_get('foo')`.
 
 In addition to declaring variables in a page-header you may also declare
 __global__ variables in your `templer.cfg` file, or upon the command-line
@@ -190,7 +192,9 @@ the pattern `img/*.jpg`:
      ---
      <!-- tmpl_if name='images' -->
        <!-- tmpl_loop name='images' -->
-        <p><img src="<!-- tmpl_var name='file' -->" /> </p>
+        <p><img src="<!-- tmpl_var name='file' -->"
+                height="<!-- tmpl_var name='height' -->"
+                width="<!-- tmpl_var name='width' -->" /> </p>
        <!-- /tmpl_loop -->
      <!-- tmpl_else -->
        <p>No images were found.</p>
@@ -206,6 +210,20 @@ the pattern `img/*.jpg`:
 
 This facility is implemented in the `Templer::Plugin::FileGlob` [plugin](PLUGINS.md).
 
+The file glob is primarily designed for handling image-galleries, which is why it will set the `height` and `width` attributes if your glob matches `*.jpg`, `*.png`, etc.  However it can also be used for non-images.
+
+If your glob matches files which are not images it will populate the member `content`, being the text-content of the matching files.  This allows you to include files easily.  For example:
+
+
+    Title: This is my news-page
+    news: file_glob( news-*.txt )
+    ----
+    <p>Here are the recent events:</p>
+    <!-- tmpl_loop name='news' -->
+    <p><!-- tmpl_var name='content' --></p>
+    <!-- /tmpl_loop -->
+
+This assumes you have files such as <tt>news-20130912.txt</tt>, etc, and will show the contents of each file in (glob)order.</p>
 
 
 File Inclusion
@@ -253,6 +271,36 @@ Pages may also define variables which receive the value of the output of shell c
 This facility is implemented in the `Templer::Plugin::ShellCommand` [plugin](PLUGINS.md).
 
 
+Remote RSS Feeds
+----------------
+
+Pages may use snippets of RSS feeds, limiting them to the given
+number of entries.  For example:
+
+      title: About my site
+      feed: rss(4, http://blog.steve.org.uk/index.rss )
+      ----
+      <p>This page is about my site, here are my recent blog posts:</p>
+      <ul>
+      <!-- tmpl_loop name='feed' -->
+            <li><a href="<!-- tmpl_var name='link' -->"><!-- tmpl_var name='title' --></a></li>
+      <!-- /tmpl_loop -->
+      </ul>
+
+
+Redis Lookups
+-------------
+
+If you have a redis-server running upon the local system you may
+configure page-variables to retrieve their values via lookups against it.
+
+For example:
+
+      title: Site Statistics
+      count: redis_get( "global_count" )
+      ----
+      <p>There are <!-- tmpL-var name='count' --> entries.</p>
+
 
 Installation
 ------------
@@ -288,6 +336,10 @@ The dependencies are minimal, to ease installation:
       *  This may be installed, on a Debian system, with `apt-get install libtext-textile-perl`.
    * The [Text::Template](http://search.cpan.org/perldoc?Text%3A%3ATemplate) module is required if you wish to include dynamic perl in your input pages.
       *  This may be installed, on a Debian system, with `apt-get install libtext-template-perl`.
+   * The [Redis](http://search.cpan.org/perldoc?Redis) module is required if you wish to use the Redis plugin.
+      *  This may be installed, on a Debian system, with `apt-get install libredis-perl`.
+   * The [XML::Feed](http://search.cpan.org/perldoc?XML%3A%3AFeed) module is required if you wish to use the RSS plugin.
+      *  This may be installed, on a Debian system, with `apt-get install libxml-feed-perl`.
 
 
 Creating a new site
