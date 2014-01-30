@@ -86,7 +86,7 @@ sub new
 
 =head2 available
 
-This plugin is available if we've got the Text::Template module.
+This plugin is available if we've got the L<Text::Template> module.
 
 =cut
 

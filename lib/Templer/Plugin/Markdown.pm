@@ -84,7 +84,7 @@ sub new
 
 =head2 available
 
-This plugin is available if we've got the Text::Markdown module.
+This plugin is available if we've got the L<Text::Markdown> module.
 
 =cut
 
