@@ -67,8 +67,15 @@ if ( !defined( $CONFIG{ 'config' } ) )
 # templer.cfg.
 #
 my $cnf = $CONFIG{ 'config' } || "./templer.cfg";
-my $cfg = Templer::Global->new( file => $cnf, debug => $CONFIG{ 'debug' } );
-
+my $cfg;
+if ( defined( $CONFIG{ 'debug' } ) )
+{
+  $cfg = Templer::Global->new( file => $cnf, debug => $CONFIG{ 'debug' } );
+}
+else
+{
+  $cfg = Templer::Global->new( file => $cnf);
+}
 
 #
 # These are the default settings.
