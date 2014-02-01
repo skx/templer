@@ -117,6 +117,9 @@ sub format
     }
     else
     {
+        warn
+          "Textile formatting disabled as the Text::Textile module isn't present.\n";
+
         $str;
     }
 }
