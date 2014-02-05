@@ -121,6 +121,8 @@ sub format
     }
     else
     {
+        warn
+          "Perl formatting disabled as the Text::Template module isn't present.\n";
         $str;
     }
 }

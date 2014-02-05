@@ -116,6 +116,9 @@ sub format
     }
     else
     {
+        warn
+          "Markdown formatting disabled as the Text::Markdown module isn't present.\n";
+
         $str;
     }
 }

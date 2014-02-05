@@ -67,7 +67,8 @@ if ( !defined( $CONFIG{ 'config' } ) )
 # templer.cfg.
 #
 my $cnf = $CONFIG{ 'config' } || "./templer.cfg";
-my $cfg = Templer::Global->new( file => $cnf, debug => ( $CONFIG{ 'debug' } || 0 ));
+my $cfg =
+  Templer::Global->new( file => $cnf, debug => ( $CONFIG{ 'debug' } || 0 ) );
 
 
 #

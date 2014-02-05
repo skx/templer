@@ -142,6 +142,7 @@ if ($val)
 }
 else
 {
+
     #
     #  Otherwise cleanup
     #
