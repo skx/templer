@@ -206,8 +206,8 @@ sub expand_variables
                 #
                 elsif ( $img =~ '/'.$site->{suffix}.'$/i' ) {
                     my $pageClass = ref $page;
-                    my $globPage = $pageClass->new(file => $img );
-                    while ( my ( $k, $v ) = each $globPage->fields() ) {
+                    my $globPage = $pageClass->new(file => $img);
+                    while ( my ( $k, $v ) = each %{ $globPage } ) {
                         $meta{$k} = $v;
                     }
                 }
