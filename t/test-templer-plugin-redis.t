@@ -44,7 +44,6 @@ my $skip = 0;
 ## no critic (Eval)
 eval "use Redis";
 ## use critic
-my $fail = 1 if ($@);
 $skip = 1 if ($@);
 
 
