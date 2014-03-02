@@ -200,15 +200,18 @@ sub expand_variables
                           imgsize( $dirName . "/" . $img );
                     }
                 }
-                #
-                # If the file is a Templer input file
-                # then populate templer variables
-                #
-                elsif ( $img =~ '/'.$site->{suffix}.'$/i' ) {
+                elsif ( $img =~ '/' . $site->{ suffix } . '$/i' )
+                {
+
+                    #
+                    # If the file is a Templer input file
+                    # then populate templer variables
+                    #
                     my $pageClass = ref $page;
-                    my $globPage = $pageClass->new(file => $img);
-                    while ( my ( $k, $v ) = each %{ $globPage } ) {
-                        $meta{$k} = $v;
+                    my $globPage = $pageClass->new( file => $img );
+                    while ( my ( $k, $v ) = each %{ $globPage } )
+                    {
+                        $meta{ $k } = $v;
                     }
                 }
                 else
