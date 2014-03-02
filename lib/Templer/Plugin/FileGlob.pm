@@ -200,7 +200,8 @@ sub expand_variables
                           imgsize( $dirName . "/" . $img );
                     }
                 }
-                elsif ( $img =~ '/' . $site->{ suffix } . '$/i' )
+                elsif ( ( $site->{ suffix } ) &&
+                        ( $img =~ '/' . $site->{ suffix } . '$/i' ) )
                 {
 
                     #
