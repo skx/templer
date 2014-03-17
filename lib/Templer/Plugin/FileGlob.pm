@@ -69,7 +69,7 @@ Steve Kemp <steve@steve.org.uk>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2012-2013 Steve Kemp <steve@steve.org.uk>.
+Copyright (C) 2012-2014 Steve Kemp <steve@steve.org.uk>.
 
 This library is free software. You can modify and or distribute it under
 the same terms as Perl itself.
@@ -198,6 +198,21 @@ sub expand_variables
                     {
                         ( $meta{ 'width' }, $meta{ 'height' } ) =
                           imgsize( $dirName . "/" . $img );
+                    }
+                }
+                elsif ( ( $site->{ suffix } ) &&
+                        ( $img =~ '/' . $site->{ suffix } . '$/i' ) )
+                {
+
+                    #
+                    # If the file is a Templer input file
+                    # then populate templer variables
+                    #
+                    my $pageClass = ref $page;
+                    my $globPage = $pageClass->new( file => $img );
+                    while ( my ( $k, $v ) = each %{ $globPage } )
+                    {
+                        $meta{ $k } = $v;
                     }
                 }
                 else
