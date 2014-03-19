@@ -44,7 +44,26 @@ The height of the image, if the file is an image and L<Image::Size> is available
 
 The width of the image, if the file is an image and L<Image::Size> is available.
 
+=item content
+
+The content of the file if the file is not an image and not a templer input file.
+
+=item dirname
+
+The directory part of the file name.
+
+=item basename
+
+The basename of the file (without extension).
+
+=item extension
+
+The extension (everything after the last period) of the file name.
+
 =back
+
+If matching files are templer input files then all templer variables are also
+populated.
 
 =cut
 
@@ -88,6 +107,7 @@ use warnings;
 package Templer::Plugin::FileGlob;
 
 use Cwd;
+use File::Basename;
 
 
 =head2
@@ -231,6 +251,14 @@ sub expand_variables
                         close($handle);
                     }
                 }
+
+                #
+                # Populate filename parts
+                #
+                my($basename, $dirname, $extension) = fileparse($img);
+                ($meta { 'dirname' } = $dirname) =~ s{/$}{};
+                ($meta { 'basename' } = $basename) =~ s{(.*)\.([^.]*)$}{$1};
+                $meta { 'extension' } = $2;
 
                 push( @$ref, \%meta );
             }

@@ -57,7 +57,7 @@ my $dir = tempdir( CLEANUP => 1 );
 open( my $handle, ">", $dir . "/input.wgn" );
 print $handle <<EOF;
 Title: This is my page title.
-Files: file_glob( *.txt );
+Files: file_glob( foo/* );
 ----
 
 This is my page content.
@@ -69,9 +69,11 @@ close($handle);
 #
 #  Now create some files.
 #
-createFile( $dir . "/foo.txt" );
-createFile( $dir . "/ok.txt" );
-createFile( $dir . "/bar.txt" );
+mkdir ("$dir/foo");
+createFile( $dir . "/foo/foo.txt" );
+createFile( $dir . "/foo/ok.txt" );
+createFile( $dir . "/foo/bar.txt" );
+createFile( $dir . "/foo/bar" );
 
 #
 #  Create the page
@@ -101,10 +103,19 @@ ok( $updated{ 'files' }, "The fields contain a file reference" );
 foreach my $obj ( @{ $updated{ 'files' } } )
 {
     ok( $obj->{ 'file' }, "The file reference has a name" );
-    ok( $obj->{ 'file' } =~ /\.txt$/, "The file reference is sane" );
+    ok( $obj->{ 'file' } =~ m{^foo/}, "The file reference is sane" );
+    if ($obj->{ 'file' } eq 'foo/bar') {
+      ok( $obj->{ 'dirname' } eq 'foo', "The file dirname is captured" );
+      ok( $obj->{ 'basename' } eq 'bar', "The file basename is captured" );
+      ok( ! defined($obj->{ 'extension' }), "The file extension is empty" );
+    } elsif ($obj->{ 'file' } eq 'foo/bar.txt') {
+      ok( $obj->{ 'dirname' } eq 'foo', "The file dirname is captured" );
+      ok( $obj->{ 'basename' } eq 'bar', "The file basename is captured" );
+      ok( $obj->{ 'extension' } eq 'txt', "The file extension is captured" );
+    }
 }
 is( scalar( @{ $updated{ 'files' } } ),
-    3, "We received the number of files we expected" );
+    4, "We received the number of files we expected" );
 
 #
 # All done.
