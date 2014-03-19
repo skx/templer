@@ -22,8 +22,10 @@ The following variable plugins are distributed as part of the project:
    * Set variable values to the contents of files.
 * `Templer::Plugin::FileGlob`
    * Set variable values to lists of files, based on a globbing pattern.
+   * dirname, basename and file extension are made available.
    * If the glob matches images then heights and widths will be available to your HTML.
    * If the glob doesn't match images then the contents of the files will also be made available.
+   * If the glob matches templer input files then templer input variables will be available to your HTML.
 * `Templer::Plugin::ShellCommand`
    * Set variable values to the output of shell commands.
 * `Templer::Plugin::RootPath`
