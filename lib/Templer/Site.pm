@@ -628,9 +628,9 @@ sub copyAssets
         my $quoted_src;
         if ($src =~ /\'/) {
           ($quoted_src = "$src")  =~ s{\\}{\\\\}g;
-		  $quoted_src =~ s{\"}{\\\"}g;
-		  $quoted_src =~ s{\$}{\\\$}g;
-		  $quoted_src =~ s{\`}{\\\`}g;
+          $quoted_src =~ s{\"}{\\\"}g;
+          $quoted_src =~ s{\$}{\\\$}g;
+          $quoted_src =~ s{\`}{\\\`}g;
           $quoted_src = "\"$quoted_src\"";
         } else {
           $quoted_src = "'$src'";
