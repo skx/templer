@@ -69,7 +69,7 @@ close($handle);
 #
 #  Now create some files.
 #
-mkdir ("$dir/foo");
+mkdir("$dir/foo");
 createFile( $dir . "/foo/foo.txt" );
 createFile( $dir . "/foo/ok.txt" );
 createFile( $dir . "/foo/bar.txt" );
@@ -104,14 +104,17 @@ foreach my $obj ( @{ $updated{ 'files' } } )
 {
     ok( $obj->{ 'file' }, "The file reference has a name" );
     ok( $obj->{ 'file' } =~ m{^foo/}, "The file reference is sane" );
-    if ($obj->{ 'file' } eq 'foo/bar') {
-      ok( $obj->{ 'dirname' } eq 'foo', "The file dirname is captured" );
-      ok( $obj->{ 'basename' } eq 'bar', "The file basename is captured" );
-      ok( ! defined($obj->{ 'extension' }), "The file extension is empty" );
-    } elsif ($obj->{ 'file' } eq 'foo/bar.txt') {
-      ok( $obj->{ 'dirname' } eq 'foo', "The file dirname is captured" );
-      ok( $obj->{ 'basename' } eq 'bar', "The file basename is captured" );
-      ok( $obj->{ 'extension' } eq 'txt', "The file extension is captured" );
+    if ( $obj->{ 'file' } eq 'foo/bar' )
+    {
+        is( $obj->{ 'dirname' },   'foo', "The file dirname is captured" );
+        is( $obj->{ 'basename' },  'bar', "The file basename is captured" );
+        is( $obj->{ 'extension' }, undef, "The file extension is empty" );
+    }
+    elsif ( $obj->{ 'file' } eq 'foo/bar.txt' )
+    {
+        is( $obj->{ 'dirname' },   'foo', "The file dirname is captured" );
+        is( $obj->{ 'basename' },  'bar', "The file basename is captured" );
+        is( $obj->{ 'extension' }, 'txt', "The file extension is captured" );
     }
 }
 is( scalar( @{ $updated{ 'files' } } ),
