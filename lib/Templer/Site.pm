@@ -623,10 +623,24 @@ sub copyAssets
         $src =~ s/^$self->{'input'}//g;
 
         #
+        # Filenames must be shell safe: we'll use it in a shell command
+        #
+        my $quoted_src;
+        if ($src =~ /\'/) {
+          ($quoted_src = "$src")  =~ s{\\}{\\\\}g;
+          $quoted_src =~ s{\"}{\\\"}g;
+          $quoted_src =~ s{\$}{\\\$}g;
+          $quoted_src =~ s{\`}{\\\`}g;
+          $quoted_src = "\"$quoted_src\"";
+        } else {
+          $quoted_src = "'$src'";
+        }
+
+        #
         # If we've got an asset which is a directory that
         # is already present, for example, we'll skip it.
         #
-        push( @copy, $src ) unless ( -e "$self->{'output'}/$src" );
+        push( @copy, $quoted_src ) unless ( -e "$self->{'output'}/$src" );
     }
 
     #
