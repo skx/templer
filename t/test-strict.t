@@ -5,7 +5,8 @@ use warnings;
 
 use Test::More;
 
-BEGIN {
+BEGIN
+{
     my $str = "use Test::Strict;";
 
     ## no critic (Eval)
@@ -13,7 +14,7 @@ BEGIN {
     ## use critic
 
     plan skip_all => "Skipping as Test::Strict isn't installed"
-      if ( $@ );
+      if ($@);
 }
 
 all_perl_files_ok();

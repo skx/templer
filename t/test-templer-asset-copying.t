@@ -42,10 +42,10 @@ createFile( $tmp . "/input/index.skx" );
 createFile( $tmp . "/input/logo.png" );
 createFile( $tmp . "/input/.htaccess" );
 createFile( $tmp . "/input/it's ugly.png" );
-createFile( $tmp . '/input/it'."'".'s ugly\.png' );
-createFile( $tmp . '/input/it'."'".'s ugly".png' );
-createFile( $tmp . '/input/it'."'".'s ugly$.png' );
-createFile( $tmp . '/input/it'."'".'s ugly`.png' );
+createFile( $tmp . '/input/it' . "'" . 's ugly\.png' );
+createFile( $tmp . '/input/it' . "'" . 's ugly".png' );
+createFile( $tmp . '/input/it' . "'" . 's ugly$.png' );
+createFile( $tmp . '/input/it' . "'" . 's ugly`.png' );
 createFile( $tmp . '/input/it"s ugly.png' );
 
 #
@@ -69,15 +69,15 @@ ok( -d "$tmp/output", "The output directory was created" );
 $site->copyAssets();
 
 
-ok( -e $tmp . "/output/logo.png",             "Asset copied successfully" );
-ok( -e $tmp . "/output/.htaccess",            "Asset copied successfully" );
-ok( -e $tmp . "/output/it's ugly.png",        "Asset copied successfully" );
-ok( -e $tmp . '/output/it'."'".'s ugly\.png', "Asset copied successfully" );
-ok( -e $tmp . '/output/it'."'".'s ugly".png', "Asset copied successfully" );
-ok( -e $tmp . '/output/it'."'".'s ugly$.png', "Asset copied successfully" );
-ok( -e $tmp . '/output/it'."'".'s ugly`.png', "Asset copied successfully" );
-ok( -e $tmp . '/output/it"s ugly.png',        "Asset copied successfully" );
-ok( !-e $tmp . "/output/index.skx",           "Page source not copied" );
+ok( -e $tmp . "/output/logo.png",                 "Asset copied successfully" );
+ok( -e $tmp . "/output/.htaccess",                "Asset copied successfully" );
+ok( -e $tmp . "/output/it's ugly.png",            "Asset copied successfully" );
+ok( -e $tmp . '/output/it' . "'" . 's ugly\.png', "Asset copied successfully" );
+ok( -e $tmp . '/output/it' . "'" . 's ugly".png', "Asset copied successfully" );
+ok( -e $tmp . '/output/it' . "'" . 's ugly$.png', "Asset copied successfully" );
+ok( -e $tmp . '/output/it' . "'" . 's ugly`.png', "Asset copied successfully" );
+ok( -e $tmp . '/output/it"s ugly.png',            "Asset copied successfully" );
+ok( !-e $tmp . "/output/index.skx",               "Page source not copied" );
 
 
 sub createFile

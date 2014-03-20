@@ -225,6 +225,10 @@ If your glob matches files which are not images it will populate the member `con
 
 This assumes you have files such as <tt>news-20130912.txt</tt>, etc, and will show the contents of each file in (glob)order.</p>
 
+If matching files are templer input files then all templer variables are populated instead of the text-content of the matching files.
+
+In all cases it will populate `dirname`, `basename` and `extension`, being parts of each matching files name.
+
 
 File Inclusion
 --------------
