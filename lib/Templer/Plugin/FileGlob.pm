@@ -204,6 +204,7 @@ sub expand_variables
                 #
                 my %meta = ( file => $img );
 
+                my $suffix = $site->{ suffix };
                 #
                 # If the file is an image AND we have Image::Size
                 # then populate the height/width too.
@@ -220,8 +221,7 @@ sub expand_variables
                           imgsize( $dirName . "/" . $img );
                     }
                 }
-                elsif ( ( $site->{ suffix } ) &&
-                        ( $img =~ '/' . $site->{ suffix } . '$/i' ) )
+                elsif ( ( $site->{ suffix } ) && ( $img =~ /$suffix$/i ) )
                 {
 
                     #
@@ -255,10 +255,10 @@ sub expand_variables
                 #
                 # Populate filename parts
                 #
-                my($basename, $dirname, $extension) = fileparse($img);
-                ($meta { 'dirname' } = $dirname) =~ s{/$}{};
-                ($meta { 'basename' } = $basename) =~ s{(.*)\.([^.]*)$}{$1};
-                $meta { 'extension' } = $2;
+                my ( $basename, $dirname, $extension ) = fileparse($img);
+                ( $meta{ 'dirname' }  = $dirname )  =~ s{/$}{};
+                ( $meta{ 'basename' } = $basename ) =~ s{(.*)\.([^.]*)$}{$1};
+                $meta{ 'extension' } = $2;
 
                 push( @$ref, \%meta );
             }

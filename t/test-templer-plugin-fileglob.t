@@ -37,7 +37,7 @@ require_ok('Templer::Plugin::FileGlob');
 #
 #  Create a config file
 #
-my $site = Templer::Site->new();
+my $site = Templer::Site->new( suffix => ".skx" );
 
 #
 #  Instantiate the helper.
@@ -54,7 +54,7 @@ my $dir = tempdir( CLEANUP => 1 );
 #
 #  Create a page.
 #
-open( my $handle, ">", $dir . "/input.wgn" );
+open( my $handle, ">", $dir . "/input.skx" );
 print $handle <<EOF;
 Title: This is my page title.
 Files: file_glob( foo/* );
@@ -65,20 +65,30 @@ This is my page content.
 EOF
 close($handle);
 
-
 #
-#  Now create some files.
+#  Now create some files (one of which is a templer input page)
 #
 mkdir("$dir/foo");
 createFile( $dir . "/foo/foo.txt" );
 createFile( $dir . "/foo/ok.txt" );
 createFile( $dir . "/foo/bar.txt" );
 createFile( $dir . "/foo/bar" );
+open( $handle, ">", $dir . "/foo/input.skx" );
+print $handle <<EOF;
+Title: An included page
+Variable: Value
+----
+
+This is another page content.
+
+EOF
+close($handle);
+
 
 #
 #  Create the page
 #
-my $page = Templer::Site::Page->new( file => $dir . "/input.wgn" );
+my $page = Templer::Site::Page->new( file => $dir . "/input.skx" );
 ok( $page, "We created a page object" );
 isa_ok( $page, "Templer::Site::Page", "Which has the correct type" );
 
@@ -102,23 +112,48 @@ ok( $updated{ 'files' }, "The fields contain a file reference" );
 
 foreach my $obj ( @{ $updated{ 'files' } } )
 {
-    ok( $obj->{ 'file' }, "The file reference has a name" );
-    ok( $obj->{ 'file' } =~ m{^foo/}, "The file reference is sane" );
-    if ( $obj->{ 'file' } eq 'foo/bar' )
+    my $file = $obj->{ 'file' };
+    ok( $obj->{ 'file' }, "The file reference has a name : $obj->{ 'file' }" );
+    ok( $obj->{ 'file' } =~ m{^foo/}, "    file reference is sane" );
+    if ( $file eq "foo/foo.txt" )
     {
-        is( $obj->{ 'dirname' },   'foo', "The file dirname is captured" );
-        is( $obj->{ 'basename' },  'bar', "The file basename is captured" );
-        is( $obj->{ 'extension' }, undef, "The file extension is empty" );
+        is( $obj->{ 'content' },   "something", "    content is propagated" );
+        is( $obj->{ 'dirname' },   'foo',       "    dirname is captured" );
+        is( $obj->{ 'basename' },  'foo',       "    basename is captured" );
+        is( $obj->{ 'extension' }, 'txt',       "    extension is captured" );
     }
-    elsif ( $obj->{ 'file' } eq 'foo/bar.txt' )
+    elsif ( $file eq "foo/ok.txt" )
     {
-        is( $obj->{ 'dirname' },   'foo', "The file dirname is captured" );
-        is( $obj->{ 'basename' },  'bar', "The file basename is captured" );
-        is( $obj->{ 'extension' }, 'txt', "The file extension is captured" );
+        is( $obj->{ 'content' },   "something", "    content is propagated" );
+        is( $obj->{ 'dirname' },   'foo',       "    dirname is captured" );
+        is( $obj->{ 'basename' },  'ok',        "    basename is captured" );
+        is( $obj->{ 'extension' }, 'txt',       "    extension is captured" );
+    }
+    elsif ( $file eq "foo/bar.txt" )
+    {
+        is( $obj->{ 'content' },   "something", "    content is propagated" );
+        is( $obj->{ 'dirname' },   'foo',       "    dirname is captured" );
+        is( $obj->{ 'basename' },  'bar',       "    basename is captured" );
+        is( $obj->{ 'extension' }, 'txt',       "    extension is captured" );
+    }
+    elsif ( $file eq "foo/bar" )
+    {
+        is( $obj->{ 'content' },   "something", "    content is propagated" );
+        is( $obj->{ 'dirname' },   'foo',       "    dirname is captured" );
+        is( $obj->{ 'basename' },  'bar',       "    basename is captured" );
+        is( $obj->{ 'extension' }, undef,       "    extension is empty" );
+    }
+    elsif ( $file eq "foo/input.skx" )
+    {
+        is( $obj->{ 'variable' },
+            'Value', "    input variables are propagated" );
+        is( $obj->{ 'dirname' },   'foo',   "    dirname is captured" );
+        is( $obj->{ 'basename' },  'input', "    basename is captured" );
+        is( $obj->{ 'extension' }, 'skx',   "    extension is captured" );
     }
 }
 is( scalar( @{ $updated{ 'files' } } ),
-    4, "We received the number of files we expected" );
+    5, "We received the number of files we expected" );
 
 #
 # All done.
@@ -137,7 +172,7 @@ sub createFile
     ok( !-e $filename, "The file we're creating is not present" );
 
     open( my $handle, ">", $filename );
-    print $handle "\n";
+    print $handle "something";
     close($handle);
 
     ok( -e $filename, "We created a temporary file" );
