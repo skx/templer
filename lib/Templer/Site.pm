@@ -626,14 +626,17 @@ sub copyAssets
         # Filenames must be shell safe: we'll use it in a shell command
         #
         my $quoted_src;
-        if ($src =~ /\'/) {
-          ($quoted_src = "$src")  =~ s{\\}{\\\\}g;
-          $quoted_src =~ s{\"}{\\\"}g;
-          $quoted_src =~ s{\$}{\\\$}g;
-          $quoted_src =~ s{\`}{\\\`}g;
-          $quoted_src = "\"$quoted_src\"";
-        } else {
-          $quoted_src = "'$src'";
+        if ( $src =~ /\'/ )
+        {
+            ( $quoted_src = "$src" ) =~ s{\\}{\\\\}g;
+            $quoted_src =~ s{\"}{\\\"}g;
+            $quoted_src =~ s{\$}{\\\$}g;
+            $quoted_src =~ s{\`}{\\\`}g;
+            $quoted_src = "\"$quoted_src\"";
+        }
+        else
+        {
+            $quoted_src = "'$src'";
         }
 
         #
