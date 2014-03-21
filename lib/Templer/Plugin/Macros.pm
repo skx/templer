@@ -106,7 +106,7 @@ This plugin is always available.
 
 sub available
 {
-  return 1;
+    return 1;
 }
 
 
@@ -126,20 +126,21 @@ sub format
         #
         # If macros variable exist add its content to str
         #
-        $str = ${$data}{'macros'} . $str if (${$data}{'macros'});
+        $str = ${ $data }{ 'macros' } . $str if ( ${ $data }{ 'macros' } );
 
         my @patterns = ();
         my @replaces = ();
-        my $content = "";
+        my $content  = "";
 
-        foreach (split /\n/, $str)
+        foreach ( split /\n/, $str )
         {
+
             #
             # Line contains a macro definition
             #
-            if (    /^<!--\s+#define\s+"([^"]+)"\s+(.*)\s+-->$/
-                 || /^<!--\s+#define\s+'([^']+)'\s+(.*)\s+-->$/
-                 || /^<!--\s+#define\s+([^\s]+)\s+(.*)\s+-->$/)
+            if ( /^<!--\s+#define\s+"([^"]+)"\s+(.*)\s+-->$/ ||
+                 /^<!--\s+#define\s+'([^']+)'\s+(.*)\s+-->$/ ||
+                 /^<!--\s+#define\s+([^\s]+)\s+(.*)\s+-->$/ )
             {
                 my $pattern = $1;
                 my $replace = $2;
@@ -155,15 +156,16 @@ sub format
 
                 next;
             }
+
             #
             # Line should be expanded
             #
             else
             {
-              my $line = $_;
-                foreach (keys(@patterns))
+                my $line = $_;
+                foreach ( keys(@patterns) )
                 {
-                    my $rep = '"'.$replaces[$_].'"';
+                    my $rep = '"' . $replaces[$_] . '"';
                     $line =~ s{$patterns[$_]}
                               {$rep}eeg;
                 }
