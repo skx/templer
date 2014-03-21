@@ -191,25 +191,37 @@ sub expand_variables
             #
             my $ref;
 
+            #
+            #  The suffix of files that are Templer input-files.
+            #
+            my $suffix = $site->{ suffix };
+
 
             #
             #  Run the glob.
             #
-            foreach my $img ( glob($pattern) )
+            foreach my $file ( glob($pattern) )
             {
 
                 #
                 # Data reference - moved here so we can add height/width if the
                 # glob refers to an image, and if we have Image::Size installed.
                 #
-                my %meta = ( file => $img );
+                my %meta = ( file => $file );
 
-                my $suffix = $site->{ suffix };
+                #
+                # Populate filename parts.
+                #
+                my ( $basename, $dirname, $extension ) = fileparse($file);
+                ( $meta{ 'dirname' }  = $dirname )  =~ s{/$}{};
+                ( $meta{ 'basename' } = $basename ) =~ s{(.*)\.([^.]*)$}{$1};
+                $meta{ 'extension' } = $2;
+
                 #
                 # If the file is an image AND we have Image::Size
                 # then populate the height/width too.
                 #
-                if ( $img =~ /\.(jpe?g|png|gif)$/i )
+                if ( $file =~ /\.(jpe?g|png|gif)$/i )
                 {
                     my $module = "use Image::Size;";
                     ## no critic (Eval)
@@ -218,10 +230,10 @@ sub expand_variables
                     if ( !$@ )
                     {
                         ( $meta{ 'width' }, $meta{ 'height' } ) =
-                          imgsize( $dirName . "/" . $img );
+                          imgsize( $dirName . "/" . $file );
                     }
                 }
-                elsif ( ( $site->{ suffix } ) && ( $img =~ /$suffix$/i ) )
+                elsif ( ( $suffix ) && ( $file =~ /$suffix$/i ) )
                 {
 
                     #
@@ -229,7 +241,7 @@ sub expand_variables
                     # then populate templer variables
                     #
                     my $pageClass = ref $page;
-                    my $globPage = $pageClass->new( file => $img );
+                    my $globPage = $pageClass->new( file => $file );
                     while ( my ( $k, $v ) = each %{ $globPage } )
                     {
                         $meta{ $k } = $v;
@@ -241,7 +253,7 @@ sub expand_variables
                     #
                     #  If it isn't an image we'll make the content available
                     #
-                    if ( open( my $handle, "<:utf8", $img ) )
+                    if ( open( my $handle, "<:utf8", $file ) )
                     {
                         binmode( $handle, ":utf8" );
                         while ( my $line = <$handle> )
@@ -251,14 +263,6 @@ sub expand_variables
                         close($handle);
                     }
                 }
-
-                #
-                # Populate filename parts
-                #
-                my ( $basename, $dirname, $extension ) = fileparse($img);
-                ( $meta{ 'dirname' }  = $dirname )  =~ s{/$}{};
-                ( $meta{ 'basename' } = $basename ) =~ s{(.*)\.([^.]*)$}{$1};
-                $meta{ 'extension' } = $2;
 
                 push( @$ref, \%meta );
             }
