@@ -233,7 +233,7 @@ sub expand_variables
                           imgsize( $dirName . "/" . $file );
                     }
                 }
-                elsif ( ( $suffix ) && ( $file =~ /$suffix$/i ) )
+                elsif ( ($suffix) && ( $file =~ /$suffix$/i ) )
                 {
 
                     #
