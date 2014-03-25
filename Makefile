@@ -1,3 +1,4 @@
+TMP        ?= /tmp
 DIST_PREFIX = ${TMP}
 BASE        = templer
 VERSION     = $(shell sh -c 'git describe --abbrev=0 --tags | tr -d "release-"')
