@@ -498,7 +498,7 @@ sub build
                 if ( -M $d < -M $dst )
                 {
                     $self->{ 'verbose' } &&
-                      print "Triggering rebuild $d is more recent than $dst\n";
+                      print "Triggering rebuild: $d is more recent than $dst\n";
                     $rebuild = 1;
                 }
             }
