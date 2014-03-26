@@ -204,6 +204,18 @@ sub expand_variables
             {
 
                 #
+                # The page dependency also includes the matching filename now.
+                #
+                if ( $file =~ m{^/} )
+                {
+                    $page->add_dependency($file);
+                }
+                else
+                {
+                    $page->add_dependency( $dirName . "/" . $file );
+                }
+
+                #
                 # Data reference - moved here so we can add height/width if the
                 # glob refers to an image, and if we have Image::Size installed.
                 #
