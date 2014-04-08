@@ -117,7 +117,7 @@ sub filter
 {
     my ( $self, $str ) = (@_);
 
-    $str =~ s/\$\{(\w+)([^}]*)\}/<tmpl_var name="$1"$2>/g;
+    $str =~ s/\$\{([^:\s}]+)([^}]*)\}/<tmpl_var name="$1"$2>/g;
 
     return $str;
 }
