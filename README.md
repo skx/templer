@@ -3,7 +3,10 @@ Templer
 
 Templer is yet another static site generator, written in Perl.
 
-It makes use of the [HTML::Template](http://search.cpan.org/perldoc?HTML%3A%3ATemplate) module for performing variable expansion within pages and layouts, along with looping and conditional-statement handling.
+It makes use of the
+[HTML::Template](http://search.cpan.org/perldoc?HTML%3A%3ATemplate) module for
+performing variable expansion within pages and layouts, along with looping and
+conditional-statement handling.
 
 Templer has evolved over time for my own personal use, but I believe
 it is sufficiently generic it could be useful to others.
@@ -42,9 +45,10 @@ Concepts
 A templer site comprises of three things:
 
 * A global configuration file.
-     * This defines the paths to search for input pages, layout templates, plugins, etc.
-     * This may contain global variable declarations.
-     * Please see the example configuration file: [`templer.cfg`](https://raw.github.com/skx/templer/master/templer.cfg.sample).
+    * This defines the paths to search for input pages, layout templates, plugins, etc.
+    * This may contain global variable declarations.
+    * Please see the example configuration file:
+      [`templer.cfg`](https://raw.github.com/skx/templer/master/templer.cfg.sample).
 * A layout.
     * This is used to format the output pages, defining the common look and feel.
 * A series of pages & assets.
@@ -54,13 +58,13 @@ A templer site comprises of three things:
 In general we assume there is a tree like so:
 
     ├── input
-    │   ├── index.wgn
-    │   ├── ...
-    │   ├── ...
-    │   ├── favicon.ico
-    │   └── robots.txt
+    │   ├── index.wgn
+    │   ├── ...
+    │   ├── ...
+    │   ├── favicon.ico
+    │   └── robots.txt
     ├── layouts
-    │   └── default.layout
+    │   └── default.layout
     ├── output
     └── templer.cfg
 
@@ -71,14 +75,16 @@ In the example above `input/index.wgn` would become `output/index.html`.
 
 > **NOTE** The `.wgn` suffix is an example. You can define which suffix is considered a page via the configuration file.
 
-There is _also_ an "in-place" mode.  When working in-place there is no distinct output directory, instead output is written to the same directory in which is encountered.  Given an input directory you might see this kind of transformation:
+There is _also_ an "in-place" mode.  When working in-place there is no
+distinct output directory, instead output is written to the same directory in
+which is encountered.  Given an input directory you might see this kind of
+transformation:
 
-     index.wgn           -> index.html
-     about.wgn           -> about.html
-     favicon.ico         [Ignored and left un-modified.]
-     robots.txt          [Ignored and left un-modified.]
-     ..
-
+    index.wgn           -> index.html
+    about.wgn           -> about.html
+    favicon.ico         [Ignored and left un-modified.]
+    robots.txt          [Ignored and left un-modified.]
+    ..
 
 
 Pages
@@ -108,8 +114,13 @@ but some names are reserved - and any variable with one of those names will
 be treated specially:
 
 The special variable `layout` may be used to specify a different layout
-template for the current page.  If there is no per-page layout specified then
+template for the current page. If there is no per-page layout specified then
 the global layout declared in the `templer.cfg` file will be used.
+
+The special variable `layout-filter` may be used to specify some filters to
+apply on the used layout in order to transform it into valid `HTML::Template`
+file. If there is no per-page layout filter specified then the global layout
+declared in the `templer.cfg` file will be used.
 
 The special variable `output` may be used to specify an alternative output
 file.  For example the input file `index.wgn` would normally become
@@ -146,10 +157,10 @@ variables.  These variable declarations are then available for use within the
 page-body, using the standard  [HTML::Template](http://search.cpan.org/perldoc?HTML%3A%3ATemplate) expansion facilities:
 
 
-     Title:  Page title
-     Name: Steve Kemp
-     ----
-     <p>Hello, my name is <!-- tmpl_var name='name' -->.</p>
+    Title:  Page title
+    Name: Steve Kemp
+    ----
+    <p>Hello, my name is <!-- tmpl_var name='name' -->.</p>
 
 > **NOTE**: All variable-names are transformed to lower-case for consistency, which is why we refer to the variable `name` rather than the defined `Name`.
 
@@ -175,30 +186,28 @@ via `--define foo=bar`.
 Defining global variables is demonstrated in the sample [`templer.cfg`](https://raw.github.com/skx/templer/master/templer.cfg.sample) file.
 
 
-
-
 File Globbing Variables
 -----------------------
 
-We've already seen simple variables declared by "key: value" in the page header,
+We've already seen simple variables declared by `key: value` in the page header,
 in addition to this you may define a variable that refers to a number of files
 by pattern.
 
 Here is a simple example of creating a gallery which will include files matching
 the pattern `img/*.jpg`:
 
-     Title: My gallery
-     Images: file_glob( "img/*.jpg" )
-     ---
-     <!-- tmpl_if name='images' -->
-       <!-- tmpl_loop name='images' -->
-        <p><img src="<!-- tmpl_var name='file' -->"
-                height="<!-- tmpl_var name='height' -->"
-                width="<!-- tmpl_var name='width' -->" /> </p>
-       <!-- /tmpl_loop -->
-     <!-- tmpl_else -->
-       <p>No images were found.</p>
-     <!-- /tmpl_if -->
+    Title: My gallery
+    Images: file_glob( "img/*.jpg" )
+    ---
+    <!-- tmpl_if name='images' -->
+      <!-- tmpl_loop name='images' -->
+       <p><img src="<!-- tmpl_var name='file' -->"
+               height="<!-- tmpl_var name='height' -->"
+               width="<!-- tmpl_var name='width' -->" /> </p>
+      <!-- /tmpl_loop -->
+    <!-- tmpl_else -->
+      <p>No images were found.</p>
+    <!-- /tmpl_if -->
 
 > **TIP**:  If your images are numbered numerically you can ensure their correct order by doing this:
 
@@ -223,7 +232,7 @@ If your glob matches files which are not images it will populate the member `con
     <p><!-- tmpl_var name='content' --></p>
     <!-- /tmpl_loop -->
 
-This assumes you have files such as <tt>news-20130912.txt</tt>, etc, and will show the contents of each file in (glob)order.</p>
+This assumes you have files such as `news-20130912.txt`, etc, and will show the contents of each file in (glob)order.</p>
 
 If matching files are templer input files then all templer variables are populated instead of the text-content of the matching files.
 
@@ -235,18 +244,18 @@ File Inclusion
 
 The [HTML::Template](http://search.cpan.org/perldoc?HTML%3A%3ATemplate) module supports file inclusion natively, via the following construct:
 
-      <p>This is some text.</p>
-      <!-- tmpl_include name='/etc/passwd' -->
-      <p>That was my password file.</p>
+    <p>This is some text.</p>
+    <!-- tmpl_include name='/etc/passwd' -->
+    <p>That was my password file.</p>
 
 In addition to this you may define a variable to contain the contents of a specified file.  For example:
 
-      Title: This file has my passwords!
-      Passwd: read_file( "/etc/passwd" )
-      ----
-      <p>Please see my passwords:</p>
-      <pre><!-- tmpl_var name='passwd' -->
-      </pre>
+    Title: This file has my passwords!
+    Passwd: read_file( "/etc/passwd" )
+    ----
+    <p>Please see my passwords:</p>
+    <pre><!-- tmpl_var name='passwd' -->
+    </pre>
 
 This facility is implemented in the `Templer::Plugin::FileContents` [plugin](PLUGINS.md).
 
@@ -267,10 +276,10 @@ Shell Command Execution
 Pages may also define variables which receive the value of the output of shell commands.  This is done via definitions like this:
 
 
-      Title: This file is dynamic
-      Host: run_command( "hostname" )
-      ----
-      <p>This page was built upon <!-- tmpl_var name='host' -->.</p>
+    Title: This file is dynamic
+    Host: run_command( "hostname" )
+    ----
+    <p>This page was built upon <!-- tmpl_var name='host' -->.</p>
 
 This facility is implemented in the `Templer::Plugin::ShellCommand` [plugin](PLUGINS.md).
 
@@ -281,15 +290,15 @@ Remote RSS Feeds
 Pages may use snippets of RSS feeds, limiting them to the given
 number of entries.  For example:
 
-      title: About my site
-      feed: rss(4, http://blog.steve.org.uk/index.rss )
-      ----
-      <p>This page is about my site, here are my recent blog posts:</p>
-      <ul>
-      <!-- tmpl_loop name='feed' -->
-            <li><a href="<!-- tmpl_var name='link' -->"><!-- tmpl_var name='title' --></a></li>
-      <!-- /tmpl_loop -->
-      </ul>
+    title: About my site
+    feed: rss(4, http://blog.steve.org.uk/index.rss )
+    ----
+    <p>This page is about my site, here are my recent blog posts:</p>
+    <ul>
+    <!-- tmpl_loop name='feed' -->
+        <li><a href="<!-- tmpl_var name='link' -->"><!-- tmpl_var name='title' --></a></li>
+    <!-- /tmpl_loop -->
+    </ul>
 
 
 Redis Lookups
@@ -300,10 +309,10 @@ configure page-variables to retrieve their values via lookups against it.
 
 For example:
 
-      title: Site Statistics
-      count: redis_get( "global_count" )
-      ----
-      <p>There are <!-- tmpL-var name='count' --> entries.</p>
+    title: Site Statistics
+    count: redis_get( "global_count" )
+    ----
+    <p>There are <!-- tmpL-var name='count' --> entries.</p>
 
 
 Installation
@@ -311,18 +320,18 @@ Installation
 
 The code is modular and neat and is combined from a series of modules into a single script `templer`.  To install the tool system-wide run:
 
-        $ git clone https://github.com/skx/templer.git
-        $ cd templer
-        $ sudo make install
+    $ git clone https://github.com/skx/templer.git
+    $ cd templer
+    $ sudo make install
 
 (If you ever wish to remove the software you may run `sudo make uninstall`.)
 
 If you wish to merely run/examine the scripts then you should run `make` first,
 like so:
 
-        $ git clone https://github.com/skx/templer.git
-        $ cd templer
-        $ make
+    $ git clone https://github.com/skx/templer.git
+    $ cd templer
+    $ make
 
 The `make` (or `make default`) command is required to generate the script by concatenating the various modules which make up the code into a single script.  The code is deliberately contained in a single script to ease deployment, but developed in a modular fashion to ease testing.  (You can see a brief overview of [the logical structure](#object-hierarchy) later.)
 
@@ -330,20 +339,20 @@ The dependencies are minimal, to ease installation:
 
 * Perl
 * The [HTML::Template](http://search.cpan.org/perldoc?HTML%3A%3ATemplate) module.
-   *  This may be installed, on a Debian system, with `apt-get install libhtml-template-perl`.
+    *  This may be installed, on a Debian system, with `apt-get install libhtml-template-perl`.
 * The following are optional modules:
-   * The [Image::Size](http://search.cpan.org/perldoc?Image%3A%3ASize) module is used if available whenever you create `file_glob`-using loops of image files.
-      * This will set the attributes `width` and `height` any images added via `file_glob`.
-   * The [Text::Markdown](http://search.cpan.org/perldoc?Text%3A%3AMarkdown) module is required if you wish to write your page bodies in Markdown.
-      *  This may be installed, on a Debian system, with `apt-get install libtext-markdown-perl`.
-   * The [Text::Textile](http://search.cpan.org/perldoc?Text%3A%3ATextile) module is required if you wish to write your page bodies in Textile.
-      *  This may be installed, on a Debian system, with `apt-get install libtext-textile-perl`.
-   * The [Text::Template](http://search.cpan.org/perldoc?Text%3A%3ATemplate) module is required if you wish to include dynamic perl in your input pages.
-      *  This may be installed, on a Debian system, with `apt-get install libtext-template-perl`.
-   * The [Redis](http://search.cpan.org/perldoc?Redis) module is required if you wish to use the Redis plugin.
-      *  This may be installed, on a Debian system, with `apt-get install libredis-perl`.
-   * The [XML::Feed](http://search.cpan.org/perldoc?XML%3A%3AFeed) module is required if you wish to use the RSS plugin.
-      *  This may be installed, on a Debian system, with `apt-get install libxml-feed-perl`.
+    * The [Image::Size](http://search.cpan.org/perldoc?Image%3A%3ASize) module is used if available whenever you create `file_glob`-using loops of image files.
+        * This will set the attributes `width` and `height` any images added via `file_glob`.
+    * The [Text::Markdown](http://search.cpan.org/perldoc?Text%3A%3AMarkdown) module is required if you wish to write your page bodies in Markdown.
+        *  This may be installed, on a Debian system, with `apt-get install libtext-markdown-perl`.
+    * The [Text::Textile](http://search.cpan.org/perldoc?Text%3A%3ATextile) module is required if you wish to write your page bodies in Textile.
+        *  This may be installed, on a Debian system, with `apt-get install libtext-textile-perl`.
+    * The [Text::Template](http://search.cpan.org/perldoc?Text%3A%3ATemplate) module is required if you wish to include dynamic perl in your input pages.
+        *  This may be installed, on a Debian system, with `apt-get install libtext-template-perl`.
+    * The [Redis](http://search.cpan.org/perldoc?Redis) module is required if you wish to use the Redis plugin.
+        *  This may be installed, on a Debian system, with `apt-get install libredis-perl`.
+    * The [XML::Feed](http://search.cpan.org/perldoc?XML%3A%3AFeed) module is required if you wish to use the RSS plugin.
+        *  This may be installed, on a Debian system, with `apt-get install libxml-feed-perl`.
 
 
 Creating a new site
@@ -352,18 +361,18 @@ Creating a new site
 There is a supplied script `templer-generate` which will create a new site-structure
 if you give in the name of a directory to create & write to:
 
-     ~$ templer-generate my-site
-     ~$ tree my-site/
-     my-site/
-      ├── include
-      ├── input
-      │   ├── about.wgn
-      │   ├── index.wgn
-      │   └── robots.txt
-      ├── layouts
-      │   └── default.layout
-      ├── output
-      └── templer.cfg
+    ~$ templer-generate my-site
+    ~$ tree my-site/
+    my-site/
+    ├── include
+    ├── input
+    │   ├── about.wgn
+    │   ├── index.wgn
+    │   └── robots.txt
+    ├── layouts
+    │   └── default.layout
+    ├── output
+    └── templer.cfg
 
 If you prefer you may go through the process manually creating a directory,
 adding the [`templer.cfg`](https://raw.github.com/skx/templer/master/templer.cfg.sample)
@@ -375,11 +384,10 @@ uploaded online - so you may easily compare the input and the generated
 output:
 
 * [simple example source](https://github.com/skx/templer/tree/master/examples/simple)
-   * The online [generated output](http://www.steve.org.uk/Software/templer/examples/simple/output/).
+    * The online [generated output](http://www.steve.org.uk/Software/templer/examples/simple/output/).
 * [complex example source](https://github.com/skx/templer/tree/master/examples/complex)
-   * The online [generated output](http://www.steve.org.uk/Software/templer/examples/complex/output/).
-   * The generated "complex" example is designed to be a standalone introduction to templer.
-
+    * The online [generated output](http://www.steve.org.uk/Software/templer/examples/complex/output/).
+    * The generated "complex" example is designed to be a standalone introduction to templer.
 
 
 Rebuilding a site
@@ -390,11 +398,11 @@ run `templer` with no arguments.  You may optionally add flags to control
 what happens:
 
 * `templer --verbose`
-     * To see more details of what is happening.
+    * To see more details of what is happening.
 * `templer --force`
-     * To force a rebuild of the site.
+    * To force a rebuild of the site.
 * `templer --define foo=bar`
-     * Define the variable `foo` for use in your templates.  This will over-ride any setting of foo in the configuration file you've loaded.
+    * Define the variable `foo` for use in your templates.  This will over-ride any setting of foo in the configuration file you've loaded.
 
 In the general case `templer` should rebuild only the files which are needed
 to be built.  A page will be rebuilt if:
@@ -402,10 +410,9 @@ to be built.  A page will be rebuilt if:
 * The page source is edited.
 * The layout the page uses is edited.
 * Any include-file the page includes is edited.
-     * This applies to those includes read via [read_file](#file-inclusion) rather than via `HTML::Template` includes
+    * This applies to those includes read via [read_file](#file-inclusion) rather than via `HTML::Template` includes
 
 > Previously it was required that you run `templer` from the top-level of your site, this has now changed.  `templer` will walk upwards from the current working directory and attempt to find the site-root by itself.
-
 
 
 Object Hierarchy
@@ -424,10 +431,10 @@ In brief the control flow goes like this:
 * A `Templer::Site` object is created, using the merged config values.
 * A `Templer::Timer` object is created to record the build-time.
 * The build process is contained in `Templer::Site::build()`:
-     * A `Templer::Plugin::Factory` object is created to load plugins.
-     * A `Templer::Site::Page` object is created for each appropriate input.
-     * Each page is output.
-     * The plugins are unloaded.
+    * A `Templer::Plugin::Factory` object is created to load plugins.
+    * A `Templer::Site::Page` object is created for each appropriate input.
+    * Each page is output.
+    * The plugins are unloaded.
 * The assets are copied via `Templer::Site::copyAssets()`.
 * The build-time/build-count is reported and the process is complete.
 
