@@ -134,7 +134,7 @@ sub register_formatter
 }
 
 
-=head2 register_formatter
+=head2 register_plugin
 
 This method should be called by all variable-expanding plugins to register
 themselves.  The expected argument is the class-name which may be instantiated
@@ -180,7 +180,7 @@ sub expand_variables
 
 
 
-=head2 register_formatter
+=head2 cleanup
 
 For each loaded plugin invoke the "cleanup" method, if it exists.
 
