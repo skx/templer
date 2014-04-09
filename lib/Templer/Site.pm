@@ -447,7 +447,7 @@ sub build
         # There may be template filters on templates
         #
         my @filters;
-        my $filter = $data{ 'layout-filter' };
+        my $filter = $data{ 'template-filter' };
 
         if ($filter)
         {

@@ -138,7 +138,7 @@ print $handle <<EOF;
 Title: A simple title
 Author: Someone
 Body: Something inside
-layout-filter: dollar, strict
+template-filter: dollar, strict
 ----
 \${body}
 EOF

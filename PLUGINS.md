@@ -109,7 +109,7 @@ engine allowing one to escape `HTML::Template` rigid syntax.
 A standard input page-file might look like this:
 
     Title: My page title.
-    layout-filter: dollar
+    template-filter: dollar
     ----
     This is a html page with a ${title}.
 

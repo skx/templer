@@ -115,7 +115,7 @@ output = ./output/
 # When pages are processed a layout-template will be used to expand the content
 # into.
 #
-# Each page may specify its own layout (and layout-filter) if it so wishes,
+# Each page may specify its own layout (and template-filter) if it so wishes,
 # but generally we'd expect only one layout to exist.
 #
 # Here we specify both the path to the layout directory and the layout to use
@@ -129,7 +129,7 @@ output = ./output/
 # Layout template can be filtered in order to escape HTML::Template rigid
 # syntax which is annoying with some text-editor
 #
-# layout-filter = dollar, strict
+# template-filter = dollar, strict
 #
 ##
 

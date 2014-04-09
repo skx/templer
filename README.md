@@ -117,7 +117,7 @@ The special variable `layout` may be used to specify a different layout
 template for the current page. If there is no per-page layout specified then
 the global layout declared in the `templer.cfg` file will be used.
 
-The special variable `layout-filter` may be used to specify some filters to
+The special variable `template-filter` may be used to specify some filters to
 apply on the used layout in order to transform it into valid `HTML::Template`
 file. If there is no per-page layout filter specified then the global layout
 declared in the `templer.cfg` file will be used.
