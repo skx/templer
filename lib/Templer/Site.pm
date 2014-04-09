@@ -374,6 +374,7 @@ sub build
     #
     my $rebuilt = 0;
 
+
     #
     #  For each page we've found.
     #
@@ -435,6 +436,35 @@ sub build
             next;
         }
 
+        #
+        #  The template-data we'll expand for the page/template.
+        #
+        #  (All fields from the page, and from the configuration file.)
+        #
+        my %data = ( $self->fields(), $page->fields() );
+
+        #
+        # There may be template filters on templates
+        #
+        my @filters;
+        my $filter = $data{ 'template-filter' };
+
+        if ($filter)
+        {
+            foreach my $f ( split( /,/, $filter ) )
+            {
+                $f =~ s/^\s+|\s+$//g;
+                next unless ($f);
+
+                my $helper = $PLUGINS->filter($f);
+
+                push( @filters,
+                      {  sub =>
+                           sub {my $s = shift; $$s = $helper->filter($$s);},
+                         format => 'scalar',
+                      } );
+            }
+        }
 
         #
         #  Load the HTML::Template module against the layout.
@@ -448,14 +478,8 @@ sub build
                          global_vars            => 1,
                          loop_context_vars      => 1,
                          utf8                   => 1,
+                         filter                 => \@filters,
           );
-
-        #
-        #  The template-data we'll expand for the page/template.
-        #
-        #  (All fields from the page, and from the configuration file.)
-        #
-        my %data = ( $self->fields(), $page->fields() );
 
         #
         #  Use the plugin-factory to expand each of the variables.
@@ -476,7 +500,7 @@ sub build
         #
         #  We want to build the page if:
         #
-        #    *  The output page is missing.
+        #    * The output page is missing.
         #
         #    * The input page, or any dependancy is newer than the output.
         #
@@ -533,6 +557,7 @@ sub build
                                         global_vars            => 1,
                                         loop_context_vars      => 1,
                                         utf8                   => 1,
+                                        filter                 => \@filters,
                                       );
 
 

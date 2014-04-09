@@ -134,6 +134,30 @@ sub register_formatter
 }
 
 
+
+=head2 register_filter
+
+This method should be called by all template filter plugins to register
+themselves.  The two arguments are the name of the template-filter,
+and the class-name which may be instantiated to process that kind
+of input.
+
+L<Templer::Plugin::Dollar> and L<Templer::Plugin::Strict> are
+example classes.
+
+=cut
+
+sub register_filter
+{
+    my ( $self, $name, $obj ) = (@_);
+
+    die "No name" unless ($name);
+    $name = lc($name);
+    $self->{ 'filters' }{ $name } = $obj;
+}
+
+
+
 =head2 register_plugin
 
 This method should be called by all variable-expanding plugins to register
@@ -229,6 +253,7 @@ sub formatter
 }
 
 
+
 =head2 formatters
 
 Return the names of each registered formatter-plugin, this is only
@@ -241,6 +266,49 @@ sub formatters
     my ($self) = (@_);
 
     keys( %{ $self->{ 'formatters' } } );
+}
+
+
+
+=head2 filter
+
+Return a new instance of the filter class with the given name.
+
+C<undef> is returned if no such plugin is registered.
+
+=cut
+
+sub filter
+{
+    my ( $self, $name ) = (@_);
+
+    die "No name" unless ($name);
+    $name = lc($name);
+
+    #
+    #  Lookup the filter by name, if it is found
+    # then instantiate the class.
+    #
+    my $obj = $self->{ 'filters' }{ $name } || undef;
+    $obj = $obj->new() if ($obj);
+
+    return ($obj);
+}
+
+
+
+=head2 filters
+
+Return the names of each registered filter-plugin, this is only
+used by the test-suite.
+
+=cut
+
+sub filters
+{
+    my ($self) = (@_);
+
+    keys( %{ $self->{ 'filters' } } );
 }
 
 
