@@ -86,6 +86,10 @@ transformation:
     robots.txt          [Ignored and left un-modified.]
     ..
 
+There is _also_ a *synchronized* mode. When working synchronized any file in
+the output directory which do not have a source file in input directory (page
+or asset) is removed each time the site is rebuild.
+
 
 Pages
 -----
@@ -436,6 +440,7 @@ In brief the control flow goes like this:
     * Each page is output.
     * The plugins are unloaded.
 * The assets are copied via `Templer::Site::copyAssets()`.
+* The output directory is cleaned via `Templer::Site::sync()`.
 * The build-time/build-count is reported and the process is complete.
 
 Each of the modules has a simple test-case associated with it.  To test functionality, especially after making changes, please run the test-suite:

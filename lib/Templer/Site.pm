@@ -147,6 +147,8 @@ Ensure that the input directory exists.
 
 Create the output directory if we're not running in-place.
 
+Create array of destination files.
+
 =cut
 
 sub init
@@ -184,6 +186,10 @@ sub init
     File::Path::mkpath( $output, { verbose => 0, mode => oct(755) } )
       if ( !-d $output && ( !$inplace ) );
 
+    #
+    # We will store the list of all destination files
+    #
+    $self->set( "output-files", [] );
 }
 
 
@@ -315,6 +321,10 @@ sub _findFiles
             push( @matches, $class->new( file => $file ) );
         }
     }
+    else
+    {
+        @matches = map {$class->new( file => $_ )} keys %files;
+    }
 
     @matches;
 }
@@ -409,6 +419,10 @@ sub build
             $dst =~ s/$self->{'suffix'}/.html/g;
         }
 
+        #
+        # Store the destination file path
+        #
+        push( @{ $self->{ 'output-files' } }, $dst );
 
         #
         # Show the transformation.
@@ -648,6 +662,13 @@ sub copyAssets
         $src =~ s/^$self->{'input'}//g;
 
         #
+        # Store the destination file path
+        #
+        my $dst = $asset->source();
+        $dst =~ s/$self->{'input'}/$self->{'output'}/;
+        push( @{ $self->{ 'output-files' } }, $dst );
+
+        #
         # Filenames must be shell safe: we'll use it in a shell command
         #
         my $quoted_src;
@@ -687,6 +708,73 @@ sub copyAssets
     }
 }
 
+
+=head2 sync
+
+Delete all files from output directory which do not come from the input directory.
+
+=cut
+
+sub sync
+{
+    my ($self) = @_;
+
+    return if $self->{ 'in-place' };
+
+    return unless $self->{ 'sync' };
+
+    #
+    # Get list of created and existing files
+    #
+    my @created = sort @{ $self->{ 'output-files' } };
+
+    my @existing = sort
+      map {$_->source();}
+      $self->_findFiles( object        => "Templer::Site::Asset",
+                         directory     => $self->{ 'output' },
+                         hide_dotfiles => 0,
+                       );
+
+    #
+    # Determine files to remove
+    #
+    my @files = ();
+    my @dirs  = ();
+    my %count = ();
+    foreach ( @created, @existing )
+    {
+        $count{ $_ }++;
+    }
+    foreach ( keys %count )
+    {
+        push( @files, $_ ) if ( $count{ $_ } == 1 && !-d $_ );
+        push( @dirs,  $_ ) if ( $count{ $_ } == 1 && -d $_ );
+    }
+    @files = sort @files;
+    @dirs  = sort @dirs;
+
+    #
+    # Removing files
+    #
+    if (@files)
+    {
+        print "\nRemoving files: @files\n" if ( $self->{ 'verbose' } );
+
+        unlink @files;
+    }
+
+    #
+    # Removing directories
+    #
+    if (@dirs)
+    {
+        print "\nRemoving directories: @dirs\n" if ( $self->{ 'verbose' } );
+        foreach (@dirs)
+        {
+            rmdir $_;
+        }
+    }
+}
 
 =head2 set
 

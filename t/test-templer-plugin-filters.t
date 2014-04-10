@@ -3,8 +3,7 @@
 #  Test we can instantiate the known filter-plugins, and that
 # they work when Templer::Site use HTTML::Template.
 #
-# Steve
-# --
+# Bruno
 #
 
 use strict;

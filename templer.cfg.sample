@@ -93,6 +93,15 @@ format = html
 ##
 
 
+##
+#
+# If we're working synchronized then files in output must have a source file
+# in input or else they are removed
+#
+# sync = 1
+#
+##
+
 
 ##
 #
