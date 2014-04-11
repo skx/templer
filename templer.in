@@ -85,6 +85,7 @@ my %DEFAULTS = ( "in-place"     => 0,
                  "verbose"      => ( $CONFIG{ 'verbose' } || 0 ),
                  "debug"        => ( $CONFIG{ 'debug' } || 0 ),
                  "force"        => ( $CONFIG{ 'force' } || 0 ),
+                 "sync"         => ( $CONFIG{ 'sync' } || 0 ),
                );
 
 
@@ -158,6 +159,10 @@ my $rebuilt = $site->build();
 #
 $site->copyAssets();
 
+#
+#  Synchronize destination with input
+#
+$site->sync();
 
 #
 #  Run any post-build commands the user might have defined.
