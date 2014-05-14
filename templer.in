@@ -100,6 +100,12 @@ foreach my $field ( keys %SITE )
 }
 
 #
+# We need to keep the global configuration file name to add it as a dependency
+# for every page
+#
+$DEFAULTS{ 'config' } = $cnf;
+
+#
 #  Add in any definitions we've received.
 #
 if ( $CONFIG{ 'defines' } )
