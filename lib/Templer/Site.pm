@@ -326,6 +326,17 @@ sub _findFiles
         @matches = map {$class->new( file => $_ )} keys %files;
     }
 
+    #
+    # Every pages depend on the global configuration file
+    #
+    if ( $args{ 'object' } eq "Templer::Site::Page" )
+    {
+        foreach my $page (@matches)
+        {
+            $page->add_dependency( $self->{ 'config' } );
+        }
+    }
+
     @matches;
 }
 
