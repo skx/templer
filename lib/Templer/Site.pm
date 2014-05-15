@@ -686,10 +686,17 @@ sub copyAssets
         }
 
         #
-        # If we've got an asset which is a directory that
-        # is already present, for example, we'll skip it.
+        # We only copy asset which do not already exist or which exist but are
+        # newer than in destination (except for directory). If we've got an
+        # asset which is a directory that is already present, for example,
+        # we'll skip it.
         #
-        push( @copy, $quoted_src ) unless ( -e "$self->{'output'}/$src" );
+        if ( !-e "$self->{'output'}/$src" ||
+             ( !-d "$self->{'output'}/$src" &&
+                -M "$self->{'output'}/$src" > -M $asset->source() ) )
+        {
+            push( @copy, $quoted_src );
+        }
     }
 
     #
