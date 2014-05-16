@@ -23,6 +23,9 @@ This is mainly useful as global variables used in the default layout.
 This plugin allows template variables (considered as absolute path from the
 web-root) to be set to a correct relative path from any page of the website.
 
+An empty call to C<path_to> may be used to compute the relative path to the
+web-root.
+
 =cut
 
 =head1 LICENSE
@@ -132,8 +135,11 @@ sub expand_variables
             #
             # Ensure path is absolute
             #
-            $path = "/$path";
-            $path =~ s{^/+}{/};
+            if ( $path )
+            {
+                $path = "/$path";
+                $path =~ s{^/+}{/};
+            }
 
             #
             #  Store specified path starting from web-root.
