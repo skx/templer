@@ -45,7 +45,7 @@ Steve Kemp <steve@steve.org.uk>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2013 Steve Kemp <steve@steve.org.uk>.
+Copyright (C) 2013-2014 Steve Kemp <steve@steve.org.uk>.
 
 This library is free software. You can modify and or distribute it under
 the same terms as Perl itself.
@@ -121,15 +121,42 @@ sub expand_variables
             $file =~ s/^\s+|\s+$//g;
 
             #
+            #  If the file is unqualified then make it refer to the
+            # path of the source file.
+            #
+            my $dirName = $page->source();
+            if ( $dirName =~ /^(.*)\/(.*)$/ )
+            {
+                $dirName = $1;
+            }
+            my $pwd = Cwd::cwd();
+            chdir( $dirName . "/" );
+
+            #
+            #
             #  Setup the two new variables.
             #
-            $hash{ $key . "_src" }  = $file;
-            $hash{ $key . "_hash" } = $self->hash_file($file);
+            $hash{ $key . "_src" } = $file;
+
+            my $sha1 = $self->hash_file($file);
+            $hash{ $key . "_hash" } = $sha1;
+
+            if ( $site->{ 'verbose' } )
+            {
+                print "Hash of $file is $sha1\n";
+            }
+
 
             #
             #  Delete the original one.
             #
             delete $hash{ $key };
+
+
+            #
+            #  Restore the PWD.
+            #
+            chdir($pwd);
 
         }
     }
@@ -138,43 +165,49 @@ sub expand_variables
 }
 
 #
-#  Return the hash of the file.
+#  Return the SHA1 hash of the file contents.
 #
 sub hash_file
 {
     my ( $self, $file ) = (@_);
 
-    my $str = "use Digest::SHA1;";
+    my $hash = undef;
 
-    ## no critic (Eval)
-    eval($str);
-    ## use critic
+    foreach my $module (qw! Digest::SHA Digest::SHA1 !)
+    {
 
-    return ("Digest::SHA1 not installed") if ($@);
+        # If we succeeded in calculating the hash we're done.
+        next if ( defined($hash) );
 
-    #
-    #  Open the file.
-    #
-    open( my $handle, "<", $file ) or
-      return "Failed to open $file - $!";
+        # Attempt to load the module
+        my $eval = "use $module;";
 
+        ## no critic (Eval)
+        eval($eval);
+        ## use critic
 
-    #
-    #  Get the hash.
-    #
-    my $sha1 = Digest::SHA1->new();
-    $sha1->addfile($handle);
-    my $result = $sha1->hexdigest();
+        #
+        #  Loaded module, with no errors.
+        #
+        if ( !$@ )
+        {
+            my $object = $module->new;
 
-    #
-    #  Close the file
-    #
-    close($handle);
+            open my $handle, "<", $file or
+              die "Failed to read $file to hash contents with $module - $!";
+            $object->addfile($handle);
+            close($handle);
 
-    #
-    #  Return the result.
-    #
-    return ($result);
+            $hash = $object->hexdigest();
+        }
+    }
+
+    unless ( defined $hash )
+    {
+        die "Failed to calculate hash of $file - internal error.";
+    }
+
+    return ($hash);
 }
 
 
