@@ -52,17 +52,17 @@ isa_ok( $factory2, "Templer::Plugin::Factory" );
 is( $factory, $factory2, "Our singleton is a singleton" );
 
 #
-#  No plugins registered
+#  The plugins are auto-loaded, so we'll have formatters.
 #
 my @known = $factory->formatters();
-is( scalar @known, 0, "There are no known formatters" );
+is( scalar @known, 4, "There are four known formatters" );
 
 #
 #  Register a formatter.
 #
 $factory->register_formatter( "tmp", "Simple::Class" );
 @known = $factory->formatters();
-is( scalar @known, 1, "There is now one known formatters" );
+is( scalar @known, 5, "There is now another formatter." );
 
 
 #
