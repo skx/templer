@@ -5,6 +5,8 @@ use lib './t/lib';
 use ExtUtils::MakeMaker;
 
 my %prereq_pm = ( 'HTML::Template' => undef,
+                  'Test::More' =>undef,
+                  'Getopt::Long' => undef,
                 );
 
 WriteMakefile(
