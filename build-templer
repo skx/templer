@@ -9,7 +9,7 @@
 
 use strict;
 use warnings;
-
+use English qw( -no_match_vars );
 
 #
 # Open templer for output.
@@ -63,7 +63,13 @@ foreach my $file ( qw! lib/Templer/Global.pm
 #
 #  Make the file executable.
 #
-chmod( 0755, $handle );
+if ($OSNAME eq 'MSWin32') {
+    #pl2bat is included by default in Strawberry and ActiveState Perl.
+    `pl2bat templer`; # Will wrap templer in a batch file named templer.bat. 
+}
+else {
+    chmod( 0755, $handle );
+}
 
 #
 #  All done.
