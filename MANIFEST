@@ -21,6 +21,8 @@ lib/Templer/Global.pm
 lib/Templer/Site/Asset.pm
 lib/Templer/Site/New.pm
 lib/Templer/Site/Page.pm
+bin/templer
+bin/templer-generate
 LICENSE
 Makefile.PL
 MANIFEST			This list of files
