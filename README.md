@@ -322,8 +322,10 @@ For example:
 Installation
 ------------
 
-The code is currently only available from github, but should shortly be
-available from CPAN.
+Templer is developed in a public fashion, here on github, but stable releases
+are also uploaded to CPAN:
+
+* [App::Templer](http://search.cpan.org/dist/App-Templer/)
 
 Installation should be as simple as any other CPAN-based module:
 
@@ -357,6 +359,10 @@ The dependencies are minimal, to ease installation:
         *  This may be installed, on a Debian system, with `apt-get install libredis-perl`.
     * The [XML::Feed](http://search.cpan.org/perldoc?XML%3A%3AFeed) module is required if you wish to use the RSS plugin.
         *  This may be installed, on a Debian system, with `apt-get install libxml-feed-perl`.
+
+If you prefer you can install Debian binary packages from my personal repository:
+
+* [templer repository for Debian GNU/Linux](http://packages.steve.org.uk/templer/)
 
 
 Creating a new site
