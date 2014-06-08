@@ -23,6 +23,25 @@ lib/Templer/Site/New.pm
 lib/Templer/Site/Page.pm
 bin/templer
 bin/templer-generate
+t/test-templer-plugin-timestamp.t
+t/test-templer-site-new.t
+t/test-templer-site.t
+t/test-strict.t
+t/style-no-tabs.t
+t/test-templer-plugin-redis.t
+t/test-templer-plugin-factory.t
+t/test-templer-plugin-factory-formatters.t
+t/test-pod-syntax.t
+t/test-templer-asset-copying.t
+t/test-templer-page-expansion.t
+t/test-templer-plugin-fileglob.t
+t/test-templer-plugin-rootpath.t
+t/test-dependencies.t
+t/test-templer-plugin-filters.t
+t/style-no-trailing-whitespace.t
+t/test-templer-synchronization.t
+t/test-templer-plugin-shellcommand.t
+t/test-templer-plugin-filecontents.t
 LICENSE
 Makefile.PL
 MANIFEST			This list of files
