@@ -322,26 +322,26 @@ For example:
 Installation
 ------------
 
-The code is modular and neat and is combined from a series of modules into a single script `templer`.  To install the tool system-wide run:
+The code is currently only available from github, but should shortly be
+available from CPAN.
+
+Installation should be as simple as any other CPAN-based module:
 
     $ git clone https://github.com/skx/templer.git
     $ cd templer
+    $ perl Makefile.PL
+    $ make test
     $ sudo make install
 
 (If you ever wish to remove the software you may run `sudo make uninstall`.)
 
-If you wish to merely run/examine the scripts then you should run `make` first,
-like so:
-
-    $ git clone https://github.com/skx/templer.git
-    $ cd templer
-    $ make
-
-The `make` (or `make default`) command is required to generate the script by concatenating the various modules which make up the code into a single script.  The code is deliberately contained in a single script to ease deployment, but developed in a modular fashion to ease testing.  (You can see a brief overview of [the logical structure](#object-hierarchy) later.)
+The code makes use of a reasonably large number of modules for its
+implementation, and you can see a brief overview of [the logical structure](#object-hierarchy) later.)
 
 The dependencies are minimal, to ease installation:
 
 * Perl
+* The [Module::Pluggable](http://search.cpan.org/perldoc?Module%3A%3APluggable) module for loading plugins.
 * The [HTML::Template](http://search.cpan.org/perldoc?HTML%3A%3ATemplate) module.
     *  This may be installed, on a Debian system, with `apt-get install libhtml-template-perl`.
 * The following are optional modules:

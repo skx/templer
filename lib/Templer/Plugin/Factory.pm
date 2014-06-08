@@ -53,7 +53,7 @@ Steve Kemp <steve@steve.org.uk>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2012-2013 Steve Kemp <steve@steve.org.uk>.
+Copyright (C) 2012-2014 Steve Kemp <steve@steve.org.uk>.
 
 This library is free software. You can modify and or distribute it under
 the same terms as Perl itself.
@@ -71,7 +71,23 @@ use warnings;
 
 package Templer::Plugin::Factory;
 
+
 my $singleton;
+
+
+#
+#  Look for plugins beneath the `Templer::Plugin` namespace.
+#
+use Module::Pluggable
+  search_path => ['Templer::Plugin'],
+  require     => 1;
+
+
+#
+# Invoking `plugins` ensures that we've actually loaded our plugins
+# by the time this module is loaded.
+#
+my @plugins = plugins();
 
 
 
