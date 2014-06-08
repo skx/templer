@@ -7,5 +7,4 @@ debian/*.log
 debian/*.substvars
 debian/files
 
-templer
-templer-generate
+Makefile.old
