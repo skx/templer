@@ -103,20 +103,23 @@ sub expand_variables
     my ( $self, $site, $page, $data ) = (@_);
 
     #
+    #  Get the page-variables in the template.
+    #
+    my %hash = %$data;
+
+    #
     # Compute the path to the web-root
     #
-    my $root_path = $page->source();
-    my $input     = $site->get("input");
+    return ( \%hash ) if ( ! $page );
+
+    my $root_path = $page->source()     || "";
+    my $input     = $site->get("input") || "";
     $root_path =~ s{^$input}{./};     # Change leading input path
     $root_path =~ s{[^/]+$}{};        # Remove trailing pagename
     $root_path =~ s{/[^/]+}{/..}g;    # Replace directories by ..
     $root_path =~ s{/$}{};            # Remove trailing /
     $root_path =~ s{^./}{};           # Remove leading ./ if still there
 
-    #
-    #  Get the page-variables in the template.
-    #
-    my %hash = %$data;
 
     #
     #  Look for a value of "path_to" in each key.
