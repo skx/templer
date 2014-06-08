@@ -202,6 +202,7 @@ use Pod::Usage;
 #
 # Core templer libraries.
 #
+require Templer;
 require Templer::Timer;
 require Templer::Global;
 require Templer::Site;
@@ -420,6 +421,7 @@ sub parseCommandLine
 
             # run verbosely.
             "verbose", \$CONFIG{ 'verbose' },
+            "version", \$CONFIG{ 'version' },
             "debug",   \$CONFIG{ 'debug' },
         ) );
 
@@ -430,6 +432,15 @@ sub parseCommandLine
     Pod::Usage::pod2usage( ) if ( $CONFIG{ 'help' } );
     Pod::Usage::pod2usage( -verbose => 2 )
       if ( $CONFIG{ 'manual' } );
+
+    #
+    #  Show the release.
+    #
+    if ( $CONFIG{'version'} )
+    {
+        print $Templer::VERSION . "\n";
+        exit(0);
+    }
 
     #
     #  Poke in definitions
