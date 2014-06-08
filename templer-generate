@@ -1,0 +1,107 @@
+#!/usr/bin/perl
+
+=head1 NAME
+
+templer-generate - Generate a stub static-site to be processed via templer.
+
+=cut
+
+=head1 SYNOPSIS
+
+  templer-generate [options] path/to/generate
+
+
+  Help Options:
+
+    --help        Show the help information for this script.
+    --manual      Read the manual for this script.
+
+  Flags
+
+    --force       Force overwriting existing files.
+    --verbose     Be verbose.
+
+=cut
+
+=head1 LICENSE
+
+This module is free software; you can redistribute it and/or modify it
+under the terms of either:
+
+a) the GNU General Public License as published by the Free Software
+Foundation; either version 2, or (at your option) any later version,
+or
+
+b) the Perl "Artistic License".
+
+=cut
+
+=head1 AUTHOR
+
+ Steve
+ --
+ http://www.steve.org.uk/
+
+=cut
+
+=head1 LICENSE
+
+Copyright (c) 2012-2013 by Steve Kemp.  All rights reserved.
+
+This module is free software;
+you can redistribute it and/or modify it under
+the same terms as Perl itself.
+The LICENSE file contains the full text of the license.
+
+=cut
+
+
+
+use strict;
+use warnings;
+
+use File::Path qw(mkpath);
+use Getopt::Long;
+use Pod::Usage;
+
+use Templer::Site::New;
+
+my %CONFIG;
+
+exit
+  if (
+    !GetOptions(
+
+        # Help options
+        "help",    \$CONFIG{ 'help' },
+        "manual",  \$CONFIG{ 'manual' },
+        "force",   \$CONFIG{ 'force' },
+        "verbose", \$CONFIG{ 'verbose' },
+    ) );
+
+
+#
+#  Help/Manual handling.
+#
+pod2usage(1) if ( $CONFIG{ 'help' } );
+pod2usage( -verbose => 2 ) if ( $CONFIG{ 'manual' } );
+
+
+#
+#  Get the directory to populate.
+#
+my $base = shift;
+if ( !defined($base) )
+{
+    pod2usage(1);
+}
+
+
+my $helper = Templer::Site::New->new();
+$helper->create( $base, $CONFIG{ 'force' } );
+
+
+#
+#  All done
+#
+exit(0);
