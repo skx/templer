@@ -199,6 +199,17 @@ use Getopt::Long;
 use Pod::Usage;
 
 
+#
+# Core templer libraries.
+#
+require Templer::Timer;
+require Templer::Global;
+require Templer::Site;
+require Templer::Site::Asset;
+require Templer::Site::Page;
+require Templer::Plugin::Factory;
+
+
 
 
 ####
@@ -207,9 +218,6 @@ use Pod::Usage;
 ##
 ########
 
-
-
-package main;
 
 
 
