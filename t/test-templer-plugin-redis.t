@@ -12,7 +12,7 @@
 use strict;
 use warnings;
 
-use Test::More qw ! no_plan !;
+use Test::More qw! no_plan !;
 use File::Temp qw! tempdir !;
 
 #
@@ -57,33 +57,34 @@ $skip = 1 unless ($redis);
 $skip = 1 unless ( $redis && $redis->ping() );
 
 
-if ($skip)
+SKIP:
 {
-    plan skip_all => "Redis must be running on localhost";
-}
 
-#
-#  Create a config file
-#
-my $site = Templer::Site->new();
+    skip "Redis must be running on localhost" unless ( !$skip );
 
-#
-#  Instantiate the helper.
-#
-my $factory = Templer::Plugin::Factory->new();
-ok( $factory, "Loaded the factory object." );
-isa_ok( $factory, "Templer::Plugin::Factory" );
 
-#
-#  Create a temporary tree.
-#
-my $dir = tempdir( CLEANUP => 1 );
+    #
+    #  Create a config file
+    #
+    my $site = Templer::Site->new();
 
-#
-#  Create a page.
-#
-open( my $handle, ">", $dir . "/input.wgn" );
-print $handle <<EOF;
+    #
+    #  Instantiate the helper.
+    #
+    my $factory = Templer::Plugin::Factory->new();
+    ok( $factory, "Loaded the factory object." );
+    isa_ok( $factory, "Templer::Plugin::Factory" );
+
+    #
+    #  Create a temporary tree.
+    #
+    my $dir = tempdir( CLEANUP => 1 );
+
+    #
+    #  Create a page.
+    #
+    open( my $handle, ">", $dir . "/input.wgn" );
+    print $handle <<EOF;
 Title: This is my redis-page title.
 count: redis_get( "steve.kemp" );
 ----
@@ -91,64 +92,66 @@ count: redis_get( "steve.kemp" );
 This is my page content.
 
 EOF
-close($handle);
+    close($handle);
 
-
-#
-#  See if there is an existing value for the redis key "steve.kemp"
-#
-my $val = $redis->get("steve.kemp");
-
-#
-#  Set a known-value either way.
-#
-$redis->set( "steve.kemp", "is.me" );
-
-#
-#  Create the page
-#
-my $page = Templer::Site::Page->new( file => $dir . "/input.wgn" );
-ok( $page, "We created a page object" );
-isa_ok( $page, "Templer::Site::Page", "Which has the correct type" );
-
-
-#
-#  Get the title to be sure
-#
-is( $page->field("title"),
-    "This is my redis-page title.",
-    "The page has the correct title"
-  );
-
-#
-#  Get the data, after plugin-expansion, which should mean that the
-# count is populated to something.
-#
-my %original = $page->fields();
-my $ref      = $factory->expand_variables( $site, $page, \%original );
-my %updated  = %$ref;
-
-ok( %updated,            "Fetching the fields of the page succeeded" );
-ok( $updated{ 'count' }, "The fields contain a count reference" );
-is( $updated{ 'count' }, "is.me", "The field has the correct value" );
-
-#
-#  If there was previously a value, reset it.
-#
-if ($val)
-{
-    $redis->set( "steve.kemp", $val );
-}
-else
-{
 
     #
-    #  Otherwise cleanup
+    #  See if there is an existing value for the redis key "steve.kemp"
     #
-    $redis->del("steve.kemp");
+    my $val = $redis->get("steve.kemp");
+
+    #
+    #  Set a known-value either way.
+    #
+    $redis->set( "steve.kemp", "is.me" );
+
+    #
+    #  Create the page
+    #
+    my $page = Templer::Site::Page->new( file => $dir . "/input.wgn" );
+    ok( $page, "We created a page object" );
+    isa_ok( $page, "Templer::Site::Page", "Which has the correct type" );
+
+
+    #
+    #  Get the title to be sure
+    #
+    is( $page->field("title"),
+        "This is my redis-page title.",
+        "The page has the correct title"
+      );
+
+    #
+    #  Get the data, after plugin-expansion, which should mean that the
+    # count is populated to something.
+    #
+    my %original = $page->fields();
+    my $ref      = $factory->expand_variables( $site, $page, \%original );
+    my %updated  = %$ref;
+
+    ok( %updated,            "Fetching the fields of the page succeeded" );
+    ok( $updated{ 'count' }, "The fields contain a count reference" );
+    is( $updated{ 'count' }, "is.me", "The field has the correct value" );
+
+    #
+    #  If there was previously a value, reset it.
+    #
+    if ($val)
+    {
+        $redis->set( "steve.kemp", $val );
+    }
+    else
+    {
+
+        #
+        #  Otherwise cleanup
+        #
+        $redis->del("steve.kemp");
+    }
+
+
+    #
+    # All done.
+    #
+    done_testing;
 }
-
-
-#
-# All done.
-#
