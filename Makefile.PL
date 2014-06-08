@@ -11,7 +11,7 @@ my %prereq_pm = ( 'HTML::Template' => undef,
 
 WriteMakefile(
     NAME         => 'App::Templer',
-    VERSION_FROM => 'lib/Templer/Version.pm',
+    VERSION_FROM => 'lib/Templer.pm',
     EXE_FILES    => ['templer', 'templer-generate'],
     PREREQ_PM    => \%prereq_pm,
     ABSTRACT     => 'Extensible Static Site Generator.',

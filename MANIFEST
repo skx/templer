@@ -1,4 +1,4 @@
-lib/Templer/Version.pm
+lib/Templer.pm
 lib/Templer/Site.pm
 lib/Templer/Plugin/RootPath.pm
 lib/Templer/Plugin/HTML.pm
