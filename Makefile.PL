@@ -1,7 +1,6 @@
-# $Id$
 
 use strict;
-use lib './t/lib';
+
 use ExtUtils::MakeMaker;
 
 my %prereq_pm = ( 'HTML::Template' => undef,
