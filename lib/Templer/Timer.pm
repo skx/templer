@@ -56,9 +56,6 @@ the same terms as Perl itself.
 
 =cut
 
-=head1 METHODS
-
-=cut
 
 use strict;
 use warnings;
