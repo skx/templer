@@ -3,9 +3,10 @@ use strict;
 
 use ExtUtils::MakeMaker;
 
-my %prereq_pm = ( 'HTML::Template' => undef,
-                  'Test::More'     => undef,
-                  'Getopt::Long'   => undef,
+my %prereq_pm = ( 'HTML::Template'    => undef,
+                  'Test::More'        => undef,
+                  'Getopt::Long'      => undef,
+                  'Module::Pluggable' => undef,
                 );
 
 WriteMakefile(
@@ -23,7 +24,6 @@ WriteMakefile(
             homepage   => 'https://github.com/skx/templer/',
             bugtracker => 'https://github.com/skx/templer/issues',
             repository => 'https://github.com/skx/templer.git',
-
                      },
                   },
              );
