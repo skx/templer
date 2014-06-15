@@ -5,6 +5,7 @@ use ExtUtils::MakeMaker;
 
 my %prereq_pm = ( 'HTML::Template'    => undef,
                   'Test::More'        => undef,
+                  'Test::Exception'   => undef,
                   'Getopt::Long'      => undef,
                   'Module::Pluggable' => undef,
                 );
