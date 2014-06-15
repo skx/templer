@@ -1,9 +1,15 @@
+templer (0.9-2) stable; urgency=low
+
+  * Added a the missing dependency Test::Exception to allow the test suite
+    to pass.
+
+ -- Steve Kemp <steve@steve.org.uk>  Sun, 15 Jun 2014 07:08:09 +0000
+
 templer (0.9-1) stable; urgency=low
 
   * Install in a CPAN-like manner, rather than our older system.
 
  -- Steve Kemp <steve@steve.org.uk>  Sun, 8 Jun 2014 08:44:00 +0000
-
 
 templer (0.8-1) stable; urgency=low
 
