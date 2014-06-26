@@ -61,7 +61,7 @@ use warnings;
 package Templer;
 
 
-our $VERSION = "0.9.2";
+our $VERSION = "0.9.3";
 
 
 1;
