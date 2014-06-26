@@ -77,5 +77,4 @@ SKIP:
     ok( length($shell), "The shell command execution returned something." );
     ok( $shell =~ /passwd/,    "Which looks a little sane." );
     ok( $shell =~ /fstab/,     "And a little more sane." );
-    ok( $shell =~ /hostname/i, "It did good." );
 }
