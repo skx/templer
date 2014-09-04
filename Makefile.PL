@@ -26,7 +26,7 @@ WriteMakefile(
             homepage   => 'https://github.com/skx/templer/',
             bugtracker => 'https://github.com/skx/templer/issues',
             repository => 'https://github.com/skx/templer.git',
-            git_mirror => 'http://git.steve.org.uk/skx/templer',
+            GitMirror  => 'http://git.steve.org.uk/skx/templer',
                      },
                   },
              );
