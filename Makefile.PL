@@ -24,6 +24,7 @@ WriteMakefile(
     TEST_REQUIRES => \%test_pm,
     ABSTRACT     => 'Extensible Static Site Generator.',
     AUTHOR       => 'Steve Kemp <steve@steve.org.uk>',
+    LICENSE      => 'perl',
 
 
     META_MERGE => {
