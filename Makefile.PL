@@ -4,18 +4,24 @@ use strict;
 use ExtUtils::MakeMaker;
 
 my %prereq_pm = ( 'HTML::Template'    => 0,
-                  'Test::More'        => 0,
-                  'Test::Exception'   => 0,
-                  'Test::NoTabs'      => 0,
                   'Getopt::Long'      => 0,
                   'Module::Pluggable' => 0,
                 );
+
+my %test_pm = (
+               # solely for the test-suite.
+               'Test::More'       => 0,
+               'Test::Pod'        => 0,
+               'Test::Exception'  => 0,
+               'Test::NoTabs'     => 0,
+              );
 
 WriteMakefile(
     NAME         => 'App::Templer',
     VERSION_FROM => 'lib/Templer.pm',
     EXE_FILES    => ['bin/templer', 'bin/templer-generate'],
     PREREQ_PM    => \%prereq_pm,
+    TEST_REQUIRES => \%test_pm,
     ABSTRACT     => 'Extensible Static Site Generator.',
     AUTHOR       => 'Steve Kemp <steve@steve.org.uk>',
 
