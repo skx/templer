@@ -12,6 +12,7 @@ my %test_pm = (
                # solely for the test-suite.
                'Test::More'       => 0,
                'Test::Pod'        => 0,
+               'Test::Strict'     => 0,
                'Test::Exception'  => 0,
                'Test::NoTabs'     => 0,
               );
