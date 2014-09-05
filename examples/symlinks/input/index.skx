@@ -1,5 +1,0 @@
-title: Test site
-----
-
-<p>This site is here to find broken symlink behaviour.</p>
-<p>Please see <a href="js/">js/</a> to see if it has good behaviour!</p>
