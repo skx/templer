@@ -1,4 +1,6 @@
 Makefile$
+Makefile.old
+MYMETA.yml
 TODO
 CVS
 pm_to_blib
