@@ -110,7 +110,7 @@ sub expand_variables
     #
     # Compute the path to the web-root
     #
-    return ( \%hash ) if ( ! $page );
+    return ( \%hash ) if ( !$page );
 
     my $root_path = $page->source()     || "";
     my $input     = $site->get("input") || "";
@@ -138,7 +138,7 @@ sub expand_variables
             #
             # Ensure path is absolute
             #
-            if ( $path )
+            if ($path)
             {
                 $path = "/$path";
                 $path =~ s{^/+}{/};
