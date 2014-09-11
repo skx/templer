@@ -241,8 +241,16 @@ sub expand_variables
                     ## use critic
                     if ( !$@ )
                     {
-                        ( $meta{ 'width' }, $meta{ 'height' } ) =
-                          imgsize(  $file );
+                        if ( -e $file )
+                        {
+                            ( $meta{ 'width' }, $meta{ 'height' } ) =
+                              imgsize($file);
+                        }
+                        else
+                        {
+                            print
+                              "WARNING: Attempting to invoke Image::Size on a file that doesn't exist: $file\n";
+                        }
                     }
                 }
                 elsif ( ($suffix) && ( $file =~ /$suffix$/i ) )
