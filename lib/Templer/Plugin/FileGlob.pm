@@ -242,7 +242,7 @@ sub expand_variables
                     if ( !$@ )
                     {
                         ( $meta{ 'width' }, $meta{ 'height' } ) =
-                          imgsize( $dirName . "/" . $file );
+                          imgsize(  $file );
                     }
                 }
                 elsif ( ($suffix) && ( $file =~ /$suffix$/i ) )
