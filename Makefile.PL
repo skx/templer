@@ -12,18 +12,18 @@ my %WriteMakefileArgs = (
     VERSION_FROM => 'lib/Templer.pm',
     EXE_FILES    => ['bin/templer', 'bin/templer-generate'],
     PREREQ_PM    => {
+
+        # These are hard requirements.
         'HTML::Template'    => 0,
         'Getopt::Long'      => 0,
         'Module::Pluggable' => 0,
 
-        # these are OPTIONAL.
+        # These are OPTIONAL.
         "Image::Size"    => 0,
         "Redis"          => 0,
         "Text::Markdown" => 0,
         "Text::Template" => 0,
         "Text::Textile"  => 0,
-                 },
-    TEST_REQUIRES => {
 
         # solely for the test-suite.
         'Test::More'      => 0,
@@ -50,27 +50,5 @@ my %WriteMakefileArgs = (
                   },
 );
 
-
-
-
-unless ( eval {ExtUtils::MakeMaker->VERSION(6.56)} )
-{
-    my $br = delete $WriteMakefileArgs{ BUILD_REQUIRES };
-    my $pp = $WriteMakefileArgs{ PREREQ_PM };
-    for my $mod ( keys %$br )
-    {
-        if ( exists $pp->{ $mod } )
-        {
-            $pp->{ $mod } = $br->{ $mod } if $br->{ $mod } > $pp->{ $mod };
-        }
-        else
-        {
-            $pp->{ $mod } = $br->{ $mod };
-        }
-    }
-}
-
-delete $WriteMakefileArgs{ CONFIGURE_REQUIRES }
-  unless eval {ExtUtils::MakeMaker->VERSION(6.52)};
 
 WriteMakefile(%WriteMakefileArgs);
