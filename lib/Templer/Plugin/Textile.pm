@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-Templer::Plugin::Markdown - A simple textile-formatting plugin.
+Templer::Plugin::Textile - A simple textile-formatting plugin.
 
 =cut
 
