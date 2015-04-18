@@ -29,7 +29,7 @@ examples/simple/input/index.skx
 examples/simple/input/robots.txt
 examples/simple/layouts/default.layout
 examples/simple/templer.cfg
-lib/Templer.pm
+lib/App/Templer.pm
 lib/Templer/Global.pm
 lib/Templer/Plugin/Breadcrumbs.pm
 lib/Templer/Plugin/Dollar.pm
