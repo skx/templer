@@ -45,7 +45,7 @@ Bruno Beaufils <bruno@boulgour.com>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2014 Bruno Beaufils <bruno@boulgour.com>.
+Copyright (C) 2015 Bruno Beaufils <bruno@boulgour.com>.
 
 This library is free software. You can modify and or distribute it under
 the same terms as Perl itself.

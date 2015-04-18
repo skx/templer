@@ -49,7 +49,7 @@ Steve Kemp <steve@steve.org.uk>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2012-2014 Steve Kemp <steve@steve.org.uk>.
+Copyright (C) 2012-2015 Steve Kemp <steve@steve.org.uk>.
 
 This library is free software. You can modify and or distribute it under
 the same terms as Perl itself.
