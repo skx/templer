@@ -9,7 +9,7 @@ use ExtUtils::MakeMaker 6.48;
 
 my %WriteMakefileArgs = (
     NAME         => 'App::Templer',
-    VERSION_FROM => 'lib/Templer.pm',
+    VERSION_FROM => 'lib/App/Templer.pm',
     EXE_FILES    => ['bin/templer', 'bin/templer-generate'],
     PREREQ_PM    => {
 
