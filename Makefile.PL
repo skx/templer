@@ -3,7 +3,7 @@ use warnings;
 
 use 5.008;
 
-use ExtUtils::MakeMaker 6.30;
+use ExtUtils::MakeMaker 6.48;
 
 
 
