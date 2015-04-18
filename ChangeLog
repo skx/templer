@@ -1,3 +1,11 @@
+templer (0.9-9-1) stable; urgency=low
+
+  * Bumped version to 0.9.9.1
+  * Updated copyright year to 2015.
+  * Moved version from Templer::VERSION to App::Templer::VERSION.
+
+ -- Steve Kemp <steve@steve.org.uk>  Sat, 18 Apr 2015 16:55:60 +0000
+
 templer (0.9-9) stable; urgency=low
 
   * Updated POD files to fix a minor error.

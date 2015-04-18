@@ -61,7 +61,7 @@ use warnings;
 package App::Templer;
 
 
-our $VERSION = "0.9.9";
+our $VERSION = "0.9.9.1";
 
 
 1;
