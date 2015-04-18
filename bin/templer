@@ -202,7 +202,7 @@ use Pod::Usage;
 #
 # Core templer libraries.
 #
-require Templer;
+require App::Templer;
 require Templer::Timer;
 require Templer::Global;
 require Templer::Site;
@@ -438,7 +438,7 @@ sub parseCommandLine
     #
     if ( $CONFIG{'version'} )
     {
-        print $Templer::VERSION . "\n";
+        print $App::Templer::VERSION . "\n";
         exit(0);
     }
 
