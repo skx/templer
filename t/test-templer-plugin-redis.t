@@ -60,7 +60,11 @@ $skip = 1 unless ( $redis && $redis->ping() );
 SKIP:
 {
 
-    skip "Redis must be running on localhost" unless ( !$skip );
+    if ($skip)
+    {
+        done_testing;
+        exit(0);
+    }
 
 
     #
@@ -148,7 +152,6 @@ EOF
         #
         $redis->del("steve.kemp");
     }
-
 
     #
     # All done.
