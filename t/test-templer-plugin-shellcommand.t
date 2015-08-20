@@ -75,6 +75,6 @@ SKIP:
     #
     my $shell = $ref->{ 'foo' };
     ok( length($shell), "The shell command execution returned something." );
-    ok( $shell =~ /passwd/,    "Which looks a little sane." );
-    ok( $shell =~ /fstab/,     "And a little more sane." );
+    ok( $shell =~ /passwd/, "Which looks a little sane." );
+    ok( $shell =~ /fstab/,  "And a little more sane." );
 }
