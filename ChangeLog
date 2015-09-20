@@ -1,3 +1,9 @@
+templer (1.0-1) stable; urgency=low
+
+  * Avoid running tests if Redis isn't available/running.
+
+ -- Steve Kemp <steve@steve.org.uk>  Sun, 20 Sep 2015 18:00:00 +0000
+
 templer (0.9-9-1) stable; urgency=low
 
   * Bumped version to 0.9.9.1
