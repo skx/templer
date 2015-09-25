@@ -194,6 +194,7 @@ The LICENSE file contains the full text of the license.
 use strict;
 use warnings;
 
+package main;
 
 use Getopt::Long;
 use Pod::Usage;
