@@ -62,10 +62,7 @@ my %WriteMakefileArgs = (
 sub MY::postamble {
     return <<'MAKE_FRAG';
 standalone:
-	echo "#!/usr/bin/perl -w" > templer
-	for i in  $$(find . -name '*.pm' | grep -v New.pm) ; do cat $$i >> templer.pl >> templer ; done
-	egrep -v "require.*Templer*" bin/templer >> templer
-	chmod 755 templer
+	perl bin/build-templer
 MAKE_FRAG
         }
 
