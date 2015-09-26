@@ -88,7 +88,8 @@ if ($OSNAME eq 'MSWin32') {
     `pl2bat templer`; # Will wrap templer in a batch file named templer.bat. 
 }
 else {
-    chmod( 0755, $handle );
+  
+    chmod( 0755, "templer" );
 }
 
 #
