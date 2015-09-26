@@ -340,6 +340,12 @@ Installation should be as simple as any other CPAN-based module:
 The code makes use of a reasonably large number of modules for its
 implementation, and you can see a brief overview of [the logical structure](#object-hierarchy) later.)
 
+If you want to get a standalone `templer` executable which includes all those `Templer` modules, you can use the `standalone` target of the generated `Makefile`:
+
+    $ make standalone
+
+This will produce a script called `templer` in the base directory so that you should be able to use it alone without copying these used modules anywhere in perl library directories.
+
 The dependencies are minimal, to ease installation:
 
 * Perl
