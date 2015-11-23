@@ -85,10 +85,10 @@ close( $handle );
 #
 if ($OSNAME eq 'MSWin32') {
     #pl2bat is included by default in Strawberry and ActiveState Perl.
-    `pl2bat templer`; # Will wrap templer in a batch file named templer.bat. 
+    `pl2bat templer`; # Will wrap templer in a batch file named templer.bat.
 }
 else {
-  
+
     chmod( 0755, "templer" );
 }
 
