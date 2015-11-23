@@ -9,7 +9,7 @@
 use strict;
 use warnings;
 
-use Test::More qw( no_plan );
+use Test::More;
 
 ## no critic (Eval)
 eval "use Test::NoTabs;";
