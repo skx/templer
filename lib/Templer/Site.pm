@@ -93,6 +93,8 @@ use Data::Dumper;
 use File::Find;
 use File::Path qw! mkpath !;
 use HTML::Template;
+use Templer::Site::Page;
+use Templer::Site::Asset;
 
 
 
@@ -208,7 +210,7 @@ sub pages
 {
     my ( $self, %args ) = (@_);
 
-    my $dir    = $args{ 'directory' } || $self->{ 'directory' };
+    my $dir    = $args{ 'directory' } || $self->{ 'directory' } || $self->{ 'input' };
     my $suffix = $args{ 'suffix' }    || $self->{ 'suffix' };
 
     return (
@@ -236,7 +238,7 @@ sub assets
 {
     my ( $self, %args ) = (@_);
 
-    my $dir    = $args{ 'directory' } || $self->{ 'directory' };
+    my $dir    = $args{ 'directory' } || $self->{ 'directory' } || $self->{ 'input' };
     my $suffix = $args{ 'suffix' }    || $self->{ 'suffix' };
 
     return (
