@@ -1,3 +1,9 @@
+templer (1.1-1) stable; urgency=low
+
+  * Added `init` method to our plugin interface.
+
+ -- Steve Kemp <steve@steve.org.uk>  Sun, 10 Jul 2016 10:33:01 +0000
+
 templer (1.0-1) stable; urgency=low
 
   * Avoid running tests if Redis isn't available/running.
