@@ -40,9 +40,9 @@ The following variable plugins are distributed as part of the project:
 The following template filter plugins are distributed as part of the project:
 
 * `Templer::Plugin::Dollar`
-    * Allow template variables to be written using simple a shell-like syntax
+    * Allow template variables to be written using a simple shell-like syntax.
 * `Templer::Plugin::Strict`
-    * Allow template tags to be written as empty-element tags conforming to XML syntax
+    * Allow template tags to be written as empty-element tags conforming to XML syntax.
 
 If you wish you may contain write your own plugins, contained beneath your
 templer-site.  The default [templer.cfg](templer.cfg.sample) documents the
@@ -59,7 +59,7 @@ There are three types of plugins which are supported:
 
 * Plugins which present variables for use in your template(s).
     * Creating variables that refer to file contents, file globs, etc.
-    
+
 * Plugins which filter content of your template(s).
     * Simplify the way template can be written (escaping `HTML::Template` syntax which is too rigid for some text-editors facility, namely `nxml-mode` in Emacs for instance).
 
