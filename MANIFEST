@@ -45,6 +45,7 @@ lib/Templer/Plugin/Redis.pm
 lib/Templer/Plugin/RootPath.pm
 lib/Templer/Plugin/RSS.pm
 lib/Templer/Plugin/ShellCommand.pm
+lib/Templer/Plugin/SiteMap.pm
 lib/Templer/Plugin/Strict.pm
 lib/Templer/Plugin/Textile.pm
 lib/Templer/Plugin/TimeStamp.pm
