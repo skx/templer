@@ -210,8 +210,9 @@ sub pages
 {
     my ( $self, %args ) = (@_);
 
-    my $dir    = $args{ 'directory' } || $self->{ 'directory' } || $self->{ 'input' };
-    my $suffix = $args{ 'suffix' }    || $self->{ 'suffix' };
+    my $dir =
+      $args{ 'directory' } || $self->{ 'directory' } || $self->{ 'input' };
+    my $suffix = $args{ 'suffix' } || $self->{ 'suffix' };
 
     return (
              $self->_findFiles( must_match    => $suffix . "\$",
@@ -238,8 +239,9 @@ sub assets
 {
     my ( $self, %args ) = (@_);
 
-    my $dir    = $args{ 'directory' } || $self->{ 'directory' } || $self->{ 'input' };
-    my $suffix = $args{ 'suffix' }    || $self->{ 'suffix' };
+    my $dir =
+      $args{ 'directory' } || $self->{ 'directory' } || $self->{ 'input' };
+    my $suffix = $args{ 'suffix' } || $self->{ 'suffix' };
 
     return (
              $self->_findFiles( must_not_match => $suffix . "\$",
@@ -372,6 +374,10 @@ sub build
         $PLUGINS->load_plugins( $self->{ 'plugin-path' } );
     }
 
+    #
+    #  Initialize all plugins.
+    #
+    $PLUGINS->init($self);
 
     #
     #  Setup an array of include-paths.

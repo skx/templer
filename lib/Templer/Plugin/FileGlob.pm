@@ -225,7 +225,7 @@ sub expand_variables
                 # Populate filename parts.
                 #
                 my ( $basename, $dirname, $extension ) = fileparse($file);
-                ( $meta{ 'dirname' }  = $dirname )  =~ s{/$}{};
+                ( $meta{ 'dirname' }  = $dirname ) =~ s{/$}{};
                 ( $meta{ 'basename' } = $basename ) =~ s{(.*)\.([^.]*)$}{$1};
                 $meta{ 'extension' } = $2;
 

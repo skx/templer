@@ -152,7 +152,7 @@ sub expand_variables
             my $count = $1;
             my $link  = $2;
 
-            $link  =~ s/^\s+|\s+$//g;
+            $link =~ s/^\s+|\s+$//g;
             $count =~ s/^\s+|\s+$//g;
 
             # remove the variable.

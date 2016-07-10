@@ -127,6 +127,25 @@ sub load_plugins
 }
 
 
+=head2 init
+
+For each loaded plugin invoke the "init" method, if it exists.
+
+=cut
+
+sub init
+{
+    my ( $self, $site ) = (@_);
+
+    foreach my $plugin ( @{ $self->{ 'plugins' } } )
+    {
+        if ( UNIVERSAL::can( $plugin, "init" ) )
+        {
+            $plugin->init($site);
+        }
+    }
+}
+
 
 =head2 register_formatter
 
