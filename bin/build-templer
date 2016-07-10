@@ -57,12 +57,31 @@ EOF
 #
 foreach my $file ( find_files() )
 {
-    next if ( $file =~ /New/ );
+    # Skip lib::Templer::Site::New
+    next if ( $file =~ /Templer\/Site\/New.pm$/ );
+
+    # Is this Templer::Site?
+    my $site = 0;
+    $site = 1 if ( $file =~ /Templer\/Site.pm$/ );
+
     open( my $tmp, "<", $file ) or
       die "Failed to open file - $file - $!";
     while ( my $line = <$tmp> )
     {
-        print $handle $line;
+        if ($site)
+        {
+            #
+            # We don't want to "use Templer::Site::Asset" or
+            # "use Templer::Site::Page" when running in standalone
+            # mode.
+            #
+            print $handle $line
+              unless ( $line =~ /use Templer::Site::(Asset|Page)/ );
+        }
+        else
+        {
+            print $handle $line;
+        }
     }
     close($tmp);
 }
@@ -71,23 +90,25 @@ foreach my $file ( find_files() )
 #
 #  Now add on "./bin/templer"
 #
-open( my $master, "<", "bin/templer" )
-  or die "Failed to open bin/templer - $!";
-while( my $line = <$master> )
+open( my $master, "<", "bin/templer" ) or
+  die "Failed to open bin/templer - $!";
+while ( my $line = <$master> )
 {
     next if ( $line =~ /^require.*Templer.*/ );
     print $handle $line;
 }
-close( $handle );
+close($handle);
 
 #
 #  Make the file executable.
 #
-if ($OSNAME eq 'MSWin32') {
+if ( $OSNAME eq 'MSWin32' )
+{
     #pl2bat is included by default in Strawberry and ActiveState Perl.
-    `pl2bat templer`; # Will wrap templer in a batch file named templer.bat.
+    `pl2bat templer`;    # Will wrap templer in a batch file named templer.bat.
 }
-else {
+else
+{
 
     chmod( 0755, "templer" );
 }
