@@ -230,9 +230,12 @@ sub expand_variables
 
     foreach my $plugin ( @{ $self->{ 'plugins' } } )
     {
-        my %in = %$data;
-        $out = $plugin->expand_variables( $site, $page, \%in );
-        $data = \%$out;
+        if ( UNIVERSAL::can( $plugin, "expand_variables" ) )
+        {
+            my %in = %$data;
+            $out = $plugin->expand_variables( $site, $page, \%in );
+            $data = \%$out;
+        }
     }
     return ($data);
 }
