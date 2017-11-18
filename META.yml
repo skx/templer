@@ -19,7 +19,6 @@ requires:
     Test::NoTabs:       0
 resources:
     bugtracker:  https://github.com/skx/templer/issues
-    GitMirror:   http://git.steve.org.uk/skx/templer
     homepage:    https://github.com/skx/templer/
     license:     http://dev.perl.org/licenses/
     repository:  https://github.com/skx/templer.git
