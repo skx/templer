@@ -44,7 +44,7 @@ The height of the image, if the file is an image and L<Image::Size> is available
 
 The width of the image, if the file is an image and L<Image::Size> is available.
 
-=item content
+=item contents
 
 The content of the file if the file is not an image and not a templer input file.
 
@@ -88,7 +88,7 @@ Steve Kemp <steve@steve.org.uk>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2012-2015 Steve Kemp <steve@steve.org.uk>.
+Copyright (C) 2012-2018 Steve Kemp <steve@steve.org.uk>.
 
 This library is free software. You can modify and or distribute it under
 the same terms as Perl itself.
@@ -278,7 +278,7 @@ sub expand_variables
                         binmode( $handle, ":utf8" );
                         while ( my $line = <$handle> )
                         {
-                            $meta{ 'content' } .= $line;
+                            $meta{ 'contents' } .= $line;
                         }
                         close($handle);
                     }
