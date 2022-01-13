@@ -1,3 +1,9 @@
+templer (1.3-1) stable; urgency=low
+
+  * Added explicit dependency upon `Pod::Find` and `Pod::Usage`
+
+ -- Steve Kemp <steve@steve.org.uk>  Thu, 13 Jan 2021 21:55:12 +0200
+
 templer (1.2-1) stable; urgency=low
 
   * Only invoke plugin methods that exist.
