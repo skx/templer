@@ -31,6 +31,9 @@ require_ok('Getopt::Long');
 BEGIN {use_ok('HTML::Template');}
 require_ok('HTML::Template');
 
+BEGIN {use_ok('Pod::Find');}
+require_ok('Pod::Find');
+
 BEGIN {use_ok('Pod::Usage');}
 require_ok('Pod::Usage');
 
@@ -45,5 +48,3 @@ require_ok('strict');
 
 BEGIN {use_ok('warnings');}
 require_ok('warnings');
-
-
