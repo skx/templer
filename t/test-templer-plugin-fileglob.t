@@ -117,28 +117,28 @@ foreach my $obj ( @{ $updated{ 'files' } } )
     ok( $obj->{ 'file' } =~ m{^foo/}, "    file reference is sane" );
     if ( $file eq "foo/foo.txt" )
     {
-        is( $obj->{ 'content' },   "something", "    content is propagated" );
+        is( $obj->{ 'contents' },  "something", "    content is propagated" );
         is( $obj->{ 'dirname' },   'foo',       "    dirname is captured" );
         is( $obj->{ 'basename' },  'foo',       "    basename is captured" );
         is( $obj->{ 'extension' }, 'txt',       "    extension is captured" );
     }
     elsif ( $file eq "foo/ok.txt" )
     {
-        is( $obj->{ 'content' },   "something", "    content is propagated" );
+        is( $obj->{ 'contents' },  "something", "    content is propagated" );
         is( $obj->{ 'dirname' },   'foo',       "    dirname is captured" );
         is( $obj->{ 'basename' },  'ok',        "    basename is captured" );
         is( $obj->{ 'extension' }, 'txt',       "    extension is captured" );
     }
     elsif ( $file eq "foo/bar.txt" )
     {
-        is( $obj->{ 'content' },   "something", "    content is propagated" );
+        is( $obj->{ 'contents' },  "something", "    content is propagated" );
         is( $obj->{ 'dirname' },   'foo',       "    dirname is captured" );
         is( $obj->{ 'basename' },  'bar',       "    basename is captured" );
         is( $obj->{ 'extension' }, 'txt',       "    extension is captured" );
     }
     elsif ( $file eq "foo/bar" )
     {
-        is( $obj->{ 'content' },   "something", "    content is propagated" );
+        is( $obj->{ 'contents' },  "something", "    content is propagated" );
         is( $obj->{ 'dirname' },   'foo',       "    dirname is captured" );
         is( $obj->{ 'basename' },  'bar',       "    basename is captured" );
         is( $obj->{ 'extension' }, undef,       "    extension is empty" );
